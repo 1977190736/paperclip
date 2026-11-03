@@ -1,4 +1,5 @@
 import { auditSectionHref, type AuditSection } from "./audit/audit-navigation";
+import { t } from "@/i18n";
 
 export type AgentAuditView = Extract<AuditSection, "activity" | "runs" | "costs" | "budgets">;
 
@@ -45,13 +46,19 @@ export const AGENT_DETAIL_NAVIGATION: ReadonlyArray<{
   },
 ] as const;
 
-const HIDDEN_VIEW_LABELS: Partial<Record<AgentLocalDetailView, string>> = {
-  skills: "Skills",
-  tools: "Tools",
-  channels: "Channels",
-  "api-keys": "API Keys",
-  revisions: "Agent history",
-};
+/** i18n key for a detail view's display name; resolve with `t()` at render. */
+export function agentDetailViewLabelKey(view: AgentLocalDetailView): string {
+  const item = AGENT_DETAIL_NAVIGATION.flatMap((section) => section.items).find((entry) => entry.value === view);
+  if (item) return `agentNav.views.${item.value}`;
+  const hiddenKey: Partial<Record<AgentLocalDetailView, string>> = {
+    skills: "agentNav.views.skills",
+    tools: "agentNav.views.tools",
+    channels: "agentNav.views.channels",
+    "api-keys": "agentNav.views.apiKeys",
+    revisions: "agentNav.views.revisions",
+  };
+  return hiddenKey[view] ?? "agentNav.views.overview";
+}
 
 export const AGENT_AUDIT_VIEWS: ReadonlySet<AgentLocalDetailView> = new Set(["activity", "runs", "costs", "budgets"]);
 
@@ -60,8 +67,7 @@ export function isAgentAuditView(view: AgentDetailView): view is AgentAuditView 
 }
 
 export function agentDetailViewLabel(view: AgentLocalDetailView): string {
-  const item = AGENT_DETAIL_NAVIGATION.flatMap((section) => section.items).find((entry) => entry.value === view);
-  return item?.label ?? HIDDEN_VIEW_LABELS[view] ?? "Overview";
+  return t(agentDetailViewLabelKey(view));
 }
 
 export function parseAgentDetailView(value: string | null): AgentLocalDetailView {

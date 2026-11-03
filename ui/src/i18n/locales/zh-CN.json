@@ -13,6 +13,43 @@
     "hoursAgo": "{{n}} 小时前",
     "daysAgo": "{{n}} 天前"
   },
+  "agentNav": {
+    "agent": "智能体",
+    "audit": "审计",
+    "apps": "应用",
+    "navigationAria": "{{name}} 导航",
+    "discardChanges": "放弃未保存的智能体配置更改？",
+    "views": {
+      "overview": "总览",
+      "identity": "身份",
+      "instructions": "身份",
+      "runtime": "框架与运行时",
+      "secrets": "机密与变量",
+      "permissions": "权限与信任",
+      "advanced": "高级",
+      "activity": "动态",
+      "runs": "运行",
+      "costs": "费用",
+      "budgets": "预算",
+      "skills": "技能",
+      "tools": "工具",
+      "channels": "频道",
+      "apiKeys": "API 密钥",
+      "revisions": "智能体历史"
+    },
+    "tab": {
+      "dashboard": "仪表板",
+      "instructions": "身份",
+      "skills": "技能",
+      "configuration": "配置",
+      "secrets": "机密",
+      "tools": "工具",
+      "channels": "频道",
+      "runs": "运行",
+      "audit": "审计",
+      "budget": "预算"
+    }
+  },
   "theme": {
     "switchToLight": "切换到浅色模式",
     "switchToDark": "切换到深色模式",
