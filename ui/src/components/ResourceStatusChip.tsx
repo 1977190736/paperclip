@@ -1,6 +1,7 @@
 import { Badge } from "@/components/ui/badge";
 import { cn } from "@/lib/utils";
 import { brandChipBadge, type BrandChipColor } from "@/lib/status-colors";
+import { useTranslation } from "@/i18n";
 
 /**
  * The load-bearing visual grammar for the built-in bundle status panel
@@ -28,45 +29,45 @@ export type ResourceStatusVariant =
 interface VariantSpec {
   color: BrandChipColor;
   glyph: string;
-  label: string;
-  title: string;
+  labelKey: string;
+  titleKey: string;
 }
 
 const VARIANTS: Record<ResourceStatusVariant, VariantSpec> = {
-  ready: { color: "green", glyph: "●", label: "Ready", title: "Materialized and matches the shipped default" },
-  needs_setup: { color: "amber", glyph: "⚠", label: "Needs setup", title: "Present but not usable yet" },
-  missing: { color: "amber", glyph: "⚠", label: "Missing", title: "Expected resource absent; reconcile will recreate it" },
-  error: { color: "red", glyph: "✕", label: "Error", title: "Failed to load or reconcile" },
+  ready: { color: "green", glyph: "●", labelKey: "comps3.resourceChip.ready.label", titleKey: "comps3.resourceChip.ready.title" },
+  needs_setup: { color: "amber", glyph: "⚠", labelKey: "comps3.resourceChip.needsSetup.label", titleKey: "comps3.resourceChip.needsSetup.title" },
+  missing: { color: "amber", glyph: "⚠", labelKey: "comps3.resourceChip.missing.label", titleKey: "comps3.resourceChip.missing.title" },
+  error: { color: "red", glyph: "✕", labelKey: "comps3.resourceChip.error.label", titleKey: "comps3.resourceChip.error.title" },
   update_available: {
     color: "blue",
     glyph: "↑",
-    label: "Update available",
-    title: "Unedited — a newer shipped default can be applied",
+    labelKey: "comps3.resourceChip.updateAvailable.label",
+    titleKey: "comps3.resourceChip.updateAvailable.title",
   },
   drifted: {
     color: "gray",
     glyph: "✎",
-    label: "Drifted",
-    title: "You've edited this; your changes are kept, not overwritten",
+    labelKey: "comps3.resourceChip.drifted.label",
+    titleKey: "comps3.resourceChip.drifted.title",
   },
   schedule_off: {
     color: "gray",
     glyph: "◌",
-    label: "Schedule off",
-    title: "No background work runs until you enable it — costs zero tokens",
+    labelKey: "comps3.resourceChip.scheduleOff.label",
+    titleKey: "comps3.resourceChip.scheduleOff.title",
   },
-  schedule_on: { color: "green", glyph: "●", label: "Weekly", title: "Runs on the weekly schedule" },
+  schedule_on: { color: "green", glyph: "●", labelKey: "comps3.resourceChip.scheduleOn.label", titleKey: "comps3.resourceChip.scheduleOn.title" },
   pending_approval: {
     color: "amber",
     glyph: "⚠",
-    label: "Pending approval",
-    title: "Waiting on board hire approval before it can run",
+    labelKey: "comps3.resourceChip.pendingApproval.label",
+    titleKey: "comps3.resourceChip.pendingApproval.title",
   },
   proposal_pending: {
     color: "blue",
     glyph: "↑",
-    label: "Proposal pending",
-    title: "A proposed update is waiting for your review",
+    labelKey: "comps3.resourceChip.proposalPending.label",
+    titleKey: "comps3.resourceChip.proposalPending.title",
   },
 };
 
@@ -82,6 +83,7 @@ export function ResourceStatusChip({
   compact?: boolean;
   className?: string;
 }) {
+  const { t } = useTranslation();
   const spec = VARIANTS[variant];
   return (
     <Badge
@@ -92,10 +94,10 @@ export function ResourceStatusChip({
         compact && "px-1.5 py-0 text-(length:--text-nano)",
         className,
       )}
-      title={spec.title}
+      title={t(spec.titleKey)}
     >
       <span aria-hidden="true">{spec.glyph}</span>
-      {label ?? spec.label}
+      {label ?? t(spec.labelKey)}
     </Badge>
   );
 }

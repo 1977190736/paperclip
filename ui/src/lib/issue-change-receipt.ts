@@ -1,5 +1,6 @@
 import type { IssueChangeReceiptEntry } from "@paperclipai/shared";
 import { formatReviewPolicyValue } from "./review-policy";
+import { t } from "@/i18n";
 
 /**
  * Read + format the field-level change receipts carried on an `issue.updated`
@@ -16,35 +17,35 @@ import { formatReviewPolicyValue } from "./review-policy";
  */
 
 /** Field names whose raw ids carry no meaning in a scannable summary. */
-const FIELD_LABELS: Record<string, string> = {
-  assigneeAgentId: "Assignee",
-  assigneeUserId: "Assignee (user)",
-  responsibleUserId: "Responsible user",
-  blockedByIssueIds: "Blockers",
-  labelIds: "Labels",
-  parentId: "Parent",
-  projectId: "Project",
-  goalId: "Goal",
-  workMode: "Work mode",
-  reviewPolicy: "Who can approve",
-  billingCode: "Billing code",
-  checkoutRunId: "Checkout run",
-  executionRunId: "Execution run",
-  hiddenAt: "Hidden",
-  startedAt: "Started",
-  completedAt: "Completed",
-  cancelledAt: "Cancelled",
-  requestDepth: "Request depth",
-  sourceTrust: "Source trust",
-  executionPolicy: "Execution policy",
-  executionWorkspaceId: "Execution workspace",
-  projectWorkspaceId: "Project workspace",
+const FIELD_LABEL_KEYS: Record<string, string> = {
+  assigneeAgentId: "assigneeAgentId",
+  assigneeUserId: "assigneeUserId",
+  responsibleUserId: "responsibleUserId",
+  blockedByIssueIds: "blockedByIssueIds",
+  labelIds: "labelIds",
+  parentId: "parentId",
+  projectId: "projectId",
+  goalId: "goalId",
+  workMode: "workMode",
+  reviewPolicy: "reviewPolicy",
+  billingCode: "billingCode",
+  checkoutRunId: "checkoutRunId",
+  executionRunId: "executionRunId",
+  hiddenAt: "hiddenAt",
+  startedAt: "startedAt",
+  completedAt: "completedAt",
+  cancelledAt: "cancelledAt",
+  requestDepth: "requestDepth",
+  sourceTrust: "sourceTrust",
+  executionPolicy: "executionPolicy",
+  executionWorkspaceId: "executionWorkspaceId",
+  projectWorkspaceId: "projectWorkspaceId",
 };
 
 /** Human label for a changed field, e.g. `assigneeAgentId` → "Assignee". */
 export function issueChangeFieldLabel(field: string): string {
-  const known = FIELD_LABELS[field];
-  if (known) return known;
+  const key = FIELD_LABEL_KEYS[field];
+  if (key) return t(`libui.changeReceipt.field.${key}`);
   // camelCase / snake_case → "Sentence case".
   const spaced = field
     .replace(/([a-z0-9])([A-Z])/g, "$1 $2")
@@ -69,24 +70,24 @@ export function formatIssueChangeValue(
   // `reviewPolicy` is nullable-by-default: a cleared column means "anyone can
   // approve", not "no value" (PAP-16506), so it resolves before the null branch.
   if (options.field === "reviewPolicy") return formatReviewPolicyValue(value);
-  if (value === null || value === undefined || value === "") return "none";
-  if (typeof value === "boolean") return value ? "yes" : "no";
+  if (value === null || value === undefined || value === "") return t("libui.changeReceipt.value.none");
+  if (typeof value === "boolean") return value ? t("libui.changeReceipt.value.yes") : t("libui.changeReceipt.value.no");
   if (typeof value === "number") return String(value);
 
   if (Array.isArray(value)) {
-    if (value.length === 0) return "none";
+    if (value.length === 0) return t("libui.changeReceipt.value.none");
     const strings = value.filter((entry): entry is string => typeof entry === "string");
-    if (strings.length !== value.length) return `${value.length} items`;
+    if (strings.length !== value.length) return t("libui.changeReceipt.value.itemsLabel", { n: value.length });
     return strings.length <= 3
       ? strings.map((id) => shortenId(id)).join(", ")
-      : `${strings.length} items`;
+      : t("libui.changeReceipt.value.itemsLabel", { n: strings.length });
   }
 
   if (value instanceof Date) return value.toLocaleString();
 
   if (typeof value === "string") {
     const trimmed = value.trim();
-    if (!trimmed) return "none";
+    if (!trimmed) return t("libui.changeReceipt.value.none");
     // Ids resolve to names when the directory is loaded; otherwise they shorten.
     const resolved = options.field?.toLowerCase().includes("agent")
       ? options.resolveAgentLabel?.(trimmed)
@@ -102,7 +103,7 @@ export function formatIssueChangeValue(
 
   // Objects (execution policy, workspace settings) are structural — the receipt
   // records that they moved, and the audit log holds the full value.
-  return "updated";
+  return t("libui.changeReceipt.value.updated");
 }
 
 function truncate(value: string): string {
@@ -164,18 +165,18 @@ export function readIssueChangeReceipt(
 }
 
 /** Authorization reasons, as recorded by the server's write-policy decision. */
-const AUTHORIZATION_REASON_LABELS: Record<string, string> = {
-  allow_visible_issue_write: "default-open write on a visible task",
-  allow_scoped_agent_write: "scoped agent write",
-  allow_board_actor: "board actor",
-  allow_self: "own task",
-  allow_issue_mention_grant: "mention grant",
-  allow_direct_parent_report: "direct parent report",
-  allow_low_trust_boundary: "low-trust boundary allowance",
-  allow_explicit_grant: "explicit permission grant",
-  allow_instance_admin: "instance admin",
-  allow_local_board: "local board",
-  internal_agent_write: "internal agent write",
+const AUTHORIZATION_REASON_KEYS: Record<string, string> = {
+  allow_visible_issue_write: "allowVisibleIssueWrite",
+  allow_scoped_agent_write: "allowScopedAgentWrite",
+  allow_board_actor: "allowBoardActor",
+  allow_self: "allowSelf",
+  allow_issue_mention_grant: "allowIssueMentionGrant",
+  allow_direct_parent_report: "allowDirectParentReport",
+  allow_low_trust_boundary: "allowLowTrustBoundary",
+  allow_explicit_grant: "allowExplicitGrant",
+  allow_instance_admin: "allowInstanceAdmin",
+  allow_local_board: "allowLocalBoard",
+  internal_agent_write: "internalAgentWrite",
 };
 
 /**
@@ -186,5 +187,6 @@ const AUTHORIZATION_REASON_LABELS: Record<string, string> = {
 export function issueAuthorizationReasonLabel(reason: string | null | undefined): string | null {
   const trimmed = reason?.trim();
   if (!trimmed) return null;
-  return AUTHORIZATION_REASON_LABELS[trimmed] ?? trimmed.replace(/_/g, " ");
+  const key = AUTHORIZATION_REASON_KEYS[trimmed];
+  return key ? t(`libui.changeReceipt.authReason.${key}`) : trimmed.replace(/_/g, " ");
 }

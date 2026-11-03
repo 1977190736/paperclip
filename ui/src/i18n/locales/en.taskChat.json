@@ -800,8 +800,8 @@
       "nextItemAria": "Next item",
       "verdictForAria": "Verdict for {{label}}",
       "verdicts": {
-        "approve": "Approve",
-        "reject": "Reject"
+        "approve": "approve",
+        "reject": "reject"
       },
       "reasonLabel": "Reason",
       "addShortReason": "Add a short reason",

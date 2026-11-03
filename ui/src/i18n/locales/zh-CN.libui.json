@@ -1,0 +1,1231 @@
+{
+  "libui": {
+    "workspaceRestore": {
+      "failed": "工作区恢复失败。",
+      "savedPlanKept": "工作区恢复在计划已保存后失败。已保存的计划仍然可用。",
+      "filesNeedRecovery": "工作区文件需要恢复。",
+      "noFinalResponse": "没有记录最终回复。",
+      "affectedPath": "受影响的路径：{{path}}"
+    },
+    "bulk": {
+      "notAvailableForBulkEdits": "该智能体不支持批量编辑",
+      "editPoolMembers": "请在该智能体的配置页编辑连接池成员",
+      "managedExternally": "连接和模型由外部管理",
+      "localCredentials": "本地凭据",
+      "connectionPool": "连接池",
+      "responsibleUserDefault": "负责用户的默认连接",
+      "assignedConnection": "已分配的连接"
+    },
+    "skillFork": {
+      "source": {
+        "url": "一个 URL",
+        "catalog": "技能目录",
+        "localPath": "本地路径",
+        "fallback": "其来源"
+      },
+      "agentUsage": {
+        "none": "当前没有智能体使用该技能",
+        "usage_other": "{{count}} 个智能体正在使用该技能",
+        "usage_one": "{{count}} 个智能体正在使用该技能"
+      }
+    },
+    "secretsDelivery": {
+      "mode": {
+        "env": "环境变量",
+        "api": "API 访问",
+        "config": "配置"
+      },
+      "description": {
+        "env": "在运行开始时注入为环境变量。",
+        "api": "通过运行绑定的智能体 API 按需获取。从不写入环境变量。",
+        "config": "通过适配器配置提供。"
+      },
+      "consumer": {
+        "agentApi": "智能体 API",
+        "pluginWorker": "插件工作进程",
+        "toolConnection": "工具连接"
+      }
+    },
+    "reviewPolicy": {
+      "badge": {
+        "notCreator": {
+          "label": "发起者以外的任何人",
+          "description": "除请求该审查的人以外，任何人都可以批准。"
+        },
+        "humanOnly": {
+          "label": "仅限人类",
+          "description": "只有人类可以批准此审查。智能体无法给出裁决。"
+        }
+      },
+      "value": {
+        "anyone": "任何人",
+        "notCreator": "发起者以外的任何人",
+        "humanOnly": "仅限人类"
+      }
+    },
+    "systemNoticeComment": {
+      "label": {
+        "neutral": "系统通知",
+        "warning": "系统警告",
+        "danger": "系统警报"
+      },
+      "rows": {
+        "detail": "详情",
+        "code": "代码",
+        "task": "任务",
+        "agent": "智能体",
+        "run": "运行",
+        "unknown": "未知"
+      }
+    },
+    "systemNotice": {
+      "titles": {
+        "claudeAuthRequired": "任务已暂停——Claude 需要重新登录",
+        "configurationIncomplete": "任务已暂停——缺少密钥或配置绑定",
+        "workspaceProblem": "任务已暂停——工作区问题",
+        "waitingOnOwner": "任务已暂停——正在等待 {{owner}} 处理",
+        "waitingOnOwnerFallback": "任务已暂停——正在等待恢复负责人",
+        "fallback": "系统更新"
+      }
+    },
+    "cron": {
+      "disposition": {
+        "queued": "已排队",
+        "coalesced": "将被合并",
+        "skipped": "将被跳过"
+      },
+      "note": {
+        "runsImmediately": "立即运行",
+        "previousStillActive": "如果上一次运行仍在进行"
+      }
+    },
+    "runRetry": {
+      "reason": {
+        "nativeProviderOverloaded": "模型已达容量上限",
+        "aiConnectionPoolWait": "等待连接池用量恢复",
+        "transientFailure": "临时故障",
+        "missingIssueComment": "缺少任务评论",
+        "processLost": "进程丢失",
+        "assignmentRecovery": "指派恢复",
+        "issueContinuationNeeded": "需要继续执行",
+        "maxTurnsContinuation": "最大轮次续接"
+      },
+      "attempt_other": "第 {{count}} 次尝试",
+      "badge": {
+        "poolExhausted": "连接池已耗尽",
+        "continuationScheduled": "续接已排期",
+        "retryScheduled": "重试已排期",
+        "continuationExhausted": "续接已耗尽",
+        "retryExhausted": "重试已耗尽",
+        "continuedRun": "已续接的运行",
+        "retriedRun": "已重试的运行"
+      },
+      "nextContinuationAt": "下次续接 {{time}}",
+      "nextRetryAt": "下次重试 {{time}}",
+      "nextContinuationPending": "下次续接待排期",
+      "nextRetryPending": "下次重试待排期",
+      "automaticRetriesExhausted": "自动重试已耗尽",
+      "manualInterventionSuffix": "{{reason}} 需要人工干预。",
+      "attempt_one": "第 {{count}} 次尝试"
+    },
+    "externalObjects": {
+      "category": {
+        "unknown": "尚未判定",
+        "open": "打开",
+        "waiting": "等待中",
+        "running": "运行中",
+        "succeeded": "已成功",
+        "failed": "已失败",
+        "blocked": "已阻塞",
+        "closed": "已关闭",
+        "archived": "已归档",
+        "authRequired": "需要授权",
+        "rateLimited": "已限流",
+        "unreachable": "无法访问"
+      },
+      "liveness": {
+        "unknown": "尚未刷新",
+        "fresh": "新鲜",
+        "stale": "过期",
+        "authRequired": "需要授权",
+        "rateLimited": "已限流",
+        "unreachable": "无法访问"
+      },
+      "statusUnavailable": "状态不可用",
+      "provider": {
+        "external": "外部对象"
+      },
+      "type": {
+        "object": "对象",
+        "pullRequest": "拉取请求",
+        "issue": "议题",
+        "deployment": "部署",
+        "workflowRun": "工作流运行",
+        "ticket": "工单",
+        "lead": "线索",
+        "urlLink": "URL"
+      }
+    },
+    "statusCards": {
+      "lifecycle": {
+        "compiling": {
+          "label": "设置中",
+          "description": "刚创建；正在设置并生成首份摘要。"
+        },
+        "fresh": {
+          "label": "最新",
+          "description": "摘要已反映所有已知变更；没有待处理项。"
+        },
+        "stale": {
+          "label": "过期",
+          "description": "上次更新后有待处理的变更。"
+        },
+        "updating": {
+          "label": "更新中",
+          "description": "一次更新正在流入。"
+        },
+        "error": {
+          "label": "错误",
+          "description": "上次运行失败；最近一次正常摘要仍然可见。"
+        },
+        "pausedBudget": {
+          "label": "已暂停——预算",
+          "description": "已达到每日 token 上限；自动更新已暂停。"
+        },
+        "pausedHours": {
+          "label": "已暂停——时段",
+          "description": "不在活跃时段内；变更将合并到时段开启后的一次更新中。"
+        },
+        "archived": {
+          "label": "已归档",
+          "description": "没有自动更新，也没有关注。恢复后即可重新开始关注。"
+        }
+      },
+      "refresh": {
+        "manual": "手动",
+        "interval": "若已变更，每 {{minutes}} 分钟一次",
+        "schedule": "按计划，若已变更",
+        "reactive": "变更时（{{seconds}} 秒）"
+      }
+    },
+    "recovery": {
+      "chip": {
+        "needed": "需要恢复",
+        "inProgress": "恢复进行中",
+        "observeOnly": "正在观察运行中的运行",
+        "escalated": "恢复已上报"
+      },
+      "workspaceRecoveryNeeded": "工作区需要恢复",
+      "chipProgress": "恢复进行中 · {{attempt}}/{{max}}"
+    },
+    "appsGallery": {
+      "apps": {
+        "zapier": {
+          "tagline": "连接你的团队已在使用的 9,000 多个应用。",
+          "short": "让智能体直达 9,000 多个应用。"
+        },
+        "github": {
+          "tagline": "读取代码和拉取请求，评论议题。",
+          "short": "读取代码和拉取请求，评论议题。"
+        },
+        "slack": {
+          "tagline": "在你团队的频道中收发消息。",
+          "short": "在你的频道中收发消息。"
+        },
+        "notion": {
+          "tagline": "读取和更新工作区中的页面。",
+          "short": "读取和更新工作区中的页面。"
+        },
+        "railway": {
+          "tagline": "检查服务、读取日志并管理部署。",
+          "short": "连接 Railway 以使用部署、日志和容器访问。"
+        },
+        "posthog": {
+          "tagline": "探索产品使用情况、错误、功能开关和实验。",
+          "short": "使用 PostHog 登录。项目固定和访问控制为可选。"
+        },
+        "ditto": {
+          "tagline": "复用已批准的产品文案并遵循你的风格指南。",
+          "short": "使用 Ditto 登录。API 密钥为可选。"
+        },
+        "gauge": {
+          "tagline": "在 AI 回答中追踪你的品牌，并运行内容工作流。",
+          "short": "使用 Gauge 登录并选择一个组织。API 密钥为可选。"
+        },
+        "neon": {
+          "tagline": "管理 Postgres 项目、分支和查询。",
+          "short": "使用 Neon 登录。项目固定和只读模式为可选。"
+        },
+        "superagent": {
+          "tagline": "审查安全发现并运行红队检查。",
+          "short": "使用 Superagent API 密钥连接。计费和破坏性工具始终受操作策略约束。"
+        },
+        "linear": {
+          "tagline": "创建、更新和读取工单。",
+          "short": "创建、更新和读取工单。"
+        },
+        "google-sheets": {
+          "tagline": "读取和更新选定的电子表格。",
+          "short": "读取电子表格，或更新你选择的文件。"
+        },
+        "gmail": {
+          "tagline": "读取邮件并创建草稿供你审阅。",
+          "short": "读取邮件并创建草稿供你审阅。"
+        },
+        "google-drive": {
+          "tagline": "在云端硬盘中查找、读取和创建文件。",
+          "short": "在云端硬盘中查找、读取和创建文件。"
+        },
+        "google-docs": {
+          "tagline": "读取和更新文档。",
+          "short": "读取和更新文档。"
+        },
+        "google-slides": {
+          "tagline": "读取和更新演示文稿。",
+          "short": "读取和更新演示文稿。"
+        },
+        "google-calendar": {
+          "tagline": "查看日历并管理日程。",
+          "short": "查看日历并管理日程。"
+        },
+        "google-chat": {
+          "tagline": "读取会话并发送消息。",
+          "short": "读取会话并发送消息。"
+        },
+        "google-people": {
+          "tagline": "查找目录中的联系人和人员。",
+          "short": "查找目录中的联系人和人员。"
+        },
+        "google-workspace-search": {
+          "tagline": "搜索你的整个 Google 工作区。",
+          "short": "搜索你的整个 Google 工作区。"
+        },
+        "hubspot": {
+          "tagline": "查找联系人并更新商机阶段。",
+          "short": "查找联系人并更新商机阶段。"
+        },
+        "intercom": {
+          "tagline": "读取并回复客户会话。",
+          "short": "读取并回复客户会话。"
+        },
+        "figma": {
+          "tagline": "读取文件并在画板上发表评论。",
+          "short": "读取文件并在画板上发表评论。"
+        },
+        "stripe": {
+          "tagline": "读取客户、发票和付款。",
+          "short": "读取客户、发票和付款。"
+        },
+        "context7": {
+          "tagline": "查找你的依赖库的最新文档。",
+          "short": "查找你的依赖库的最新文档。"
+        }
+      },
+      "generic": {
+        "tagline": "让智能体访问此应用。",
+        "short": "让智能体访问此应用。"
+      },
+      "credentialField": "你的 {{app}} 密钥"
+    },
+    "skillDenial": {
+      "policyTitle": "此操作受你的组织政策限制。",
+      "policyTitleWithAction": "{{action}} 受你的组织政策限制。",
+      "policyRemediation": "组织管理员可以更改技能政策以允许此操作。",
+      "adminTitle": "此更改需要管理员权限。",
+      "adminRemediation": "这需要组织管理权限。请让管理员进行此更改。",
+      "platform": {
+        "authenticationRequired": {
+          "title": "登录后才能管理技能。",
+          "remediation": "请登录后重试。"
+        },
+        "companyBoundaryDenied": {
+          "title": "该技能属于其他组织。",
+          "remediation": "请从拥有该技能的组织打开它。"
+        },
+        "workspaceBoundaryDenied": {
+          "title": "该技能来源不在允许的工作区内。",
+          "remediation": "请从已配置的 Paperclip 工作区或组织的托管技能目录导入。"
+        },
+        "sourceValidationFailed": {
+          "title": "该技能来源未通过验证。",
+          "remediation": "请修复被标记的来源后重试。"
+        },
+        "unsafeContentBlocked": {
+          "title": "该技能包含不安全内容。",
+          "remediation": "保存前请移除“抓取并执行”或其他不安全模式。"
+        },
+        "secretHandlingBlocked": {
+          "title": "该技能暴露了密钥值。",
+          "remediation": "保存前请移除密钥值。"
+        },
+        "actorRestricted": {
+          "title": "当前操作者无法使用此操作。",
+          "remediation": "请改用有权限的账号重试此操作。"
+        },
+        "fallback": {
+          "title": "此操作被平台安全规则阻止。",
+          "remediation": "请修复被标记的问题后重试。"
+        }
+      }
+    },
+    "skillStudio": {
+      "testTask": {
+        "expired": "测试任务已过期",
+        "deleted": "测试任务已删除",
+        "unavailable": "测试任务不可用",
+        "unavailableBody": "仍会显示已存储的运行快照。测试载具的文档、附件和工作成果已不可用。"
+      },
+      "runGate": {
+        "noFiles": "该技能没有可测试的文件",
+        "noAgent": "请选择一个智能体来运行",
+        "noInput": "请添加或粘贴输入文本再运行",
+        "unsavedEdits": "运行前请先保存技能编辑",
+        "runInFlight": "已有运行正在进行"
+      },
+      "unknownEditor": "未知编辑者"
+    },
+    "searchParser": {
+      "suggestions": {
+        "statusTodo": {
+          "label": "待办任务",
+          "description": "按任务状态筛选"
+        },
+        "statusBlocked": {
+          "label": "已阻塞的任务",
+          "description": "查找被阻塞的工作"
+        },
+        "assigneeMe": {
+          "label": "分配给我",
+          "description": "使用你当前的看板用户"
+        },
+        "projectName": {
+          "label": "项目名称",
+          "description": "为多词项目名称加引号"
+        },
+        "labelBug": {
+          "label": "标签",
+          "description": "按议题标签筛选"
+        },
+        "priorityHigh": {
+          "label": "高优先级",
+          "description": "按优先级筛选"
+        },
+        "updatedRecently": {
+          "label": "最近更新",
+          "description": "过去 7 天内更新过"
+        }
+      }
+    },
+    "searchFilters": {
+      "sort": {
+        "relevance": "相关性",
+        "updated": "最近更新",
+        "created": "最新创建",
+        "priority": "优先级"
+      },
+      "updatedWithin": {
+        "24h": "过去 24 小时",
+        "7d": "过去 7 天",
+        "30d": "过去 30 天",
+        "90d": "过去 90 天",
+        "fallback": "更新于 {{value}} 内"
+      },
+      "assignee": {
+        "unassigned": "未分配",
+        "agent": "智能体",
+        "me": "我",
+        "user": "用户",
+        "assignee": "负责人"
+      },
+      "fallback": {
+        "project": "项目",
+        "label": "标签"
+      },
+      "chips": {
+        "status": "状态：{{value}}",
+        "priority": "优先级：{{value}}",
+        "assignee": "负责人：{{value}}",
+        "project": "项目：{{value}}",
+        "label": "标签：{{value}}",
+        "updated": "更新：{{value}}"
+      },
+      "loosen": {
+        "status": "状态：{{values}}",
+        "priority": "优先级：{{values}}",
+        "assignee": "负责人：{{values}}",
+        "project": "项目：{{values}}",
+        "label": "标签：{{values}}",
+        "updated": "更新时间窗口"
+      }
+    },
+    "attention": {
+      "source": {
+        "approval": "审批",
+        "decision": "决定",
+        "issueThreadInteraction": "请求决定",
+        "joinRequest": "加入请求",
+        "recoveryAction": "恢复",
+        "productivityReview": "任务",
+        "blockerAttention": "受阻依赖",
+        "review": "审查",
+        "failedRun": "运行失败",
+        "budgetAlert": "预算",
+        "agentErrorAlert": "智能体错误"
+      },
+      "severity": {
+        "critical": "严重",
+        "high": "高",
+        "medium": "中",
+        "low": "低"
+      },
+      "count": {
+        "option_other": "{{count}} 个选项",
+        "question_other": "{{count}} 个问题",
+        "suggestedTask_other": "{{count}} 个建议任务",
+        "option_one": "{{count}} 个选项",
+        "question_one": "{{count}} 个问题",
+        "suggestedTask_one": "{{count}} 个建议任务"
+      },
+      "detail": {
+        "itemsToVerdict_other": "{{count}} 个条目待裁决",
+        "blockedBy": "被 {{id}}{{title}} 阻塞",
+        "blockedByOnly": "被 {{id}} 阻塞",
+        "budget": "预算已使用 {{percent}}% ({{observed}} / {{limit}})",
+        "itemsToVerdict_one": "{{count}} 个条目待裁决"
+      },
+      "desk": {
+        "decideNow": "立即决定",
+        "newToday": "今日新增",
+        "earlier": "更早"
+      },
+      "options": {
+        "today": "今天",
+        "thisWeek": "本周",
+        "whenever": "随时",
+        "notSet": "未设置",
+        "all": "全部",
+        "yesterday": "昨天",
+        "last7Days": "过去 7 天",
+        "thisMonth": "本月",
+        "custom": "自定义",
+        "none": "无",
+        "date": "日期",
+        "type": "类型",
+        "project": "项目",
+        "severity": "严重程度",
+        "newest": "最新优先",
+        "oldest": "最早优先"
+      },
+      "dateBucket": {
+        "today": "今天",
+        "yesterday": "昨天",
+        "thisWeek": "本周",
+        "earlier": "更早"
+      },
+      "noProject": "无项目"
+    },
+    "taskViews": {
+      "groups": {
+        "myWork": "我的工作",
+        "organization": "组织"
+      },
+      "views": {
+        "mine": {
+          "label": "我的",
+          "hint": "分配给你或等待你处理的任务"
+        },
+        "unread": {
+          "label": "未读",
+          "hint": "你参与过且有新动态的任务"
+        },
+        "blocked": {
+          "label": "已阻塞",
+          "hint": "已阻塞的任务，按阻塞项分组"
+        },
+        "recent": {
+          "label": "最近",
+          "hint": "你最近参与的全部内容"
+        },
+        "everything": {
+          "label": "全部动态",
+          "hint": "任务、审批、失败运行和加入请求"
+        },
+        "all": {
+          "label": "所有任务",
+          "hint": "组织中的所有任务"
+        },
+        "active": {
+          "label": "进行中",
+          "hint": "打开的任务，无论是否在运行"
+        },
+        "backlog": {
+          "label": "待办",
+          "hint": "尚未开始"
+        },
+        "done": {
+          "label": "已完成",
+          "hint": "已完成和已取消"
+        }
+      }
+    },
+    "audience": {
+      "policy": {
+        "anyone": "任何人",
+        "notCreator": "创建者以外的任何人",
+        "humanOnly": "仅限人类"
+      },
+      "effect": {
+        "anyone": "组织中的任何人都可以回应——看板或任何智能体，包括发起请求的那一个。",
+        "notCreator": "除创建该卡片的智能体及其运行外，组织中的任何人都可以回应。当答复必须来自他人时使用此选项。",
+        "humanOnly": "只有看板上的人可以回应。智能体会被拒绝。"
+      },
+      "fallback": {
+        "addressedUser": "被指定的用户",
+        "addressedAgent": "被指定的智能体",
+        "creator": "创建它的智能体"
+      },
+      "summary": {
+        "onlyAddressee": "仅 {{addressee}} 可以回应。",
+        "humanOnlyAssigned": "已指派给 {{addressee}}。只有看板上的人可以回应——智能体无法处理此卡片。",
+        "humanOnly": "只有看板上的人可以回应——智能体无法处理此卡片。",
+        "addresseeOrBoard": "仅 {{addressee}} 或看板上的人可以回应。",
+        "notCreator": "组织中除 {{creator}} 外的任何人都可以回应。",
+        "anyone": "组织中的任何人都可以回应——看板或任何智能体，包括发起请求的那一个。"
+      },
+      "short": {
+        "onlyAddressee": "仅 {{addressee}} 可以回应",
+        "humanOnlyAssigned": "已指派给 {{addressee}} · 仅看板",
+        "humanOnly": "仅看板可以回应",
+        "addresseeOrBoard": "仅 {{addressee}} 或看板可以回应",
+        "notCreator": "除 {{creator}} 外任何人可以回应",
+        "anyone": "任何人可以回应"
+      },
+      "narrowedNote": {
+        "governedAction": "此卡片运行的是受治理操作，因此无论请求的受众如何，都仅限人类回应。",
+        "companyCap": "组织交互治理将其从 {{from}} 收窄为 {{to}}。",
+        "legacy": "创建于“任何人”成为默认值之前，因此保持受限。新卡片将为开放状态。"
+      },
+      "label": {
+        "addressed": "已指定收件人"
+      }
+    },
+    "inbox": {
+      "kind": {
+        "issues": "任务",
+        "approvals": "审批",
+        "failedRuns": "失败的运行",
+        "joinRequests": "加入请求"
+      },
+      "group": {
+        "defaultWorkspace": "{{name}}（默认）",
+        "defaultWorkspaceFallback": "默认工作区",
+        "noWorkspace": "无工作区",
+        "user": "用户",
+        "unassigned": "未分配",
+        "noProject": "无项目"
+      }
+    },
+    "interactions": {
+      "verdicts": {
+        "decided": "已裁决 {{count}}",
+        "approved": "已批准 {{count}}",
+        "rejected": "已拒绝 {{count}}",
+        "deferred": "已推迟 {{count}}",
+        "expiredAfterComment": "裁决因评论而过期",
+        "expiredAfterTargetChanged": "裁决因目标变更而过期",
+        "expired": "裁决已过期",
+        "progress": "已裁决 {{decided}}/{{total}}"
+      },
+      "summary": {
+        "skipped": "已跳过交互",
+        "withdrawn": "已撤回交互",
+        "expiredIssueClosed": "议题关闭时已过期",
+        "cancelledAddresseeDeleted": "收件人被删除时已取消",
+        "acceptedOf": "已接受 {{count}} 个任务中的 {{created}} 个",
+        "acceptedTasks_one": "已接受 1 个任务",
+        "acceptedTasks_other": "已接受 {{count}} 个任务",
+        "rejectedTasks_one": "已拒绝 1 个任务",
+        "rejectedTasks_other": "已拒绝 {{count}} 个任务",
+        "suggestedTasks_one": "已建议 1 个任务",
+        "suggestedTasks_other": "已建议 {{count}} 个任务",
+        "confirmedRequest": "已确认请求",
+        "selectedRejectLabel": "已选择 {{label}}",
+        "declinedRequest": "已拒绝请求",
+        "confirmationExpiredAfterComment": "确认因评论而过期",
+        "confirmationExpiredAfterTargetChanged": "确认因目标变更而过期",
+        "confirmationExpired": "确认已过期",
+        "requestedConfirmation": "已请求确认",
+        "confirmedNoOptions": "已确认，未选择任何选项",
+        "confirmedOptions": "已确认 {{total}} 个选项中的 {{selected}} 个",
+        "declinedSelection": "已拒绝选择",
+        "selectionExpiredAfterComment": "选择因评论而过期",
+        "selectionExpiredAfterTargetChanged": "选择因目标变更而过期",
+        "selectionExpired": "选择已过期",
+        "requestedSelection_one": "已请求从 1 个选项中选择",
+        "requestedSelection_other": "已请求从 {{count}} 个选项中选择",
+        "serviceConnected": "{{service}} 已连接",
+        "serviceDeclined": "{{service}} 已拒绝",
+        "serviceRequestSuperseded": "{{service}} 请求已被取代",
+        "serviceRequestExpired": "{{service}} 请求已过期",
+        "connectService": "连接 {{service}}",
+        "answeredQuestions_one": "已回答 1 个问题",
+        "answeredQuestions_other": "已回答 {{count}} 个问题",
+        "cancelledQuestions_one": "已取消 1 个问题",
+        "cancelledQuestions_other": "已取消 {{count}} 个问题",
+        "questionExpiredAfterComment_one": "问题因评论而过期",
+        "questionExpiredAfterComment_other": "问题因评论而过期",
+        "questionExpired_one": "问题已过期",
+        "questionExpired_other": "问题已过期",
+        "askedQuestions_one": "提出了 1 个问题",
+        "askedQuestions_other": "提出了 {{count}} 个问题"
+      },
+      "otherAnswer": "其他：{{text}}"
+    },
+    "chat": {
+      "author": {
+        "you": "你"
+      },
+      "actor": {
+        "system": "系统",
+        "board": "看板"
+      },
+      "timeline": {
+        "requestedFollowUp": "{{actor}} 请求了跟进",
+        "updatedIssue": "{{actor}} 更新了此议题",
+        "statusChange": "状态：{{from}} -> {{to}}",
+        "none": "无",
+        "unassigned": "未分配",
+        "assigneeChange": "负责人：{{from}} -> {{to}}",
+        "workspaceChange": "工作区：{{from}} -> {{to}}"
+      },
+      "duration": {
+        "seconds_other": "{{count}} 秒",
+        "minutes_other": "{{count}} 分钟",
+        "hours_other": "{{count}} 小时",
+        "seconds_one": "{{count}} 秒",
+        "minutes_one": "{{count}} 分钟",
+        "hours_one": "{{count}} 小时"
+      },
+      "run": {
+        "workedFor": "工作了 {{duration}}",
+        "finishedWork": "已完成工作",
+        "failedAfter": "{{duration}} 后失败",
+        "failed": "运行失败",
+        "timedOutAfter": "{{duration}} 后超时",
+        "timedOut": "运行超时",
+        "interruptedAfter": "{{duration}} 后被看板中断",
+        "interrupted": "被看板中断",
+        "pausedAfter": "{{duration}} 后被看板暂停",
+        "paused": "被看板暂停",
+        "cancelledAfter": "{{duration}} 后已取消",
+        "cancelled": "运行已取消",
+        "queued": "已排队",
+        "queuedEllipsis": "排队中…",
+        "working": "工作中…",
+        "finished": "运行已结束"
+      },
+      "runError": "运行错误：{{error}}",
+      "providerActivity": "提供商活动"
+    },
+    "activity": {
+      "rowVerb": {
+        "case_created": "创建了",
+        "case_updated": "更新了",
+        "case_fields_changed": "更新了详情",
+        "case_status_changed": "更改了状态",
+        "case_issue_linked": "关联了任务到",
+        "case_issue_unlinked": "取消了任务关联",
+        "case_child_linked": "关联了子任务到",
+        "case_attachment_added": "附加了文件到",
+        "case_label_added": "添加了标签到",
+        "case_label_removed": "移除了标签",
+        "case_document_revised": "修订了文档",
+        "case_handoff_requested": "请求了交接",
+        "case_handoff_applied": "已交接",
+        "case_handoff_delivered": "交付了交接",
+        "case_handoff_retry_requested": "重试了交接",
+        "case_handoff_cancelled": "取消了交接",
+        "case_handoff_completed": "已完成",
+        "issue_created": "创建了",
+        "issue_updated": "更新了",
+        "issue_read_marked": "已读",
+        "issue_read_unmarked": "标记为未读",
+        "issue_checked_out": "检出",
+        "issue_released": "释放",
+        "issue_comment_added": "评论了",
+        "issue_comment_cancelled": "取消了排队评论",
+        "issue_queued_comment_edited": "编辑了排队评论",
+        "issue_queued_comments_reordered": "重新排序了排队评论",
+        "issue_queued_comment_discarded": "丢弃了排队评论",
+        "issue_comment_deleted": "删除了评论",
+        "issue_attachment_added": "附加了文件到",
+        "issue_attachment_removed": "移除了附件",
+        "issue_document_created": "创建了文档",
+        "issue_document_updated": "更新了文档",
+        "issue_document_locked": "锁定了文档",
+        "issue_document_unlocked": "解锁了文档",
+        "issue_document_deleted": "删除了文档",
+        "issue_monitor_scheduled": "安排了监控",
+        "issue_monitor_triggered": "触发了监控",
+        "issue_monitor_cleared": "清除了监控",
+        "issue_monitor_skipped": "跳过了监控",
+        "issue_monitor_exhausted": "耗尽了监控",
+        "issue_monitor_recovery_wake_queued": "为监控恢复排队唤醒",
+        "issue_monitor_recovery_issue_created": "创建了监控恢复",
+        "issue_monitor_escalated_to_board": "将监控上报给看板",
+        "issue_commented": "评论了",
+        "issue_deleted": "删除了",
+        "issue_successful_run_handoff_required": "标记了缺少下一步",
+        "issue_successful_run_handoff_resolved": "记录了所选下一步",
+        "issue_successful_run_handoff_escalated": "上报了缺少下一步",
+        "issue_accepted_plan_decomposition_updated": "更新了已接受计划的分解",
+        "issue_recovery_action_opened": "打开了恢复操作",
+        "issue_workspace_recovered": "恢复了保存的工作",
+        "issue_workspace_recovery_requested": "请求了工作区恢复",
+        "issue_recovery_action_resolved": "解决了恢复操作",
+        "issue_recovery_action_escalated": "上报了恢复操作",
+        "agent_created": "创建了",
+        "agent_updated": "更新了",
+        "agent_paused": "暂停了",
+        "agent_resumed": "恢复了",
+        "agent_error_cleared": "清除了错误",
+        "agent_terminated": "终止了",
+        "agent_key_created": "创建了 API 密钥",
+        "agent_budget_updated": "更新了预算",
+        "agent_runtime_session_reset": "重置了会话",
+        "heartbeat_invoked": "调用了心跳",
+        "heartbeat_cancelled": "取消了心跳",
+        "heartbeat_output_stale_source_resolved": "系统折叠了过期运行",
+        "heartbeat_output_stale_recovery_recursion_refused": "拒绝了恢复之上的恢复",
+        "approval_created": "请求审批",
+        "approval_approved": "批准了",
+        "approval_rejected": "拒绝了",
+        "issue_thread_interaction_created": "请求了决定",
+        "issue_thread_interaction_accepted": "接受了请求",
+        "issue_thread_interaction_rejected": "拒绝了请求",
+        "issue_thread_interaction_answered": "回答了请求",
+        "issue_thread_interaction_withdrawn": "撤回了请求",
+        "issue_thread_interaction_cancelled": "取消了请求",
+        "issue_thread_interaction_skipped": "跳过了请求",
+        "issue_thread_interaction_dismissed": "推迟了请求",
+        "issue_thread_interaction_expired": "请求已过期",
+        "issue_thread_interaction_item_verdicts_submitted": "提交了裁决",
+        "issue_stalled_review_decided": "记录了审查裁决",
+        "project_created": "创建了",
+        "project_updated": "更新了",
+        "project_deleted": "删除了",
+        "goal_created": "创建了",
+        "goal_updated": "更新了",
+        "goal_deleted": "删除了",
+        "cost_reported": "报告了成本",
+        "cost_recorded": "记录了成本",
+        "company_created": "创建了组织",
+        "company_updated": "更新了组织",
+        "company_archived": "已归档",
+        "company_reactivated": "重新启用",
+        "company_budget_updated": "更新了预算",
+        "audit_exported": "导出了智能体审计日志",
+        "tool_app_connected": "已连接",
+        "tool_app_oauth_connected": "连接了凭据",
+        "tool_app_oauth_failed": "连接凭据失败",
+        "tool_app_oauth_access_finalized": "完成了凭据访问",
+        "tool_app_finished": "完成了设置",
+        "tool_app_reconnected": "重新连接",
+        "tool_connection_created": "创建了",
+        "tool_connection_updated": "更新了",
+        "tool_connection_archived": "移除了",
+        "tool_connection_catalog_refresh": "刷新了操作",
+        "tool_connection_installs_synced": "更改了智能体安装",
+        "tool_connection_install_access_extended": "延长了智能体访问",
+        "tool_connection_grant_audience_replaced": "更改了人类访问",
+        "tool_connection_grant_added": "添加了凭据到",
+        "tool_connection_grant_revoked": "吊销了凭据",
+        "tool_connection_grant_delegated": "委托了凭据",
+        "tool_connection_grant_delegation_revoked": "吊销了凭据委托"
+      },
+      "issueAction": {
+        "issue_created": "创建了议题",
+        "issue_updated": "更新了议题",
+        "issue_checked_out": "检出了议题",
+        "issue_released": "释放了议题",
+        "issue_comment_added": "添加了评论",
+        "issue_comment_cancelled": "取消了排队评论",
+        "issue_queued_comment_edited": "编辑了排队评论",
+        "issue_queued_comments_reordered": "重新排序了排队评论",
+        "issue_queued_comment_discarded": "丢弃了排队评论",
+        "issue_comment_deleted": "删除了评论",
+        "issue_feedback_vote_saved": "保存了对 AI 输出的反馈",
+        "issue_attachment_added": "添加了附件",
+        "issue_attachment_removed": "移除了附件",
+        "issue_document_created": "创建了文档",
+        "issue_document_updated": "更新了文档",
+        "issue_document_locked": "锁定了文档",
+        "issue_document_unlocked": "解锁了文档",
+        "issue_document_deleted": "删除了文档",
+        "issue_monitor_scheduled": "安排了监控",
+        "issue_monitor_triggered": "触发了监控",
+        "issue_monitor_cleared": "清除了监控",
+        "issue_monitor_skipped": "跳过了监控",
+        "issue_monitor_exhausted": "耗尽了监控",
+        "issue_monitor_recovery_wake_queued": "排队了监控恢复唤醒",
+        "issue_monitor_recovery_issue_created": "创建了监控恢复议题",
+        "issue_monitor_escalated_to_board": "将监控上报给看板",
+        "issue_deleted": "删除了议题",
+        "issue_successful_run_handoff_required": "运行结束但没有明确的下一步",
+        "issue_successful_run_handoff_resolved": "已选择下一步",
+        "issue_successful_run_handoff_escalated": "运行结束但没有下一步——恢复已上报",
+        "issue_cross_issue_influence_cap_rejected": "触达了单次运行的跨任务写入上限",
+        "issue_cross_issue_influence_observed": "进行了一次跨任务写入",
+        "issue_attribution_spoof_rejected": "试图自行选择负责用户",
+        "issue_recovery_action_opened": "打开了针对来源的恢复操作",
+        "issue_workspace_recovered": "已恢复保存的工作。",
+        "issue_workspace_recovery_requested": "请求了工作区恢复",
+        "issue_recovery_action_resolved": "解决了恢复操作",
+        "issue_recovery_action_escalated": "上报了恢复操作",
+        "issue_accepted_plan_decomposition_updated": "更新了已接受计划的分解",
+        "agent_created": "创建了智能体",
+        "agent_updated": "更新了智能体",
+        "agent_paused": "暂停了智能体",
+        "agent_resumed": "恢复了智能体",
+        "agent_error_cleared": "清除了智能体错误",
+        "agent_terminated": "终止了智能体",
+        "heartbeat_invoked": "调用了心跳",
+        "heartbeat_cancelled": "取消了心跳",
+        "heartbeat_output_stale_source_resolved": "系统折叠了一个过期运行",
+        "heartbeat_output_stale_recovery_recursion_refused": "拒绝了恢复之上的恢复升级",
+        "approval_created": "请求审批",
+        "approval_approved": "批准了",
+        "approval_rejected": "拒绝了",
+        "issue_thread_interaction_created": "请求了决定",
+        "issue_thread_interaction_accepted": "接受了请求",
+        "issue_thread_interaction_rejected": "拒绝了请求",
+        "issue_thread_interaction_answered": "回答了请求",
+        "issue_thread_interaction_withdrawn": "撤回了请求",
+        "issue_thread_interaction_cancelled": "取消了请求",
+        "issue_thread_interaction_skipped": "跳过了请求",
+        "issue_thread_interaction_dismissed": "推迟了请求",
+        "issue_thread_interaction_expired": "请求已过期",
+        "issue_thread_interaction_item_verdicts_submitted": "对请求提交了裁决",
+        "issue_stalled_review_decided": "记录了审查裁决"
+      },
+      "stalledReview": {
+        "approve": "批准了审查",
+        "requestChanges": "要求修改审查",
+        "sendBack": "将审查退回任务"
+      },
+      "interactionAccepted": {
+        "confirmation": "批准了请求",
+        "checkboxConfirmation": "批准了请求",
+        "suggestTasks": "接受了任务建议",
+        "askQuestions": "接受了回答"
+      },
+      "interactionRejected": {
+        "confirmation": "拒绝了请求",
+        "checkboxConfirmation": "拒绝了请求",
+        "suggestTasks": "婉拒了任务建议",
+        "askQuestions": "婉拒了问题"
+      },
+      "actor": {
+        "board": "看板",
+        "you": "你",
+        "user": "用户 {{id}}",
+        "agent": "智能体",
+        "task": "任务"
+      },
+      "entity": {
+        "blocker_other": "{{count}} 个阻塞项",
+        "blocker_one": "阻塞项 {{label}}",
+        "reviewer_one": "审查者 {{label}}",
+        "reviewer_other": "{{count}} 位审查者",
+        "approver_one": "审批者 {{label}}",
+        "approver_other": "{{count}} 位审批者"
+      },
+      "decomposition": {
+        "createdNew": "新建了 {{count}} 个",
+        "reusedExisting": "复用了 {{count}} 个已有项",
+        "requested": "请求了 {{count}} 个",
+        "completedWithSummary": "分解已完成（{{summary}}）",
+        "completed": "分解已完成",
+        "inFlightWithSummary": "分解进行中（{{summary}}）"
+      },
+      "issueUpdatedVerb": {
+        "statusFromTo": "将状态从 {{from}} 更改为 {{to}}",
+        "statusTo": "将状态更改为 {{to}}",
+        "priorityFromTo": "将优先级从 {{from}} 更改为 {{to}}",
+        "priorityTo": "将优先级更改为 {{to}}"
+      },
+      "issueUpdatedAction": {
+        "statusFromTo": "将状态从 {{from}} 更改为 {{to}}",
+        "statusTo": "将状态更改为 {{to}}",
+        "priorityFromTo": "将优先级从 {{from}} 更改为 {{to}}",
+        "priorityTo": "将优先级更改为 {{to}}",
+        "madeResponsible": "指定 {{name}} 为任务负责人",
+        "clearedResponsible": "清除了负责人",
+        "changedApprover": "将可审批者更改为 {{value}}",
+        "updatedTitle": "更新了标题",
+        "updatedDescription": "更新了描述"
+      },
+      "blockers": {
+        "added": "添加了 {{changed}}",
+        "addedTo": "将 {{changed}} 添加到",
+        "removed": "移除了 {{changed}}",
+        "removedTo": "将 {{changed}} 移出",
+        "updated": "更新了阻塞项",
+        "updatedOn": "更新了阻塞项"
+      },
+      "reviewers": {
+        "added": "添加了 {{changed}}",
+        "addedTo": "将 {{changed}} 添加到",
+        "removed": "移除了 {{changed}}",
+        "removedTo": "将 {{changed}} 移出",
+        "updated": "更新了审查者",
+        "updatedOn": "更新了审查者"
+      },
+      "approvers": {
+        "added": "添加了 {{changed}}",
+        "addedTo": "将 {{changed}} 添加到",
+        "removed": "移除了 {{changed}}",
+        "removedTo": "将 {{changed}} 移出",
+        "updated": "更新了审批者",
+        "updatedOn": "更新了审批者"
+      },
+      "toolGateway": {
+        "appAction": "某个应用操作",
+        "callCompletedTest": "测试了 {{tool}}",
+        "callCompletedUse": "使用了 {{tool}}",
+        "callAllowedTest": "开始测试 {{tool}}",
+        "callAllowed": "被允许使用 {{tool}}",
+        "callDenied": "被阻止使用 {{tool}}",
+        "approvalRequested": "请求使用 {{tool}}",
+        "sessionCreated": "打开了应用会话",
+        "sessionRejected": "被阻止打开应用会话",
+        "discovery": "发现了应用操作"
+      },
+      "forService": "{{action}} · {{service}}",
+      "documentAction": "{{action}} {{key}}"
+    },
+    "handoff": {
+      "status": {
+        "interrupted": "已中断",
+        "interruptedSrHint": "被看板评论中断"
+      },
+      "composer": {
+        "interruptAndHandOff": "中断当前运行并交给",
+        "wake": "唤醒",
+        "handOffTo": "交给",
+        "noAgentNotifiedSuffix": "——不会通知任何智能体",
+        "clearResponsible": "清除负责人——不会通知任何智能体",
+        "notify": "通知",
+        "mentionedAgentSuffix": "被提及的智能体",
+        "plainTextOnly": "不会通知任何智能体。请使用 @ 提及智能体。"
+      },
+      "timeline": {
+        "responsibleAgent": "负责智能体",
+        "interruptedRunSuffix": "（附带被中断的运行）",
+        "wakeQueued": "已为 {{who}} 排队唤醒",
+        "userHandoff": "未创建——这是交给看板用户的移交",
+        "unassigned": "未创建——未选择智能体。请用 @agent 提及或选择负责人来派发。"
+      },
+      "reassign": {
+        "anAgent": "某个智能体",
+        "banner": "{{who}} 正在运行——更改负责人将中断该运行。",
+        "confirmTitle": "要中断当前运行吗？",
+        "confirmAction": "中断并指派",
+        "cancelAction": "取消"
+      },
+      "pauseBuckets": {
+        "liveRuns": {
+          "label": "进行中的智能体运行",
+          "detail": "现已中断，恢复后会重新排队"
+        },
+        "queuedWakes": {
+          "label": "已排队的唤醒",
+          "detail": "已挂起——恢复前不会开始"
+        },
+        "agentOwned": {
+          "label": "智能体负责",
+          "detail": "负责智能体；没有进行中的运行"
+        },
+        "humanOwned": {
+          "label": "人类负责",
+          "detail": "由看板用户负责；暂停不会通知他们"
+        },
+        "static": {
+          "label": "静态",
+          "detail": "无负责人；本来也不会有运行"
+        }
+      }
+    },
+    "changeReceipt": {
+      "field": {
+        "assigneeAgentId": "负责人",
+        "assigneeUserId": "负责人（用户）",
+        "responsibleUserId": "负责用户",
+        "blockedByIssueIds": "阻塞项",
+        "labelIds": "标签",
+        "parentId": "父任务",
+        "projectId": "项目",
+        "goalId": "目标",
+        "workMode": "工作模式",
+        "reviewPolicy": "谁可以审批",
+        "billingCode": "计费代码",
+        "checkoutRunId": "检出运行",
+        "executionRunId": "执行运行",
+        "hiddenAt": "已隐藏",
+        "startedAt": "已开始",
+        "completedAt": "已完成",
+        "cancelledAt": "已取消",
+        "requestDepth": "请求深度",
+        "sourceTrust": "来源信任",
+        "executionPolicy": "执行策略",
+        "executionWorkspaceId": "执行工作区",
+        "projectWorkspaceId": "项目工作区"
+      },
+      "value": {
+        "none": "无",
+        "yes": "是",
+        "no": "否",
+        "items_one": "1 项",
+        "items_other": "{{count}} 项",
+        "itemsLabel": "{{n}} 项",
+        "updated": "已更新"
+      },
+      "authReason": {
+        "allowVisibleIssueWrite": "对可见任务的默认开放写入",
+        "allowScopedAgentWrite": "受范围限制的智能体写入",
+        "allowBoardActor": "看板操作者",
+        "allowSelf": "自己的任务",
+        "allowIssueMentionGrant": "提及授权",
+        "allowDirectParentReport": "直接上级汇报",
+        "allowLowTrustBoundary": "低信任边界许可",
+        "allowExplicitGrant": "显式权限授予",
+        "allowInstanceAdmin": "实例管理员",
+        "allowLocalBoard": "本地看板",
+        "internalAgentWrite": "内部智能体写入"
+      }
+    },
+    "transcript": {
+      "executingCommand": "正在执行命令",
+      "inspectInput": "查看 {{name}} 输入",
+      "noInput": "无 {{name}} 输入",
+      "singleField": "{{field}} 载荷",
+      "fieldsSummary": "{{count}} 个字段：{{fields}}",
+      "pathsSummary": "{{count}} 个路径，从 {{first}} 开始",
+      "pathsMore": "，另有 {{count}} 个",
+      "labels": {
+        "intent": "意图",
+        "path": "路径",
+        "directory": "目录",
+        "query": "查询",
+        "target": "目标",
+        "prompt": "提示",
+        "pattern": "匹配模式",
+        "name": "名称",
+        "paths": "路径",
+        "command": "命令",
+        "input": "输入"
+      },
+      "toolFailed": "工具失败",
+      "waitingForResult": "等待结果",
+      "completed": "已完成",
+      "failed": "已失败",
+      "failedWithExitCode": "失败，退出码 {{code}}"
+    },
+    "agentConfig": {
+      "steps": {
+        "agentConfiguration": "智能体配置",
+        "instructionsLocation": "指令位置（加载目标文件）",
+        "instructionsFile": "指令：{{path}}",
+        "removeInstructionsFile": "移除指令文件：{{path}}",
+        "skillsAndVersionPins": "技能与版本锁定",
+        "permissionsAndTrust": "权限与信任",
+        "createSecret": "创建密钥：{{name}}",
+        "rotateSecret": "轮换密钥：{{id}}",
+        "updateSecret": "更新密钥：{{id}}",
+        "secretProposal": "密钥提案：{{id}}",
+        "revokeApiKey": "吊销 API 密钥：{{name}}",
+        "createApiKey": "创建 API 密钥：{{name}}",
+        "restoreRevision": "恢复配置修订"
+      }
+    },
+    "workspaceAccess": {
+      "action": {
+        "viewRepairLog": "查看修复日志",
+        "viewProvisioningLog": "查看预置日志",
+        "repairInProgress": "修复进行中",
+        "provisioning": "预置中",
+        "repairWorkspace": "修复工作区",
+        "startWorkspace": "启动工作区",
+        "openWorkspace": "打开工作区",
+        "validating": "验证中",
+        "startingWorkspace": "正在启动工作区"
+      },
+      "reason": {
+        "handoffNotConfigured": "此实例未配置工作区登录交接，因此打开看板会回退到快照本地凭据。",
+        "noBoardIdentity": "你的会话没有可登录的克隆用户，因此打开看板会回退到快照本地凭据。",
+        "runtimeNotRunning": "尚无健康的运行时服务为此工作区发布 URL。",
+        "runtimeUrlUnusable": "运行时记录发布的 URL 无法被 Paperclip 打开。",
+        "workspaceNotReady": "克隆的数据库尚未准备好接受登录。"
+      },
+      "readiness": {
+        "databaseUnreachable": "隔离数据库没有响应。",
+        "cloneDataMissing": "克隆没有恢复任何组织或议题数据。",
+        "cloneDataUnreadable": "克隆的产品表无法读取。",
+        "clonedMembershipMissing": "没有克隆用户具有有效的组织成员身份。",
+        "clonedIdentityUnreadable": "克隆的身份表无法读取。",
+        "authHandoffNotConfigured": "工作区启动时没有登录交接密钥。",
+        "seedManifestUnreadable": "种子清单无法读取，因此恢复结果不可信。"
+      },
+      "lastRecordedPhase": "最后记录的阶段：{{phase}}",
+      "repairFailed": {
+        "title": "修复失败",
+        "phase": "修复在 {{phase}} 阶段停止。已保留修复前的备份。",
+        "plain": "修复在工作区可用之前停止。已保留修复前的备份。"
+      },
+      "provisionFailed": {
+        "title": "数据库预置失败",
+        "phase": "更早的克隆尝试在 {{phase}} 阶段失败。工作区后来变为可用。",
+        "plain": "更早的克隆尝试失败，但工作区后来变为可用。"
+      },
+      "provisioning": {
+        "title": "正在预置数据库",
+        "description": "正在为该工作区恢复隔离的数据库克隆。这在首次启动前运行一次。"
+      },
+      "provisionFailedState": {
+        "phase": "克隆在 {{phase}} 阶段失败。修复只会替换隔离数据库。",
+        "plain": "克隆未完成，因此该工作区还没有可用的数据库。"
+      },
+      "repairing": {
+        "title": "正在修复工作区数据库",
+        "phase": "仅替换隔离数据库；git 工作树和你的文件会保留。当前阶段：{{phase}}",
+        "plain": "仅替换隔离数据库；git 工作树和你的文件会保留。"
+      },
+      "stopped": {
+        "title": "工作区未运行",
+        "description": "启动工作区运行时以发布其看板。"
+      },
+      "degraded": {
+        "title": "工作区已降级",
+        "causeFallback": "工作区正在服务，但其克隆未通过就绪检查。",
+        "unhealthyFallback": "运行时已启动，但未报告可用的数据库，因此 Paperclip 不会将其发布为就绪。"
+      },
+      "validating": {
+        "title": "正在验证克隆"
+      },
+      "validatingNote": "Paperclip 仍在确认克隆。",
+      "repairNote": "一次有界限的修复会替换隔离数据库。",
+      "snapshotSignIn": {
+        "title": "就绪——快照本地登录",
+        "description": "打开看板时会要求输入此快照中捕获的凭据。"
+      },
+      "starting": {
+        "title": "工作区正在启动",
+        "description": "Paperclip 正在启动工作区运行时，并等待其看板 URL。"
+      },
+      "ready": {
+        "title": "就绪",
+        "description": "打开工作区将让你免密码登录克隆的看板。"
+      }
+    }
+  }
+}

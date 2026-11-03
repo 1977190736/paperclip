@@ -9,14 +9,13 @@ import type {
   SystemNoticeProps,
   SystemNoticeTone,
 } from "../components/SystemNotice";
+import { t } from "@/i18n";
 
-const TONE_LABEL: Record<SystemNoticeTone, string> = {
-  neutral: "System notice",
-  info: "System notice",
-  success: "System notice",
-  warning: "System warning",
-  danger: "System alert",
-};
+function toneLabel(tone: SystemNoticeTone): string {
+  if (tone === "warning") return t("libui.systemNoticeComment.label.warning");
+  if (tone === "danger") return t("libui.systemNoticeComment.label.danger");
+  return t("libui.systemNoticeComment.label.neutral");
+}
 
 function metadataRowText(row: { label?: string | null }, fallback: string) {
   const label = row.label?.trim();
@@ -29,19 +28,19 @@ function mapMetadataRow(
 ): SystemNoticeMetadataRow | null {
   switch (row.type) {
     case "text":
-      return { kind: "text", label: metadataRowText(row, "Detail"), value: row.text };
+      return { kind: "text", label: metadataRowText(row, t("libui.systemNoticeComment.rows.detail")), value: row.text };
     case "code":
-      return { kind: "code", label: metadataRowText(row, "Code"), value: row.code };
+      return { kind: "code", label: metadataRowText(row, t("libui.systemNoticeComment.rows.code")), value: row.code };
     case "key_value":
       return { kind: "text", label: row.label, value: row.value };
     case "issue_link": {
       const identifier = row.identifier ?? null;
       if (!identifier) {
-        return { kind: "text", label: metadataRowText(row, "Task"), value: row.title ?? "unknown" };
+        return { kind: "text", label: metadataRowText(row, t("libui.systemNoticeComment.rows.task")), value: row.title ?? t("libui.systemNoticeComment.rows.unknown") };
       }
       return {
         kind: "issue",
-        label: metadataRowText(row, "Task"),
+        label: metadataRowText(row, t("libui.systemNoticeComment.rows.task")),
         identifier,
         href: `/issues/${identifier}`,
         title: row.title ?? undefined,
@@ -51,7 +50,7 @@ function mapMetadataRow(
       const name = row.name?.trim() || row.agentId.slice(0, 8);
       return {
         kind: "agent",
-        label: metadataRowText(row, "Agent"),
+        label: metadataRowText(row, t("libui.systemNoticeComment.rows.agent")),
         name,
         href: `/agents/${row.agentId}`,
       };
@@ -61,7 +60,7 @@ function mapMetadataRow(
       const href = runAgentId ? `/agents/${runAgentId}/runs/${row.runId}` : undefined;
       return {
         kind: "run",
-        label: metadataRowText(row, "Run"),
+        label: metadataRowText(row, t("libui.systemNoticeComment.rows.run")),
         runId: row.runId,
         href,
         status: row.title ?? undefined,
@@ -96,7 +95,7 @@ export function systemNoticeLabelForTone(
 ): string {
   const trimmed = presentationTitle?.trim();
   if (trimmed && trimmed.length > 0) return trimmed;
-  return TONE_LABEL[tone];
+  return toneLabel(tone);
 }
 
 export function buildSystemNoticeProps(input: {

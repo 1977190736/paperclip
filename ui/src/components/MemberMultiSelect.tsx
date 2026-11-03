@@ -7,6 +7,7 @@ import { Input } from "@/components/ui/input";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { Skeleton } from "@/components/ui/skeleton";
 import { cn } from "@/lib/utils";
+import { useTranslation } from "@/i18n";
 
 export interface MemberMultiSelectOption {
   userId: string;
@@ -44,9 +45,9 @@ export function MemberMultiSelect({
   triggerFullWidth = true,
   triggerClassName,
   contentAlign = "start",
-  emptyMessage = "No members yet.",
+  emptyMessage,
   showSelectionPreview = true,
-  filterPlaceholder = "Filter people",
+  filterPlaceholder,
   onOpenChange,
 }: {
   members: MemberMultiSelectOption[];
@@ -68,6 +69,9 @@ export function MemberMultiSelect({
   filterPlaceholder?: string;
   onOpenChange?: (open: boolean) => void;
 }): ReactNode {
+  const { t } = useTranslation();
+  const resolvedEmptyMessage = emptyMessage ?? t("comps3.memberMultiSelect.noMembersYet");
+  const resolvedFilterPlaceholder = filterPlaceholder ?? t("comps3.memberMultiSelect.filterPeople");
   const [open, setOpen] = useState(false);
   const [filter, setFilter] = useState("");
   const [draftUserIds, setDraftUserIds] = useState<Set<string>>(new Set(selectedUserIds));
@@ -123,8 +127,10 @@ export function MemberMultiSelect({
             <span className="flex min-w-0 items-center">
               <span className="truncate">
                 {triggerLabel ?? (selectedCount === 0
-                  ? "Select people"
-                  : `${selectedCount} ${selectedCount === 1 ? "person" : "people"} selected`)}
+                  ? t("comps3.memberMultiSelect.selectPeople")
+                  : selectedCount === 1
+                    ? t("comps3.memberMultiSelect.selectedOne", { number: selectedCount })
+                    : t("comps3.memberMultiSelect.selectedMany", { number: selectedCount }))}
               </span>
             </span>
             <ChevronRight className="h-4 w-4 shrink-0 text-muted-foreground" />
@@ -135,7 +141,7 @@ export function MemberMultiSelect({
             <Input
               value={filter}
               onChange={(event) => setFilter(event.target.value)}
-              placeholder={filterPlaceholder}
+              placeholder={resolvedFilterPlaceholder}
               className="h-8"
               autoFocus
             />
@@ -146,7 +152,7 @@ export function MemberMultiSelect({
               <Skeleton className="h-6 w-full" />
             </div>
           ) : members.length === 0 ? (
-            <div className="px-3 py-4 text-sm text-muted-foreground">{emptyMessage}</div>
+            <div className="px-3 py-4 text-sm text-muted-foreground">{resolvedEmptyMessage}</div>
           ) : (
             <div className="max-h-60 overflow-y-auto py-1">
               {filteredMembers.map((member) => {
@@ -160,7 +166,7 @@ export function MemberMultiSelect({
                   >
                     <Checkbox
                       checked={workingUserIds.has(member.userId)}
-                      aria-label={`Allow ${label}`}
+                      aria-label={t("comps3.memberMultiSelect.allowAria", { name: label })}
                       onCheckedChange={(checked) => {
                         const next = new Set(workingUserIds);
                         if (checked) next.add(member.userId);
@@ -178,18 +184,18 @@ export function MemberMultiSelect({
                 );
               })}
               {filteredMembers.length === 0 ? (
-                <div className="px-3 py-4 text-sm text-muted-foreground">No matches.</div>
+                <div className="px-3 py-4 text-sm text-muted-foreground">{t("comps1.props.noMatches")}</div>
               ) : null}
             </div>
           )}
           <div className="flex items-center justify-between border-t border-border px-3 py-2">
             <span className="text-xs text-muted-foreground" aria-live="polite">
-              {workingUserIds.size === 0 ? "No people selected" : `${workingUserIds.size} selected`}
+              {workingUserIds.size === 0 ? t("comps3.memberMultiSelect.noneSelected") : t("comps2.chatPicker.selectedCount", { number: workingUserIds.size })}
             </span>
             <div className="flex items-center gap-2">
               {staged ? (
                 <Button type="button" variant="ghost" size="sm" onClick={() => setOpen(false)} disabled={pending}>
-                  Cancel
+                  {t("comps1.relations.cancel")}
                 </Button>
               ) : null}
               <Button
@@ -201,7 +207,7 @@ export function MemberMultiSelect({
                 }}
                 disabled={pending}
               >
-                {staged ? (pending ? "Saving…" : "Save") : "Done"}
+                {staged ? (pending ? t("comps1.decisionSettings.saving") : t("agentConfig.common.save")) : t("comps2.newAgent.done")}
               </Button>
             </div>
           </div>
@@ -216,7 +222,7 @@ export function MemberMultiSelect({
           ))}
           {selectedMembers.length > 3 ? (
             <p className="px-1.5 pt-0.5 text-xs text-muted-foreground">
-              and {selectedMembers.length - 3} more
+              {t("comps2.chatPicker.andMore", { number: selectedMembers.length - 3 })}
             </p>
           ) : null}
         </div>

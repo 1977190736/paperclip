@@ -1,4 +1,5 @@
 import { parseAgentMentionHref } from "@paperclipai/shared";
+import { t } from "@/i18n";
 
 /**
  * Shared logic for the "interrupt handoff" UX clarity surfaces (PAP-10669).
@@ -71,9 +72,9 @@ export function resolveRunStatusPresentation(
 ): RunStatusPresentation {
   if (status === "cancelled" && opts.operatorInterrupted) {
     return {
-      label: "interrupted",
+      label: t("libui.handoff.status.interrupted"),
       className: "text-amber-700 dark:text-amber-300",
-      srHint: "interrupted by board comment",
+      srHint: t("libui.handoff.status.interruptedSrHint"),
     };
   }
   return {
@@ -225,13 +226,13 @@ export function computeComposerHandoffPreview(
         ? {
             kind: "interrupt_handoff_agent",
             tone: "neutral",
-            text: "Interrupt current run, hand off to",
+            text: t("libui.handoff.composer.interruptAndHandOff"),
             chip: { kind: "agent", id: target.id },
           }
         : {
             kind: "wake_agent",
             tone: "neutral",
-            text: "Wake",
+            text: t("libui.handoff.composer.wake"),
             chip: { kind: "agent", id: target.id },
           };
     }
@@ -239,16 +240,16 @@ export function computeComposerHandoffPreview(
       return {
         kind: "user_handoff",
         tone: "neutral",
-        text: "Hand off to",
+        text: t("libui.handoff.composer.handOffTo"),
         chip: { kind: "user", id: target.id },
-        suffix: "— no agent will be notified",
+        suffix: t("libui.handoff.composer.noAgentNotifiedSuffix"),
       };
     }
     // Cleared / no target chosen for the mutation.
     return {
       kind: "clear_assignee",
       tone: "neutral",
-      text: "Clear responsible — no agent will be notified",
+      text: t("libui.handoff.composer.clearResponsible"),
     };
   }
 
@@ -256,9 +257,9 @@ export function computeComposerHandoffPreview(
     return {
       kind: "notify_agent",
       tone: "neutral",
-      text: "Notify",
+      text: t("libui.handoff.composer.notify"),
       chip: input.mentionedAgentId ? { kind: "agent", id: input.mentionedAgentId } : undefined,
-      suffix: input.mentionedAgentId ? undefined : "the mentioned agent",
+      suffix: input.mentionedAgentId ? undefined : t("libui.handoff.composer.mentionedAgentSuffix"),
     };
   }
 
@@ -266,7 +267,7 @@ export function computeComposerHandoffPreview(
     return {
       kind: "plain_text_only",
       tone: "warn",
-      text: "No agent will be notified. Use @ to mention an agent.",
+      text: t("libui.handoff.composer.plainTextOnly"),
     };
   }
 
@@ -298,19 +299,19 @@ export function classifyAssigneeHandoff(
   opts: { agentName?: string | null; interruptedRunAttached?: boolean } = {},
 ): AssigneeHandoffInfo {
   if (to.agentId) {
-    const who = opts.agentName ?? "the responsible agent";
-    const suffix = opts.interruptedRunAttached ? " (interrupted run attached)" : "";
-    return { kind: "agent_wake", wakeText: `queued for ${who}${suffix}` };
+    const who = opts.agentName ?? t("libui.handoff.timeline.responsibleAgent");
+    const suffix = opts.interruptedRunAttached ? t("libui.handoff.timeline.interruptedRunSuffix") : "";
+    return { kind: "agent_wake", wakeText: `${t("libui.handoff.timeline.wakeQueued", { who })}${suffix}` };
   }
   if (to.userId) {
     return {
       kind: "user_handoff",
-      wakeText: "not created — this is a handoff to a board user",
+      wakeText: t("libui.handoff.timeline.userHandoff"),
     };
   }
   return {
     kind: "unassigned",
-    wakeText: "not created — no agent selected. Mention @agent or pick a responsible to dispatch.",
+    wakeText: t("libui.handoff.timeline.unassigned"),
   };
 }
 
@@ -334,12 +335,12 @@ export interface ReassignInterruptCopy {
  * the interrupt consequence concrete instead of a bare "are you sure".
  */
 export function describeReassignInterrupt(opts: { runningAgentName?: string | null } = {}): ReassignInterruptCopy {
-  const who = opts.runningAgentName?.trim() || "An agent";
+  const who = opts.runningAgentName?.trim() || t("libui.handoff.reassign.anAgent");
   return {
-    banner: `${who} is running — changing the responsible will interrupt this run.`,
-    confirmTitle: "Interrupt the current run?",
-    confirmAction: "Interrupt & assign",
-    cancelAction: "Cancel",
+    banner: t("libui.handoff.reassign.banner", { who }),
+    confirmTitle: t("libui.handoff.reassign.confirmTitle"),
+    confirmAction: t("libui.handoff.reassign.confirmAction"),
+    cancelAction: t("libui.handoff.reassign.cancelAction"),
   };
 }
 
@@ -375,20 +376,12 @@ export interface PauseAffectsSummary {
   nothingLive: boolean;
 }
 
-const PAUSE_BUCKET_LABEL: Record<PauseAffectsBucketKey, string> = {
-  live_runs: "Live agent runs",
-  queued_wakes: "Queued wakes",
-  agent_owned: "Agent-owned",
-  human_owned: "Human-owned",
-  static: "Static",
-};
-
-const PAUSE_BUCKET_DETAIL: Record<PauseAffectsBucketKey, string> = {
-  live_runs: "interrupted now, re-queued when you resume",
-  queued_wakes: "held — they won't start until you resume",
-  agent_owned: "responsible agent; no run is live",
-  human_owned: "owned by a board user; pausing won't notify them",
-  static: "no responsible; nothing was going to run",
+const PAUSE_BUCKET_LABEL_KEYS: Record<PauseAffectsBucketKey, string> = {
+  live_runs: "liveRuns",
+  queued_wakes: "queuedWakes",
+  agent_owned: "agentOwned",
+  human_owned: "humanOwned",
+  static: "static",
 };
 
 /**
@@ -429,9 +422,9 @@ export function computePauseAffectsSummary(
   return {
     buckets: order.map((key) => ({
       key,
-      label: PAUSE_BUCKET_LABEL[key],
+      label: t(`libui.handoff.pauseBuckets.${PAUSE_BUCKET_LABEL_KEYS[key]}.label`),
       count: counts[key],
-      detail: PAUSE_BUCKET_DETAIL[key],
+      detail: t(`libui.handoff.pauseBuckets.${PAUSE_BUCKET_LABEL_KEYS[key]}.detail`),
     })),
     affectedIssueCount,
     nothingLive: counts.live_runs === 0 && counts.queued_wakes === 0,

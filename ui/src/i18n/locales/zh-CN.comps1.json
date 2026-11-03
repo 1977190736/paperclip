@@ -1339,6 +1339,7 @@
       "emptyHistorical": "没有活性元数据的历史运行关联到此任务后会显示在这里。"
     },
     "props": {
+      "checkingMomentarilyHint": "马上开始检查…",
       "unarchiveFailed": "取消归档此任务失败。请重试。",
       "none": "无",
       "default": "默认",

@@ -17,6 +17,7 @@
  */
 
 import { ApiError } from "../api/client";
+import { t } from "@/i18n";
 
 /** Machine-readable error codes the server attaches to skill mutation failures. */
 export const SKILL_POLICY_DENIAL_CODE = "skill_policy_denied";
@@ -58,33 +59,14 @@ export interface SkillDenial {
   remediation: string;
 }
 
-const DEFAULT_POLICY_REMEDIATION =
-  "An organization administrator can change the skill policy to allow this.";
-const DEFAULT_ADMIN_REMEDIATION =
-  "This requires organization administration access. Ask an administrator to make this change.";
-
-/** Human-readable titles for the platform-invariant codes (State C). */
-const PLATFORM_TITLES: Record<string, string> = {
-  skill_authentication_required: "Sign in to manage skills.",
-  skill_company_boundary_denied: "This skill belongs to another organization.",
-  skill_workspace_boundary_denied: "This skill source is outside an allowed workspace.",
-  skill_source_validation_failed: "This skill source failed validation.",
-  skill_unsafe_content_blocked: "This skill contains unsafe content.",
-  skill_secret_handling_blocked: "This skill exposes a secret value.",
-  skill_actor_restricted: "This action isn't available for the current actor.",
-};
-
-/** Default remediation copy per platform-invariant code — framed as a fix, never a grant. */
-const PLATFORM_REMEDIATIONS: Record<string, string> = {
-  skill_authentication_required: "Sign in and try again.",
-  skill_company_boundary_denied: "Open the skill from the organization that owns it.",
-  skill_workspace_boundary_denied:
-    "Import from a configured Paperclip workspace or the organization managed-skill directory.",
-  skill_source_validation_failed: "Fix the flagged source and retry.",
-  skill_unsafe_content_blocked:
-    "Remove the fetch-and-execute or unsafe pattern before saving.",
-  skill_secret_handling_blocked: "Remove the secret value before saving.",
-  skill_actor_restricted: "Retry from an account with access to this action.",
+const PLATFORM_CODE_KEYS: Record<string, string> = {
+  skill_authentication_required: "authenticationRequired",
+  skill_company_boundary_denied: "companyBoundaryDenied",
+  skill_workspace_boundary_denied: "workspaceBoundaryDenied",
+  skill_source_validation_failed: "sourceValidationFailed",
+  skill_unsafe_content_blocked: "unsafeContentBlocked",
+  skill_secret_handling_blocked: "secretHandlingBlocked",
+  skill_actor_restricted: "actorRestricted",
 };
 
 function asRecord(value: unknown): Record<string, unknown> | null {
@@ -110,6 +92,7 @@ export function classifySkillDenial(
   const body = asRecord(error.body);
   const code = asString(body?.code);
   const reason = asString(body?.reason);
+  // Server-provided `remediation` copy passes through verbatim (data, not UI copy).
   const remediation = asString(body?.remediation);
 
   // State B — explicit company-policy denial. Resolvable by an administrator.
@@ -119,14 +102,14 @@ export function classifySkillDenial(
     || reason === "policy_default";
   if (isPolicyDenial) {
     const title = actionLabel
-      ? `${actionLabel} is restricted by your organization policy.`
-      : "This action is restricted by your organization policy.";
+      ? t("libui.skillDenial.policyTitleWithAction", { action: actionLabel })
+      : t("libui.skillDenial.policyTitle");
     return {
       state: "policy",
       code,
       reason,
       title,
-      remediation: remediation ?? DEFAULT_POLICY_REMEDIATION,
+      remediation: remediation ?? t("libui.skillDenial.policyRemediation"),
     };
   }
 
@@ -136,8 +119,8 @@ export function classifySkillDenial(
       state: "platform_admin",
       code,
       reason,
-      title: "This change needs administration access.",
-      remediation: remediation ?? DEFAULT_ADMIN_REMEDIATION,
+      title: t("libui.skillDenial.adminTitle"),
+      remediation: remediation ?? t("libui.skillDenial.adminRemediation"),
     };
   }
 
@@ -146,15 +129,17 @@ export function classifySkillDenial(
     (code !== null && (SKILL_PLATFORM_INVARIANT_CODES as readonly string[]).includes(code))
     || reason === "platform_invariant";
   if (isPlatformInvariant) {
+    const key = code ? PLATFORM_CODE_KEYS[code] : undefined;
     return {
       state: "platform",
       code,
       reason,
-      title: (code && PLATFORM_TITLES[code]) ?? "This action is blocked by a platform safety rule.",
+      title: (key && t(`libui.skillDenial.platform.${key}.title`))
+        ?? t("libui.skillDenial.platform.fallback.title"),
       remediation:
         remediation
-        ?? (code && PLATFORM_REMEDIATIONS[code])
-        ?? "Fix the flagged issue and try again.",
+        ?? (key && t(`libui.skillDenial.platform.${key}.remediation`))
+        ?? t("libui.skillDenial.platform.fallback.remediation"),
     };
   }
 

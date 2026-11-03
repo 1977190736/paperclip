@@ -1,5 +1,6 @@
 import { UserCheck, UserMinus, type LucideIcon } from "lucide-react";
 import { ISSUE_REVIEW_POLICIES, type IssueReviewPolicy } from "@paperclipai/shared";
+import { t } from "@/i18n";
 
 /**
  * Copy for an issue's `reviewPolicy` (PAP-16506 P4).
@@ -28,27 +29,10 @@ export interface IssueReviewPolicyBadge {
   Icon: LucideIcon;
 }
 
-/** Only the constrained policies are shown; `anyone` is the silent default. */
-const BADGES: Partial<Record<IssueReviewPolicy, IssueReviewPolicyBadge>> = {
-  not_creator: {
-    value: "not_creator",
-    label: "Anyone else",
-    description: "Anyone except whoever asked for the review can approve it.",
-    Icon: UserMinus,
-  },
-  human_only: {
-    value: "human_only",
-    label: "Human only",
-    description: "Only a person can approve this review. Agents cannot give the verdict.",
-    Icon: UserCheck,
-  },
-};
-
-/** Mid-sentence wording for activity lines and field-change receipts. */
-const VALUE_LABELS: Record<IssueReviewPolicy, string> = {
+const KNOWN_VALUE_KEYS: Record<string, string> = {
   anyone: "anyone",
-  not_creator: "anyone else",
-  human_only: "human only",
+  not_creator: "notCreator",
+  human_only: "humanOnly",
 };
 
 /**
@@ -59,7 +43,23 @@ export function issueReviewPolicyBadge(
   policy: IssueReviewPolicy | null | undefined,
 ): IssueReviewPolicyBadge | null {
   if (typeof policy !== "string") return null;
-  return BADGES[policy as IssueReviewPolicy] ?? null;
+  if (policy === "not_creator") {
+    return {
+      value: policy,
+      label: t("libui.reviewPolicy.badge.notCreator.label"),
+      description: t("libui.reviewPolicy.badge.notCreator.description"),
+      Icon: UserMinus,
+    };
+  }
+  if (policy === "human_only") {
+    return {
+      value: policy,
+      label: t("libui.reviewPolicy.badge.humanOnly.label"),
+      description: t("libui.reviewPolicy.badge.humanOnly.description"),
+      Icon: UserCheck,
+    };
+  }
+  return null;
 }
 
 /**
@@ -67,10 +67,11 @@ export function issueReviewPolicyBadge(
  * cleared column must read "anyone" rather than "none".
  */
 export function formatReviewPolicyValue(value: unknown): string {
-  if (value === null || value === undefined) return VALUE_LABELS.anyone;
-  if (typeof value !== "string") return VALUE_LABELS.anyone;
+  if (value === null || value === undefined) return t("libui.reviewPolicy.value.anyone");
+  if (typeof value !== "string") return t("libui.reviewPolicy.value.anyone");
   // Forward-compatible: a policy this build does not know reads as itself.
-  return VALUE_LABELS[value as IssueReviewPolicy] ?? value.replace(/_/g, " ");
+  const key = KNOWN_VALUE_KEYS[value];
+  return key ? t(`libui.reviewPolicy.value.${key}`) : value.replace(/_/g, " ");
 }
 
 /**

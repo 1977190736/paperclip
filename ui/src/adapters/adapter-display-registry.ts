@@ -7,6 +7,7 @@
  */
 import type { ComponentType } from "react";
 import { agentHarnessType } from "@paperclipai/shared";
+import { t } from "@/i18n";
 import {
   Bot,
   Code,
@@ -52,122 +53,138 @@ function withSuffix(label: string, suffix: string | null): string {
 
 export interface AdapterDisplayInfo {
   label: string;
-  description: string;
+  /** i18n key resolved at render time; overrides `label` when set. */
+  labelKey?: string;
+  /** i18n key resolved at render time; overrides `description` when set. */
+  descriptionKey?: string;
+  description?: string;
   icon: ComponentType<{ className?: string }>;
   recommended?: boolean;
   comingSoon?: boolean;
   disabledLabel?: string;
+  disabledLabelKey?: string;
   experimental?: boolean;
   hideFromVisualSelection?: boolean;
 }
 
+function displayDescription(info: { description?: string; descriptionKey?: string }): string {
+  if (info.descriptionKey) return t(info.descriptionKey);
+  return info.description ?? t("tools.adapters.externalAdapter");
+}
+
+export function displayDisabledLabel(info: AdapterDisplayInfo): string | undefined {
+  if (info.disabledLabelKey) return t(info.disabledLabelKey);
+  return info.disabledLabel;
+}
+
 const adapterDisplayMap: Record<string, AdapterDisplayInfo> = {
-  antigravity_runtime: { label: "Google Antigravity", description: "Antigravity through Paperclip Runner", icon: Gem, hideFromVisualSelection: true },
-  copilot_runtime: { label: "GitHub Copilot", description: "Copilot through Paperclip Runner", icon: Code, hideFromVisualSelection: true },
-  kimi_runtime: { label: "Kimi Code (Runner)", description: "Kimi Code through Paperclip Runner", icon: Moon, hideFromVisualSelection: true },
+  antigravity_runtime: { label: "Google Antigravity", descriptionKey: "tools.adapters.descriptions.antigravityRuntime", icon: Gem, hideFromVisualSelection: true },
+  copilot_runtime: { label: "GitHub Copilot", descriptionKey: "tools.adapters.descriptions.copilotRuntime", icon: Code, hideFromVisualSelection: true },
+  kimi_runtime: { label: "Kimi Code (Runner)", descriptionKey: "tools.adapters.descriptions.kimiRuntime", icon: Moon, hideFromVisualSelection: true },
   acpx_local: {
     label: "ACPX (retired)",
-    description: "Retired standalone ACPX adapter",
+    descriptionKey: "tools.adapters.descriptions.acpxRetired",
     icon: Bot,
     comingSoon: true,
-    disabledLabel: "Use Claude Code or Codex with the ACP engine",
+    disabledLabelKey: "tools.adapters.descriptions.acpxDisabled",
     hideFromVisualSelection: true,
   },
   claude_local: {
     label: "Claude Code",
-    description: "Claude Code CLI harness",
+    descriptionKey: "tools.adapters.descriptions.claudeLocal",
     icon: Sparkles,
     recommended: true,
   },
   codex_local: {
     label: "Codex",
-    description: "Codex CLI harness",
+    descriptionKey: "tools.adapters.descriptions.codexLocal",
     icon: Code,
     recommended: true,
   },
   paperclip_runner: {
     label: "Paperclip Runner",
-    description: "Experimental Rust runner with a Codex provider",
+    descriptionKey: "tools.adapters.descriptions.paperclipRunner",
     icon: Cpu,
     experimental: true,
   },
   gemini_local: {
     label: "Gemini CLI",
-    description: "Gemini CLI harness",
+    descriptionKey: "tools.adapters.descriptions.geminiLocal",
     icon: Gem,
   },
   grok_local: {
     label: "Grok Build",
-    description: "Grok Build harness",
+    descriptionKey: "tools.adapters.descriptions.grokLocal",
     icon: Bot,
   },
   kimi_local: {
     label: "Kimi Code",
-    description: "Kimi Code CLI harness",
+    descriptionKey: "tools.adapters.descriptions.kimiLocal",
     icon: Moon,
   },
   hermes_gateway: {
     label: "Hermes Gateway",
-    description: "Remote Hermes API server",
+    descriptionKey: "tools.adapters.descriptions.hermesGateway",
     icon: Bot,
     hideFromVisualSelection: true,
   },
   hermes_local: {
     label: "Hermes",
-    description: "Hermes harness",
+    descriptionKey: "tools.adapters.descriptions.hermesLocal",
     icon: Bot,
   },
   opencode_local: {
     label: "OpenCode",
-    description: "OpenCode multi-provider harness",
+    descriptionKey: "tools.adapters.descriptions.opencodeLocal",
     icon: OpenCodeLogoIcon,
   },
   pi_local: {
     label: "Pi",
-    description: "Pi harness",
+    descriptionKey: "tools.adapters.descriptions.piLocal",
     icon: Terminal,
   },
   cursor: {
     label: "Cursor",
-    description: "Cursor CLI harness",
+    descriptionKey: "tools.adapters.descriptions.cursor",
     icon: MousePointer2,
   },
   // Display-only choice: persisted as paperclip_runner with provider openai_dot.
-  grok_bot: { label: "Grok Bot", experimental: true, icon: Bot, description: "An existing external Bot in Grok" },
+  grok_bot: { label: "Grok Bot", experimental: true, icon: Bot, descriptionKey: "tools.adapters.descriptions.grokBot" },
   openai_dot: {
     label: "OpenAI Dot",
-    description: "Your Dot in ChatGPT",
+    descriptionKey: "tools.adapters.descriptions.openaiDot",
     icon: Bot,
     experimental: true,
   },
   muse: {
     label: "Muse — Personal agent",
-    description: "Your personal Muse at muse.ai",
+    descriptionKey: "tools.adapters.descriptions.muse",
     icon: Bot,
     experimental: true,
   },
   cursor_cloud: {
     label: "Cursor Cloud",
-    description: "Managed remote Cursor agent",
+    descriptionKey: "tools.adapters.descriptions.cursorCloud",
     icon: MousePointer2,
   },
   openclaw_gateway: {
     label: "OpenClaw Gateway",
-    description: "External gateway adapter",
+    descriptionKey: "tools.adapters.descriptions.openclawGateway",
     icon: Bot,
     comingSoon: true,
-    disabledLabel: "Invite external agents from the add-agent modal",
+    disabledLabelKey: "tools.adapters.descriptions.openclawDisabled",
     hideFromVisualSelection: true,
   },
   process: {
     label: "Process",
-    description: "Internal process adapter",
+    labelKey: "tools.adapters.labels.process",
+    descriptionKey: "tools.adapters.descriptions.process",
     icon: Cpu,
     comingSoon: true,
   },
   http: {
     label: "HTTP",
-    description: "Internal HTTP adapter",
+    descriptionKey: "tools.adapters.descriptions.http",
     icon: Cpu,
     comingSoon: true,
   },
@@ -194,27 +211,36 @@ export function getAdapterLabel(type: string): string {
   // suffix, so labels like "OpenClaw Gateway" don't become
   // "OpenClaw Gateway (gateway)".
   const known = adapterDisplayMap[type];
-  if (known) return known.label;
-  return withSuffix(humanizeType(type), getTypeSuffix(type));
+  if (known) return known.labelKey ? t(known.labelKey) : known.label;
+  return withSuffix(humanizeType(type), getDisplaySuffixLabel(type));
+}
+
+function getDisplaySuffixLabel(type: string): string | null {
+  const suffix = getTypeSuffix(type);
+  return suffix ? t(`tools.adapters.suffix.${suffix}`) : null;
 }
 
 export function getAdapterLabels(): Record<string, string> {
   const labels: Record<string, string> = {};
   for (const [type, info] of Object.entries(adapterDisplayMap)) {
-    labels[type] = info.label;
+    labels[type] = info.labelKey ? t(info.labelKey) : info.label;
   }
   return labels;
 }
 
 export function getAdapterDisplay(type: string): AdapterDisplayInfo {
   const known = adapterDisplayMap[type];
-  if (known) return known;
+  if (known) {
+    return { ...known, label: known.labelKey ? t(known.labelKey) : known.label, description: displayDescription(known) };
+  }
 
-  const suffix = getTypeSuffix(type);
-  const label = withSuffix(humanizeType(type), suffix);
+  const suffixLabel = getDisplaySuffixLabel(type);
+  const label = withSuffix(humanizeType(type), suffixLabel);
   return {
     label,
-    description: suffix ? `External ${suffix} adapter` : "External adapter",
+    description: suffixLabel
+      ? t("tools.adapters.externalScopedAdapter", { suffix: suffixLabel })
+      : t("tools.adapters.externalAdapter"),
     icon: Cpu,
   };
 }

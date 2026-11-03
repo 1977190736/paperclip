@@ -1,3 +1,5 @@
+import { t } from "@/i18n";
+
 /**
  * Client-side "next N schedule fires" helper for the routine Delivery preview (§3.5).
  *
@@ -137,6 +139,9 @@ interface ZonedParts {
   weekday: number;
 }
 
+// The "en-US" locale here is functional, not presentational: the formatter's
+// short weekday names are matched against `WEEKDAY_INDEX` above, so the locale
+// must stay fixed regardless of the UI language or parsing would break.
 function getZonedMinuteParts(date: Date, timeZone: string): ZonedParts {
   const formatter = new Intl.DateTimeFormat("en-US", {
     timeZone,
@@ -223,11 +228,16 @@ export interface FirePreviewEntry {
   note: string | null;
 }
 
-const DISPOSITION_LABEL: Record<FireDisposition, string> = {
-  queued: "queued",
-  coalesced: "would be coalesced",
-  skipped: "would be skipped",
-};
+function dispositionLabel(disposition: FireDisposition): string {
+  switch (disposition) {
+    case "queued":
+      return t("libui.cron.disposition.queued");
+    case "coalesced":
+      return t("libui.cron.disposition.coalesced");
+    case "skipped":
+      return t("libui.cron.disposition.skipped");
+  }
+}
 
 /**
  * Annotate a list of upcoming fires with how the chosen concurrency policy would
@@ -245,8 +255,8 @@ export function previewFirePolicies(
       return {
         at,
         disposition: "queued",
-        label: DISPOSITION_LABEL.queued,
-        note: "runs immediately",
+        label: dispositionLabel("queued"),
+        note: t("libui.cron.note.runsImmediately"),
       };
     }
     let disposition: FireDisposition;
@@ -265,8 +275,8 @@ export function previewFirePolicies(
     return {
       at,
       disposition,
-      label: DISPOSITION_LABEL[disposition],
-      note: disposition === "queued" ? null : "if the previous run is still active",
+      label: dispositionLabel(disposition),
+      note: disposition === "queued" ? null : t("libui.cron.note.previousStillActive"),
     };
   });
 }

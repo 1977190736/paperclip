@@ -1,0 +1,1054 @@
+{
+  "tools": {
+    "profilesTab": {
+      "selectorTypes": {
+        "toolName": "工具名称",
+        "riskLevel": "风险级别",
+        "application": "应用",
+        "connection": "连接",
+        "catalogEntry": "目录条目 ID"
+      },
+      "targetTypes": {
+        "company": "公司",
+        "agent": "智能体",
+        "project": "项目",
+        "routine": "例行任务",
+        "issue": "议题 ID"
+      },
+      "entryFallback": {
+        "application": "应用",
+        "connection": "连接",
+        "catalogEntry": "目录条目",
+        "riskLevel": "风险级别",
+        "tool": "工具"
+      },
+      "bindingCompany": "公司",
+      "bindings": {
+        "unbound": "未绑定",
+        "boundToAgents_one": "已绑定到 {{count}} 个智能体",
+        "boundToAgents_other": "已绑定到 {{count}} 个智能体",
+        "count_one": "{{count}} 个绑定",
+        "count_other": "{{count}} 个绑定"
+      },
+      "fields": {
+        "selector": "选择器",
+        "effect": "效果",
+        "include": "包含",
+        "exclude": "排除",
+        "application": "应用",
+        "selectApplication": "选择一个应用",
+        "connection": "连接",
+        "selectConnection": "选择一个连接",
+        "catalogEntryId": "目录条目 ID",
+        "toolName": "工具名称",
+        "toolNamePlaceholder": "例如 send_email 或 slack.list_*",
+        "riskLevel": "风险级别"
+      },
+      "effective": {
+        "agent": "智能体",
+        "pickAgent": "选择一个智能体，查看它当前可以使用哪些工具。",
+        "checking": "正在检查访问权限...",
+        "canUse": "可以使用",
+        "toolsCount": "{{n}} 个工具",
+        "noneAvailable": "该智能体目前无法使用任何应用工具。",
+        "profiles": "访问配置档",
+        "noActiveProfile": "没有生效中的配置档适用于该智能体。",
+        "orgDefault": "组织默认"
+      },
+      "source": {
+        "explicit": "显式",
+        "defaultAllow": "默认允许",
+        "pattern": "模式 {{label}}"
+      },
+      "allowList": {
+        "title": "允许列表",
+        "summary_one": "{{count}} 个工具",
+        "summary_other": "{{count}} 个工具",
+        "explicitSuffix": " · {{count}} 个显式",
+        "patternSuffix": " · {{count}} 个经模式",
+        "defaultSuffix": " · {{count}} 个经默认",
+        "resolving": "正在解析允许的工具…",
+        "empty": "此配置档没有解析出任何工具。请添加一个包含选择器，或刷新工具目录。",
+        "colTool": "工具",
+        "colApplication": "应用",
+        "colCapabilities": "能力",
+        "colRisk": "风险",
+        "colSource": "来源",
+        "patternWarningPrefix": "标记为",
+        "patternWarningEmphasis": "模式",
+        "patternWarningSuffix": " 的工具是由通配符、应用、连接或风险选择器带进来的，而非逐个显式命名——目录变化时请复查它们。"
+      },
+      "toasts": {
+        "created": "配置档已创建",
+        "createFailed": "无法创建配置档",
+        "updated": "配置档已更新",
+        "updateFailed": "无法更新配置档",
+        "entryAdded": "条目已添加",
+        "entryAddFailed": "无法添加条目",
+        "entryRemoved": "条目已移除",
+        "entryRemoveFailed": "无法移除条目",
+        "bound": "配置档已绑定",
+        "bindFailed": "无法绑定配置档",
+        "bindingRemoved": "绑定已移除",
+        "unbindFailed": "无法移除绑定",
+        "entryTargetRequired": "需要条目目标",
+        "bindingTargetRequired": "需要绑定目标"
+      },
+      "header": {
+        "title": "访问配置档",
+        "description": "可复用的应用、连接和工具许可组合，可指派给智能体、项目、例行任务或议题。",
+        "newProfile": "新建配置档"
+      },
+      "empty": {
+        "message": "还没有访问配置档",
+        "description": "先创建一个配置档来组织工具选择器，再把它绑定到组织或特定智能体。",
+        "action": "新建配置档"
+      },
+      "listRow_one": "{{count}} 个工具 · {{subtitle}}",
+      "listRow_other": "{{count}} 个工具 · {{subtitle}}",
+      "dialog": {
+        "editTitle": "编辑配置档",
+        "newTitle": "新建配置档",
+        "description": "配置档规则由工具网关策略服务执行。",
+        "key": "键",
+        "namePlaceholder": "工程写工具",
+        "descriptionLabel": "描述",
+        "descriptionPlaceholder": "给审查者的补充说明（可选）。",
+        "defaultAction": "默认动作",
+        "denyUnlessIncluded": "未包含即拒绝",
+        "allowUnlessExcluded": "未排除即允许",
+        "status": "状态",
+        "statusActive": "启用",
+        "statusDisabled": "停用",
+        "statusArchived": "已归档",
+        "creating": "正在创建...",
+        "create": "创建"
+      },
+      "entryDialog": {
+        "title": "添加条目",
+        "add": "添加条目"
+      },
+      "bindDialog": {
+        "title": "绑定配置档",
+        "targetType": "目标类型",
+        "agent": "智能体",
+        "project": "项目",
+        "selectProject": "选择一个项目",
+        "routine": "例行任务",
+        "selectRoutine": "选择一个例行任务",
+        "issueId": "议题 ID",
+        "priority": "优先级",
+        "bind": "绑定"
+      },
+      "detail": {
+        "defaultBadge": "默认 {{action}}",
+        "updated": "更新于",
+        "edit": "编辑",
+        "entry": "条目",
+        "bind": "绑定",
+        "targets": "目标",
+        "noTargets": "尚未绑定目标。",
+        "removeBindingAria": "移除 {{type}} 绑定",
+        "effectiveScope": "生效范围",
+        "defaultLabel": "默认",
+        "toolsAllowedSuffix_one": "个工具已允许",
+        "toolsAllowedSuffix_other": "个工具已允许",
+        "includeWord": "包含",
+        "excludeWord": "排除",
+        "selectors": "选择器",
+        "noSelectors": "暂无选择器。",
+        "deleteEntryAria": "删除 {{type}} 条目"
+      }
+    },
+    "gateways": {
+      "profileUnavailable": "配置档不可用",
+      "toolsAllowed_one": "允许 {{count}} 个工具",
+      "toolsAllowed_other": "允许 {{count}} 个工具",
+      "noToolsAllowed": "不允许任何工具",
+      "ownerAgent": "智能体 {{id}}",
+      "ownerBoardUser": "看板用户 {{id}}",
+      "ownerBoard": "看板",
+      "scopeProject": "项目 {{name}}",
+      "scopeAgent": "智能体 {{name}}",
+      "scopeOther": "{{type}} {{id}}",
+      "scopeIssue": "议题 {{id}}",
+      "scopeCompany": "公司",
+      "toasts": {
+        "created": "网关已创建",
+        "createFailed": "网关未能创建",
+        "tokenIssued": "令牌已签发",
+        "tokenIssuedBody": "{{name}} 已创建。请立即复制；之后不会再显示。",
+        "tokenIssueFailed": "令牌未能签发",
+        "tokenRevoked": "令牌已吊销",
+        "tokenRevokeFailed": "令牌未能吊销",
+        "copiedToClipboard": "已复制到剪贴板",
+        "clipboardUnavailable": "剪贴板不可用。"
+      },
+      "pickProfileTitle": "请选择配置档",
+      "pickProfileBody": "网关需要先有一个访问配置档才能创建。",
+      "pickActionsTitle": "请选择令牌动作",
+      "pickActionsBody": "网关令牌至少需要允许一个 MCP 动作。",
+      "loading": "正在加载网关...",
+      "header": {
+        "title": "命名 MCP 网关",
+        "description": "为外部客户端提供稳定端点，使用与智能体工具访问相同的配置档、规则和审计记录。",
+        "create": "创建网关"
+      },
+      "form": {
+        "nameLabel": "网关名称",
+        "namePlaceholder": "工程笔记本",
+        "profileLabel": "访问配置档",
+        "loadingProfiles": "正在加载配置档...",
+        "chooseProfile": "选择一个配置档",
+        "descriptionLabel": "描述",
+        "descriptionPlaceholder": "这个端点给谁用，以及何时应轮换。",
+        "noProfilesHint": "请先创建访问配置档，再添加网关。",
+        "creating": "正在创建...",
+        "create": "创建网关"
+      },
+      "empty": "还没有命名的网关。在这里创建一个，然后为将要连接它的客户端签发令牌。",
+      "copyEndpoint": "复制端点",
+      "issueToken": "签发令牌",
+      "copyLabels": {
+        "endpoint": "网关端点",
+        "bearerToken": "网关 Bearer 令牌",
+        "snippet": "{{label}} 片段"
+      },
+      "meta": {
+        "owner": "所有者",
+        "scope": "范围",
+        "allowedTools": "允许的工具",
+        "allowedToolsValue": "{{tools}}，经配置档 {{profile}}",
+        "profileId": "配置档 {{id}}",
+        "lastActivity": "最近活动",
+        "neverUsed": "从未使用"
+      },
+      "tokenForm": {
+        "nameLabel": "令牌名称",
+        "namePlaceholder": "Dotta 的 MacBook",
+        "clientLabel": "客户端标签",
+        "clientPlaceholder": "办公笔记本上的 Cursor",
+        "ownerNote": "所有者备注",
+        "ownerNotePlaceholder": "谁拥有这个令牌，以及它为何存在",
+        "expires": "到期",
+        "issuing": "正在签发...",
+        "issue": "签发令牌"
+      },
+      "createdToken": {
+        "title": "{{name}} 的新令牌",
+        "copyToken": "复制令牌"
+      },
+      "tokens": {
+        "title": "令牌",
+        "empty": "尚未签发令牌。",
+        "revoked": "已吊销于",
+        "expires": "到期于",
+        "noExpiry": "无到期时间",
+        "revokeAria": "吊销 {{name}}",
+        "revoke": "吊销",
+        "confirmPrompt": "现在吊销这个令牌？",
+        "confirm": "确认"
+      },
+      "snippets": {
+        "title": "客户端片段",
+        "empty": "没有可用的片段。"
+      }
+    },
+    "connectionDialogs": {
+      "transport": {
+        "mcp_remote": "远程 http",
+        "local_stdio": "本地 stdio"
+      },
+      "catalog": {
+        "title": "工具目录 — {{name}}",
+        "empty": "尚未发现任何工具。请使用“刷新目录”从这个连接发现工具。"
+      },
+      "add": {
+        "title": "添加应用",
+        "description": "选择一个现有应用，或在同一个连接流程中新建一个。凭证始终以保险库引用保存，连接会在激活前完成探测。",
+        "stepApplication": "1 应用",
+        "stepConnection": "2 连接",
+        "application": "应用",
+        "useExisting": "使用现有应用",
+        "createNew": "新建应用",
+        "existingApplication": "现有应用",
+        "selectApplication": "选择一个应用",
+        "newName": "新应用名称",
+        "newNamePlaceholder": "例如 GitHub Triage",
+        "inferredHint": "应用类型会根据你下一步选择的传输方式自动推断。",
+        "willBeCreatedSuffix": "将被创建为 {{type}}。",
+        "connectionName": "连接名称",
+        "connectionNamePlaceholder": "例如 生产环境 GitHub",
+        "transport": "传输方式",
+        "transportRemote": "远程 HTTP（无本地进程）",
+        "transportLocal": "本地 stdio（已批准模板）",
+        "endpointUrl": "端点 URL",
+        "commandTemplate": "命令模板",
+        "selectTemplate": "选择一个已批准的模板",
+        "templateHint": "只有看板批准的命令模板才能运行。任何任意命令都不会被接受。",
+        "credentialRefs": "凭证引用",
+        "removeCredAria": "移除 {{name}} 的凭证引用",
+        "selectSecret": "选择一个保险库密钥",
+        "headerPlaceholder": "请求头",
+        "headerAria": "请求头名称",
+        "add": "添加",
+        "vaultNoteBefore": "不接受自由文本密钥——请选择一个保险库条目；Paperclip 只保存",
+        "vaultNoteAfter": "引用，并在网关使用时解析它。",
+        "probing": "正在探测连接…",
+        "probeResult": "探测结果",
+        "toolsDiscovered": "已发现工具",
+        "probeLatency": "探测延迟",
+        "quarantined": "已隔离",
+        "latencyNote": "探测延迟是单次往返采样。连接上线后，跨流量的聚合 p95 延迟会在“运行时”页签中跟踪。",
+        "creatingDraft": "正在创建草稿…",
+        "createAndProbe": "创建并探测",
+        "probingShort": "正在探测…",
+        "reprobe": "重新探测",
+        "activating": "正在激活…",
+        "activate": "激活"
+      },
+      "toasts": {
+        "createFailed": "无法创建连接",
+        "probeFailed": "探测失败",
+        "activated": "连接已激活",
+        "activationFailed": "激活失败"
+      }
+    },
+    "pasteConfig": {
+      "keyFallback": "键",
+      "draftSummary": {
+        "runsInWorkspace": "在你的工作区中运行",
+        "connectsOverWeb": "通过 Web 连接",
+        "noKeys": "无需密钥",
+        "needsKeys_one": "需要 {{count}} 个密钥",
+        "needsKeys_other": "需要 {{count}} 个密钥"
+      },
+      "oauthStartFailed": "Paperclip 无法启动安全登录。请重试。",
+      "remoteOnlyError": "只有远程 HTTP 草稿可以通过粘贴的配置进行检查和激活。",
+      "manualClientRequired": "此服务器需要来自其提供方设置中的 OAuth 客户端详情。请继续在设置中添加它们。",
+      "importedAppFallback": "导入的应用",
+      "invalidJson": "这看起来还不是有效的 JSON——请粘贴完整片段，包括最外层的大括号。",
+      "intro": "粘贴工具 README 中的 MCP 配置片段，我们会把它转换成友好的设置流程。",
+      "justUrl": "只有一个 URL？",
+      "justUrlSuffix": "。",
+      "browsePlanned": "浏览已规划的应用连接",
+      "pasteHint": "粘贴一份 MCP 配置——也就是 README 让你复制的那段片段。",
+      "checking": "正在检查…",
+      "checkConfig": "检查配置",
+      "previewNote": "我们会先读取并展示发现的内容，然后才会保存任何东西。",
+      "noAppFound": "我们在这份配置中没有找到应用。请确认你粘贴了完整片段。",
+      "foundApps_one": "我们在这份配置中找到了 {{count}} 个应用",
+      "foundApps_other": "我们在这份配置中找到了 {{count}} 个应用",
+      "remoteNote": "检查远程应用会创建一个草稿连接，把任何请求头替换值保存为 Paperclip 密钥，并在激活前运行健康/目录发现。",
+      "localNote": "我们已把配置中的字段名称人性化。这些在你工作区内运行的工具会保持草稿状态，直到管理员把它们映射到已批准的模板。",
+      "draftCard": {
+        "checkActions": "检查动作",
+        "connectionName": "连接名称",
+        "replacementPlaceholder": "粘贴替换值",
+        "keysDraftOnly": "这份配置中的密钥会保持草稿状态，直到管理员把它们映射到已批准的模板。",
+        "noKeys": "这一个不需要密钥。"
+      },
+      "review": {
+        "title": "审查 {{app}} 的动作",
+        "subtitle": "健康与目录检查已通过。每个被发现的动作初始都是允许的；激活后你可以收窄访问范围。",
+        "activate": "激活 {{enabled}}/{{total}}",
+        "readOnly": "只读",
+        "canMakeChanges": "可做出更改",
+        "activeForAllAgents": "{{name}} 已对所有智能体启用。",
+        "turnAllOn": "全部开启",
+        "turnAllOff": "全部关闭",
+        "askFirst": "启用时先询问"
+      }
+    },
+    "toolsAccess": {
+      "companyFallback": "公司",
+      "apps": "应用",
+      "advancedSetup": "高级设置",
+      "advancedBadge": "高级",
+      "developerTools": "开发者工具",
+      "selectOrg": "选择一个组织以打开高级设置。",
+      "subtitlePrefix": "适用于不在库中的工具。你需要从该工具的文档中获取细节。大多数人永远用不到——如果你想用的应用已在库中，",
+      "subtitleLink": "请改在那里连接",
+      "subtitleSuffix": "。",
+      "devSurfacePrompt": "在找开发者界面？",
+      "openDeveloperTools": "打开开发者工具"
+    },
+    "profilesIndex": {
+      "toasts": {
+        "duplicated": "配置档已复制",
+        "duplicatedBody": "副本尚未指派给任何人。",
+        "duplicateFailed": "无法复制",
+        "archived": "配置档已归档",
+        "archiveFailed": "无法归档",
+        "restored": "配置档已恢复",
+        "restoreFailed": "无法恢复",
+        "deleted": "配置档已删除",
+        "deleteFailed": "无法删除"
+      },
+      "header": {
+        "title": "访问配置档",
+        "description": "决定你的智能体可以使用哪些工具。先构建一个配置档，再把它指派给需要的智能体。",
+        "checkAccess": "检查智能体的访问权限",
+        "newProfile": "新建配置档"
+      },
+      "resolver": {
+        "title": "检查智能体的访问权限",
+        "description": "确切查看一个智能体现在可以使用哪些工具，以及每个工具由哪个配置档允许。"
+      },
+      "loading": "正在加载配置档…",
+      "filter": {
+        "active": "启用",
+        "archived": "已归档",
+        "noArchived": "没有已归档的配置档。"
+      },
+      "table": {
+        "profile": "配置档",
+        "allows": "允许",
+        "assignedTo": "指派给",
+        "status": "状态",
+        "updated": "更新于"
+      },
+      "newBadge": "{{n}} 个新增",
+      "unassignedHint": "——不改变访问权限",
+      "resume": "继续",
+      "menu": {
+        "aria": "配置档操作",
+        "edit": "编辑",
+        "duplicate": "复制",
+        "restore": "恢复",
+        "archive": "归档",
+        "delete": "删除"
+      },
+      "emptyPicker": {
+        "title": "创建你的第一个访问配置档",
+        "description": "选择一个起点。你可以在下一步精确调整它允许哪些工具。"
+      }
+    },
+    "profileSummary": {
+      "allTools": "全部工具",
+      "allExcept_one": "除 {{count}} 个工具外全部",
+      "allExcept_other": "除 {{count}} 个工具外全部",
+      "tools_one": "{{count}} 个工具",
+      "tools_other": "{{count}} 个工具",
+      "apps_one": "{{count}} 个应用",
+      "apps_other": "{{count}} 个应用",
+      "agents_one": "{{count}} 个智能体",
+      "agents_other": "{{count}} 个智能体",
+      "assignments_one": "{{count}} 个指派",
+      "assignments_other": "{{count}} 个指派",
+      "orgDefault": "组织默认",
+      "notAssigned": "尚未指派",
+      "status": {
+        "draft": "草稿",
+        "active": "启用",
+        "disabled": "关闭",
+        "archived": "已归档"
+      }
+    },
+    "profileModel": {
+      "capability": {
+        "read": "只读",
+        "write": "可做出更改",
+        "destructive": "破坏性"
+      },
+      "fallbackGroupName": "工具",
+      "noneSelected": "未选择任何工具",
+      "allAppTools": "全部 {{app}} 工具（{{total}}）",
+      "allAppExcept": "除 {{n}} 项外的全部 {{app}} 工具",
+      "someOfTools": "{{total}} 个 {{app}} 工具中的 {{n}} 个",
+      "templates": {
+        "readOnly": {
+          "title": "只读",
+          "description": "可以查看和获取，但绝不改动任何东西。"
+        },
+        "everyday": {
+          "title": "日常工作",
+          "description": "可以读取并做例行更改——不含破坏性工具。"
+        },
+        "fullAccess": {
+          "title": "完全访问",
+          "description": "每个已连接应用提供的一切工具。"
+        },
+        "scratch": {
+          "title": "从零开始",
+          "description": "一个空的配置档，由你逐个工具搭建。"
+        },
+        "copy": {
+          "title": "复制现有配置档",
+          "description": "从一个你已有的配置档开始。"
+        }
+      }
+    },
+    "profileActionDialog": {
+      "archive": {
+        "title": "归档配置档",
+        "body_one": "此配置档将停止作用于 {{count}} 个智能体。你之后可以恢复它。",
+        "body_other": "此配置档将停止作用于 {{count}} 个智能体。你之后可以恢复它。",
+        "confirm": "归档"
+      },
+      "restore": {
+        "title": "恢复配置档",
+        "body": "此配置档将重新生效，并可以指派给智能体。",
+        "confirm": "恢复"
+      },
+      "delete": {
+        "title": "删除配置档",
+        "bodyDefaultBlocked": "此配置档是组织默认。请先把组织默认重新指派给另一个配置档，再删除它。",
+        "body_one": "此操作会永久删除该配置档，并移除 {{count}} 个指派。",
+        "body_other": "此操作会永久删除该配置档，并移除 {{count}} 个指派。",
+        "confirm": "删除"
+      },
+      "reassignFirst": "请先选择另一个访问配置档，并把它设为组织默认。"
+    },
+    "routes": {
+      "companyFallback": "公司",
+      "orgFallback": "组织",
+      "apps": "应用",
+      "accessProfiles": "访问配置档",
+      "profileDetail": "配置档详情",
+      "selectOrgProfile": "请选择一个组织和配置档。",
+      "resumeDraft": "继续草稿",
+      "newProfile": "新建配置档",
+      "selectOrgCreate": "选择一个组织以创建配置档。",
+      "finishTitle": "完成你的配置档",
+      "newTitle": "新建访问配置档",
+      "subtitle": "选择此配置档允许哪些工具，然后把它指派给需要的智能体。"
+    },
+    "profileWizard": {
+      "steps": {
+        "name": "命名",
+        "chooseTools": "选择工具",
+        "assign": "指派"
+      },
+      "untitledProfile": "未命名配置档",
+      "toasts": {
+        "saveFailed": "无法保存",
+        "saved": "配置档已保存",
+        "saveProfileFailed": "无法保存配置档",
+        "draftSaved": "草稿已保存",
+        "draftSavedBody": "可以从配置档列表中把它捡起来继续。"
+      },
+      "noDraftError": "没有可完成的草稿",
+      "loading": "正在加载草稿…",
+      "footer": {
+        "allows": "允许 {{total}} 个工具中的 {{allowed}} 个",
+        "saveFinishLater": "保存并稍后完成",
+        "saveProfile": "保存配置档"
+      },
+      "stepName": {
+        "startFrom": "从这里开始",
+        "whichProfile": "哪个配置档？",
+        "noCopyOptions": "你还没有其他可复制的配置档。",
+        "namePlaceholder": "例如 日常工作",
+        "descriptionLabel": "描述（可选）",
+        "descriptionPlaceholder": "这个配置档是做什么用的？",
+        "identifier": "标识符",
+        "identifierHint": "用于导出和 API。会根据名称自动填充。"
+      },
+      "stepAssign": {
+        "orgDefault": "将此设为组织默认",
+        "orgDefaultHint": "每个没有自己配置档的智能体都会使用这一个。",
+        "replaces": "将替换“{{name}}”。",
+        "assignToAgents": "指派给智能体",
+        "contextOrgDefault": "组织默认",
+        "alreadyHas": "已有：{{list}}",
+        "noProfilesYet": "还没有配置档",
+        "overlapHint": "如果一个智能体有多个配置档，它可以使用其中任何一个允许的所有工具。",
+        "moreTargets": "更多目标",
+        "moreTargetsHint": "把此配置档指派给整个项目或某个定时例行任务，而不是（或同时）指派给单个智能体。",
+        "projects": "项目",
+        "routines": "例行任务"
+      },
+      "errors": {
+        "updateAssignment": "无法更新指派 {{key}}",
+        "rollbackFailures": "；{{n}} 个回滚操作也失败了"
+      }
+    },
+    "wizardToolsStep": {
+      "loading": "正在加载工具…",
+      "coldState": {
+        "title": "应用连接即将推出",
+        "body": "应用连接就绪后即可使用配置档。在此之前可以先浏览已规划的集成。",
+        "browse": "浏览应用连接"
+      },
+      "searchPlaceholder": "搜索工具…",
+      "noMatch": "没有符合“{{search}}”的工具。",
+      "clearSearch": "清除搜索",
+      "appRow": {
+        "aria": "全部 {{app}} 工具",
+        "title": "全部 {{app}} 工具（{{n}}）",
+        "includesLater": "包含 {{app}} 之后新增的工具"
+      },
+      "newTools": {
+        "legend": "之后出现的新工具",
+        "deny": "保持封锁，直到有人允许它们",
+        "denyHint": "应用之后新增的工具，在你审查之前将无法使用。",
+        "allow": "自动允许",
+        "allowHint": "应用之后新增的任何工具都会立即可用。",
+        "recommended": "推荐",
+        "risky": "（有风险）"
+      },
+      "rules": {
+        "kindToolName": "工具名称模式",
+        "kindRiskLevel": "风险级别",
+        "kindCatalogEntry": "按工具 ID",
+        "allow": "允许",
+        "block": "阻止",
+        "summaryMatching": "{{verb}}符合 {{value}} 的工具",
+        "summaryRisk": "{{verb}}{{level}} 工具",
+        "summaryTool": "{{verb}}工具 {{value}}",
+        "title": "高级规则",
+        "hint": "按名称模式、风险级别或具体工具 ID 匹配工具。这些规则会在上面所选内容的基础上生效。",
+        "removeAria": "移除规则",
+        "valueToolPlaceholder": "例如 gmail.send*",
+        "valueIdPlaceholder": "工具 ID",
+        "add": "添加规则"
+      }
+    },
+    "profileDetail": {
+      "toasts": {
+        "updated": "配置档已更新",
+        "updateFailed": "无法更新配置档",
+        "duplicated": "配置档已复制",
+        "duplicatedBody": "副本尚未指派给任何人。",
+        "duplicateFailed": "无法复制",
+        "deleted": "配置档已删除",
+        "deleteFailed": "无法删除",
+        "assignmentRemoved": "指派已移除",
+        "assignmentRemoveFailed": "无法移除指派",
+        "reviewSubmitted": "新工具已审查",
+        "reviewFailed": "无法提交审查"
+      },
+      "loading": "正在加载配置档...",
+      "notFound": {
+        "title": "未找到配置档",
+        "description": "此访问配置档可能已被删除。",
+        "back": "返回配置档"
+      },
+      "actions": {
+        "edit": "编辑",
+        "duplicate": "复制",
+        "restore": "恢复",
+        "archive": "归档",
+        "delete": "删除"
+      },
+      "updated": "更新于",
+      "createdBanner": {
+        "title": "配置档已保存",
+        "unassignedBody": "在它改变智能体的访问权限之前，先把它指派给智能体。",
+        "assignedBody": "指派现已生效。",
+        "assign": "指派",
+        "dismiss": "忽略"
+      },
+      "archivedBanner": "此配置档已归档。在恢复之前，它不会作用于智能体。",
+      "sections": {
+        "allows": "它允许什么",
+        "editTools": "编辑工具",
+        "whoHasIt": "谁在使用它",
+        "assign": "指派",
+        "newTools": "之后出现的新工具"
+      },
+      "checkAccess": "检查智能体实际能做什么",
+      "newToolsBanner": {
+        "loading": "有新工具需要审查",
+        "body_one": "{{app}} 在你上次审查后新增了 {{count}} 个新工具",
+        "body_other": "{{app}} 在你上次审查后新增了 {{count}} 个新工具",
+        "subtitle": "选择此配置档应允许其中哪些。",
+        "review": "审查"
+      },
+      "reviewDialog": {
+        "title": "审查新工具",
+        "description": "允许此配置档应使用的工具。其余保持封锁。",
+        "loading": "正在加载新工具...",
+        "empty": "没有等待审查的新工具。",
+        "appToolFallback": "应用工具",
+        "added": "添加于 {{date}}",
+        "allow": "允许",
+        "keepBlocked": "保持封锁",
+        "submit": "提交审查"
+      },
+      "allowList": {
+        "zero": "此配置档不允许任何工具。只有此配置档的智能体将无法使用应用工具。",
+        "colTool": "工具",
+        "colApp": "应用",
+        "colCapabilities": "能力",
+        "colSource": "来源",
+        "reconnect": "重新连接",
+        "disconnected": "{{app}} 已断开连接",
+        "addedAutomatically": "自动添加 · {{date}}",
+        "showingFirstN": "正在显示 {{n}} 个允许工具中的前 80 个。",
+        "allowsOf": "允许 {{total}} 个已知工具中的 {{n}} 个。"
+      },
+      "assignments": {
+        "notAssigned": "尚未指派",
+        "notAssignedHint": "在它改变访问权限之前，请先指派此配置档。",
+        "remove": "移除"
+      },
+      "newToolsSetting": {
+        "denyTitle": "保持封锁，直到审查",
+        "denyBody": "新工具不会自动变为可用。",
+        "allowTitle": "自动允许",
+        "allowBody": "所选应用的新工具会立即可用。"
+      },
+      "editDialog": {
+        "title": "编辑配置档",
+        "description": "更新配置档名称和描述。",
+        "duplicateName": "另一个配置档已使用此名称。"
+      },
+      "duplicateDialog": {
+        "title": "复制配置档",
+        "description": "除非你选择同时复制指派，否则副本一开始是未指派的。",
+        "duplicateName": "另一个配置档已使用此名称。",
+        "alsoCopyAssignments": "同时复制指派？",
+        "duplicate": "复制"
+      },
+      "removeAssignmentDialog": {
+        "title": "移除指派",
+        "companyBody": "移除组织默认会改变依赖它的每个智能体的访问权限。",
+        "body": "将此配置档从 {{label}} 移除。",
+        "remove": "移除"
+      },
+      "source": {
+        "direct": "直接添加",
+        "ruleAllApp": "经规则添加：全部 {{app}}",
+        "ruleRisk": "经规则添加：{{level}} 工具"
+      },
+      "capability": {
+        "destructive": "破坏性",
+        "write": "写入",
+        "read": "读取"
+      },
+      "newToolsApp": {
+        "fallback": "某个应用",
+        "unknownApp": "未知应用",
+        "two": "{{a}} 和 {{b}}",
+        "more": "{{a}} 以及另外 {{n}} 个应用"
+      },
+      "assignment": {
+        "orgDefault": "组织默认",
+        "unknownAgent": "未知智能体",
+        "unknownProject": "未知项目",
+        "unknownRoutine": "未知例行任务",
+        "organization": "组织",
+        "typeCompany": "组织默认",
+        "typeAgent": "智能体",
+        "typeProject": "项目",
+        "typeRoutine": "例行任务",
+        "typeOther": "范围指派"
+      },
+      "noDescription": "暂无描述。"
+    },
+    "runner": {
+      "actionLabels": {
+        "accept": "仅允许一次",
+        "accept_for_session": "本次会话内允许",
+        "decline": "拒绝",
+        "cancel": "取消"
+      },
+      "runtimeApprovalRequested": "请求运行时审批",
+      "answerFallback": "答案 {{n}}",
+      "questionFallback": "问题 {{n}}",
+      "optionFallback": "选项 {{n}}",
+      "activityTitles": {
+        "plan": "计划",
+        "tool_execution": "工具执行",
+        "research": "研究",
+        "delegation": "委托",
+        "model_identity": "模型",
+        "context": "上下文",
+        "artifact": "产物",
+        "review": "审查模式",
+        "hook": "钩子",
+        "memory": "记忆引用",
+        "safety": "安全审查",
+        "terminal": "终端输入",
+        "wait": "有意等待",
+        "provider_notice": "提供方通知"
+      },
+      "turnStarted": "回合已开始",
+      "turnCompleted": "回合已完成",
+      "turnFailed": "回合失败",
+      "sessionStarted": "Paperclip 会话已开始 · {{detail}}",
+      "sessionResumed": "Paperclip 会话已恢复 · {{detail}}",
+      "unsafeWorkspaceRef": "运行器：已忽略一个不安全的工作区文件引用",
+      "oversizedInput": "运行器：无法显示此输入请求，因为其完整上下文超过 100,000 字符。无法通过此请求提交任何决定。",
+      "runnerDiagnostic": "运行器：{{message}}",
+      "fallbackNames": {
+        "paperclipTool": "Paperclip 工具",
+        "tool": "工具"
+      },
+      "completed": {
+        "command": "命令已完成",
+        "fileChange": "文件更改已完成",
+        "named": "{{name}} 已完成"
+      },
+      "itemFailed": "运行器条目失败"
+    },
+    "adapters": {
+      "suffix": {
+        "gateway": "网关"
+      },
+      "externalAdapter": "外部适配器",
+      "externalScopedAdapter": "外部{{suffix}}适配器",
+      "labels": {
+        "process": "进程"
+      },
+      "descriptions": {
+        "antigravityRuntime": "经 Paperclip 运行器使用 Antigravity",
+        "copilotRuntime": "经 Paperclip 运行器使用 Copilot",
+        "kimiRuntime": "经 Paperclip 运行器使用 Kimi Code",
+        "acpxRetired": "已退役的独立 ACPX 适配器",
+        "acpxDisabled": "请改用 Claude Code 或 Codex 搭配 ACP 引擎",
+        "claudeLocal": "Claude Code CLI harness",
+        "codexLocal": "Codex CLI harness",
+        "paperclipRunner": "带 Codex 提供方的实验性 Rust 运行器",
+        "geminiLocal": "Gemini CLI harness",
+        "grokLocal": "Grok Build harness",
+        "kimiLocal": "Kimi Code CLI harness",
+        "hermesGateway": "远程 Hermes API 服务器",
+        "hermesLocal": "Hermes harness",
+        "opencodeLocal": "OpenCode 多提供方 harness",
+        "piLocal": "Pi harness",
+        "cursor": "Cursor CLI harness",
+        "grokBot": "Grok 中已有的外部 Bot",
+        "openaiDot": "你在 ChatGPT 中的 Dot",
+        "muse": "你在 muse.ai 上的个人 Muse",
+        "cursorCloud": "托管的远程 Cursor 智能体",
+        "openclawGateway": "外部网关适配器",
+        "openclawDisabled": "请从添加智能体弹窗中邀请外部智能体",
+        "process": "内部进程适配器",
+        "http": "内部 HTTP 适配器"
+      }
+    },
+    "codexLocal": {
+      "instructionsFileHint": "一个 Markdown 文件（例如 AGENTS.md）的绝对路径，用于定义此智能体的行为。会在运行时注入系统提示。注意：Codex 仍可能自动应用工作区中仓库范围的 AGENTS.md 文件。",
+      "harnessAcpAgents": "ACP 智能体",
+      "fastMode": {
+        "manualModel": "快速模式会为此手动模型原样传入。如果 Codex 拒绝它，请关闭该开关。",
+        "supported": "快速模式消耗积分/Token 的速度远快于标准 Codex 运行。",
+        "unsupported": "快速模式目前仅支持 {{models}} 或手动模型 ID。在切换模型之前，Paperclip 会忽略此开关。"
+      },
+      "engine": {
+        "label": "执行引擎",
+        "hint": "默认使用 ACP。如果 ACP 不可用，运行会因设置错误而失败。要使用 CLI，请显式选择 CLI。",
+        "aria": "执行引擎",
+        "auto": "默认（ACP）",
+        "cli": "Codex CLI",
+        "acp": "ACP"
+      },
+      "harness": {
+        "label": "Harness",
+        "hint": "选择运行你任务的智能体 harness。",
+        "aria": "Harness",
+        "unknownProvider": "{{provider}}（未知提供方）"
+      },
+      "dot": {
+        "connection": "Dot 连接",
+        "connectionHint": "在指派工作之前，需要经过验证的事件往返。",
+        "readAttachments": "读取任务附件",
+        "readAttachmentsHint": "让 Dot 读取其当前被指派任务的附件文件。文件内容会发送给 OpenAI。不需要工作区命令访问权限；默认关闭。",
+        "workspace": "工作区文件和命令",
+        "workspaceHint": "让 Dot 读取和写入其被指派的工作区并发布文件。需要本地运行器。命令仅在带有 bubblewrap 的 Linux 上可用；它们无法读取你的主目录或使用注入的凭证。",
+        "unmetered": "允许外部计费的提供方",
+        "unmeteredHint": "Dot 不报告 Token 用量或费用。Paperclip 无法强制执行提供方支出上限；已知的公司和智能体预算限制仍然适用。"
+      },
+      "muse": {
+        "connection": "Muse 连接",
+        "connectionHint": "配对、接收方联系、后台回复和智能体设置会分别验证。",
+        "unmetered": "允许外部计费的提供方",
+        "unmeteredHint": "Muse 不报告用量或费用。Paperclip 无法强制执行 Muse 支出上限；已知的公司和智能体预算限制仍然适用。"
+      },
+      "acpx": {
+        "agent": "ACP 智能体",
+        "agentHint": "选择一个合格的 harness，并输入其确切的模型 ID。",
+        "aria": "ACP 智能体",
+        "qualificationPending": " — 等待资格认证",
+        "cursorMode": "Cursor 模式",
+        "cursorModeHint": "选择 Cursor 的会话模式。权限和公司审批规则仍然适用。",
+        "ariaCursorMode": "Cursor 模式",
+        "unsupportedMode": "不支持已保存的模式——请选择 Agent、Plan 或 Ask",
+        "optionAgent": "Agent",
+        "optionPlan": "Plan",
+        "optionAsk": "Ask",
+        "piLevel": "Pi 思考级别",
+        "piLevelHint": "运行器会在每个会话可以提示之前验证这个确切级别。更改它会启动一个新会话。",
+        "ariaPiLevel": "Pi 思考级别",
+        "unsupportedPi": "不支持已保存的思考级别",
+        "off": "关闭",
+        "low": "低",
+        "high": "高",
+        "max": "最大"
+      },
+      "managed": {
+        "profile": "托管智能体配置档",
+        "profileHint": "公司范围的合格配置档 ID 或键。远程资源身份从存储的配置档加载，而不是此智能体配置。",
+        "spendCeiling": "会话支出上限（美元）",
+        "spendCeilingHint": "可选的每智能体硬上限。保留 1.00 以使用保守默认值。",
+        "retention": "确认托管保留策略",
+        "retentionHint": "Claude Managed 是一种有状态的 Beta 服务，不适用于 ZDR 或 HIPAA 模式。"
+      },
+      "agentCore": {
+        "profile": "AgentCore 配置档",
+        "profileHint": "公司范围的合格配置档 ID 或键。Harness、Memory、IAM 和上下文存储身份都来自存储的配置档。",
+        "ceiling": "预估会话上限（美元）",
+        "ceilingHint": "Paperclip 估算值；AWS 不提供按会话的货币硬停止。",
+        "maxIterations": "最大迭代次数",
+        "maxIterationsHint": "合格范围是 1–8。无效值会以 8 兜底。",
+        "maxOutputTokens": "最大输出 Token 数",
+        "maxOutputTokensHint": "合格范围是 1–4096。",
+        "timeout": "调用超时（秒）",
+        "timeoutHint": "合格范围是 1–300 秒。",
+        "retention": "确认 90 天 Memory 保留策略",
+        "retentionHint": "合格的 AgentCore 配置档会将短期 Memory 事件确切保留 90 天。"
+      },
+      "permissionMode": {
+        "label": "权限模式",
+        "hintSuffix": " 所选模式不会扩大 Paperclip 的工作区、网络、凭证或规划边界。",
+        "aria": "权限模式",
+        "unsupported": "不支持已保存的模式——请选择一个合格模式",
+        "codexUnsupportedError": "此已保存的 Codex 模式无法启动或恢复 Paperclip 运行器运行。请选择“自动（隔离）”以修复它。"
+      },
+      "lifecycle": {
+        "label": "运行器生命周期",
+        "hint": "逐回合会在每次运行后挂起。Warm 会在受治理的运行之间保持同一个提供方进程可用。",
+        "aria": "运行器生命周期",
+        "perTurn": "逐回合",
+        "warm": "Warm 会话"
+      },
+      "idleTimeout": {
+        "label": "Warm 空闲超时（毫秒）",
+        "hint": "在此时长的不活动之后，runnerd 会做检查点并挂起提供方会话。最大值为 24 小时。"
+      },
+      "acpServer": {
+        "label": "ACP 服务器命令",
+        "hint": "可选地覆盖 Codex ACP 服务器命令。默认使用包本地的 codex-acp 二进制。"
+      },
+      "acpSession": {
+        "label": "ACP 会话模式",
+        "hint": "Persistent 会在运行之间保留 ACP 会话状态。One-shot 每次运行都全新开始。",
+        "aria": "ACP 会话模式",
+        "persistent": "Persistent",
+        "oneshot": "One-shot"
+      },
+      "acpPermissions": {
+        "label": "ACP 非交互权限",
+        "hint": "当 ACP 智能体在交互会话之外请求输入时的兜底方案。",
+        "aria": "ACP 非交互权限",
+        "deny": "拒绝",
+        "fail": "失败"
+      },
+      "acpStateDir": {
+        "label": "ACP 状态目录",
+        "hint": "可选的 ACP 会话状态目录。默认使用 Paperclip 管理的按组织/智能体划分的存储。"
+      },
+      "acpWarmIdle": {
+        "label": "ACP Warm 进程空闲毫秒数",
+        "hint": "默认为 0，即每次运行后关闭 ACP 进程，同时保留持久会话状态。"
+      },
+      "instructionsFile": {
+        "label": "智能体指令文件"
+      },
+      "toggles": {
+        "bypassSandbox": "绕过沙箱",
+        "enableSearch": "启用搜索",
+        "fastMode": "快速模式"
+      }
+    },
+    "hermesGateway": {
+      "secret": {
+        "showAria": "显示 {{label}}",
+        "hideAria": "隐藏 {{label}}",
+        "storedPlaceholder": "已存储密钥；输入新值即可替换"
+      },
+      "apiBaseUrl": {
+        "label": "API 基础 URL",
+        "hint": "Paperclip 可访问的 Hermes API 服务器基础 URL，例如 http://127.0.0.1:8642 或专用 HTTPS URL。 默认仪表盘根/chat 地址（例如 http://127.0.0.1:9119/chat ）也会被接受并映射到 /api。"
+      },
+      "paperclipApiUrl": {
+        "label": "Paperclip API URL",
+        "hint": "可选的、Hermes 主机可访问的 Paperclip API URL。这不是凭证。"
+      },
+      "sessionKeyStrategy": {
+        "label": "会话键策略",
+        "hint": "控制 X-Hermes-Session-Key。按议题隔离可默认防止跨任务记忆串扰。",
+        "issue": "按议题隔离",
+        "agent": "按智能体隔离",
+        "run": "按运行隔离",
+        "none": "无"
+      },
+      "timeout": {
+        "label": "超时秒数"
+      },
+      "eventReconnect": {
+        "label": "事件重连毫秒数",
+        "hint": "在非终态断开之后，重新连接 Hermes SSE 事件流前的延迟。"
+      },
+      "insecureHttp": {
+        "label": "危险地允许远程 HTTP",
+        "hint": "不安全的仅开发用逃生通道。远程 Hermes 网关应使用 HTTPS；回环 HTTP 仍然允许。"
+      },
+      "extraHeaders": {
+        "label": "额外请求头",
+        "hint": "可选的额外非机密请求头 JSON 对象。安全关键请求头由适配器生成。"
+      },
+      "instructions": {
+        "label": "指令",
+        "hint": "可选的稳定 Hermes 指令，与唤醒输入分开发送。"
+      }
+    },
+    "openclawGateway": {
+      "gatewayUrl": {
+        "label": "网关 URL"
+      },
+      "authToken": {
+        "label": "网关认证令牌",
+        "placeholder": "OpenClaw 网关令牌"
+      },
+      "agentId": {
+        "label": "智能体 ID"
+      },
+      "sessionStrategy": {
+        "label": "会话策略",
+        "fixed": "固定",
+        "perIssue": "按议题",
+        "perRun": "按运行"
+      },
+      "sessionKey": {
+        "label": "会话键"
+      },
+      "password": {
+        "label": "密码（替代认证）",
+        "placeholder": "网关共享密码"
+      },
+      "role": {
+        "label": "角色"
+      },
+      "scopes": {
+        "label": "Scope（逗号分隔）"
+      },
+      "apiUrlOverride": {
+        "label": "Paperclip API URL 覆盖"
+      },
+      "timeout": {
+        "label": "超时（秒）"
+      },
+      "headersJson": {
+        "label": "请求头 JSON"
+      },
+      "claimedKeyPath": {
+        "label": "已领取的 API 密钥路径"
+      },
+      "waitTimeout": {
+        "label": "等待超时（毫秒）"
+      },
+      "deviceAuth": {
+        "label": "禁用设备认证",
+        "labelInfo": "设备认证",
+        "skip": "跳过设备密钥认证",
+        "autoPair": "首次连接时自动配对",
+        "autoPairHint": "自动批准设备配对",
+        "info": "启用后，Paperclip 会在入门期间持久化一个设备密钥，使配对批准在多次运行之间保持稳定。"
+      }
+    }
+  }
+}

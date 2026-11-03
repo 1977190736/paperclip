@@ -5,6 +5,7 @@ import type {
   ToolRiskLevel,
 } from "@paperclipai/shared";
 import type { ToolProfileEntryInput } from "@/api/tools";
+import { t } from "@/i18n";
 
 /**
  * Pure domain model for the prosumer access-profile wizard (PAP-10997).
@@ -30,10 +31,11 @@ export function toolCapability(tool: ToolCatalogEntry): ToolCapability {
   return "read";
 }
 
+// Evaluated at access time so language switches are reflected on re-render.
 export const CAPABILITY_LABEL: Record<ToolCapability, string> = {
-  read: "Read-only",
-  write: "Makes changes",
-  destructive: "Destructive",
+  get read() { return t("tools.profileModel.capability.read"); },
+  get write() { return t("tools.profileModel.capability.write"); },
+  get destructive() { return t("tools.profileModel.capability.destructive"); },
 };
 
 // --- App grouping ----------------------------------------------------------
@@ -66,7 +68,7 @@ export function groupCatalogByApp(
       const name =
         (tool.applicationId ? applicationsById.get(tool.applicationId) : null) ??
         connectionsById.get(tool.connectionId) ??
-        "Tools";
+        t("tools.profileModel.fallbackGroupName");
       group = {
         appKey,
         applicationId: tool.applicationId,
@@ -131,16 +133,16 @@ export function appCheckState(group: AppGroup, selection: AppSelection | undefin
 export function appSelectionLabel(group: AppGroup, selection: AppSelection | undefined): string {
   const total = group.tools.length;
   const state = appCheckState(group, selection);
-  if (state === "unchecked") return "None selected";
+  if (state === "unchecked") return t("tools.profileModel.noneSelected");
   if (selection?.kind === "all" || (selection?.kind === "all_except" && selection.excluded.length === 0)) {
-    return `All ${group.name} tools (${total})`;
+    return t("tools.profileModel.allAppTools", { app: group.name, total });
   }
   if (selection?.kind === "all_except") {
     const n = selection.excluded.length;
-    return `All ${group.name} except ${n}`;
+    return t("tools.profileModel.allAppExcept", { app: group.name, n });
   }
   const n = selectedToolIds(group, selection).size;
-  return `${n} of ${total} ${group.name} tools`;
+  return t("tools.profileModel.someOfTools", { app: group.name, n, total });
 }
 
 // --- Checkbox reducers -----------------------------------------------------
@@ -363,17 +365,38 @@ export type TemplateKey = "read_only" | "everyday" | "full_access" | "scratch" |
 
 export interface TemplateDef {
   key: TemplateKey;
-  title: string;
-  description: string;
+  /** Evaluated at access time so language switches are reflected on re-render. */
+  readonly title: string;
+  readonly description: string;
 }
 
 export const TEMPLATES: TemplateDef[] = [
-  { key: "read_only", title: "Read-only", description: "See and fetch, but never change anything." },
-  { key: "everyday", title: "Everyday work", description: "Read and make routine changes — no destructive tools." },
-  { key: "full_access", title: "Full access", description: "Everything every connected app offers." },
-  { key: "scratch", title: "Start from scratch", description: "An empty profile you build up tool by tool." },
-  { key: "copy", title: "Copy an existing profile", description: "Start from a profile you already have." },
-];
+  {
+    key: "read_only",
+    get title() { return t("tools.profileModel.templates.readOnly.title"); },
+    get description() { return t("tools.profileModel.templates.readOnly.description"); },
+  },
+  {
+    key: "everyday",
+    get title() { return t("tools.profileModel.templates.everyday.title"); },
+    get description() { return t("tools.profileModel.templates.everyday.description"); },
+  },
+  {
+    key: "full_access",
+    get title() { return t("tools.profileModel.templates.fullAccess.title"); },
+    get description() { return t("tools.profileModel.templates.fullAccess.description"); },
+  },
+  {
+    key: "scratch",
+    get title() { return t("tools.profileModel.templates.scratch.title"); },
+    get description() { return t("tools.profileModel.templates.scratch.description"); },
+  },
+  {
+    key: "copy",
+    get title() { return t("tools.profileModel.templates.copy.title"); },
+    get description() { return t("tools.profileModel.templates.copy.description"); },
+  },
+] as TemplateDef[];
 
 function capabilityPredicate(key: TemplateKey): (tool: ToolCatalogEntry) => boolean {
   if (key === "read_only") return (t) => toolCapability(t) === "read";

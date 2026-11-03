@@ -23,6 +23,7 @@ import { findUIAdapter } from "../adapters/registry";
 import {
   summarizeNotice,
 } from "./transcriptPresentation";
+import { t } from "@/i18n";
 
 type JsonValue = null | string | number | boolean | JsonValue[] | { [key: string]: JsonValue };
 type JsonObject = { [key: string]: JsonValue };
@@ -546,10 +547,10 @@ function authorNameForComment(
     return agentMap?.get(authorAgentId)?.name ?? (options?.isSystemNotice ? "Paperclip" : authorAgentId.slice(0, 8));
   }
   const authorUserId = comment.authorUserId ?? null;
-  if (!authorUserId) return options?.isSystemNotice ? "Paperclip" : "You";
+  if (!authorUserId) return options?.isSystemNotice ? "Paperclip" : t("libui.chat.author.you");
   const userLabel = userLabelMap?.get(authorUserId)?.trim();
   if (userLabel) return userLabel;
-  return formatAssigneeUserLabel(authorUserId, currentUserId, userLabelMap) ?? "You";
+  return formatAssigneeUserLabel(authorUserId, currentUserId, userLabelMap) ?? t("libui.chat.author.you");
 }
 
 function formatStatusLabel(status: string) {
@@ -654,29 +655,35 @@ function createTimelineEventMessage(args: {
   const actorName = event.actorType === "agent"
     ? (agentMap?.get(event.actorId)?.name ?? event.actorId.slice(0, 8))
     : event.actorType === "system"
-      ? "System"
-      : (formatAssigneeUserLabel(event.actorId, currentUserId, userLabelMap) ?? "Board");
+      ? t("libui.chat.actor.system")
+      : (formatAssigneeUserLabel(event.actorId, currentUserId, userLabelMap) ?? t("libui.chat.actor.board"));
 
   const lines: string[] = [
-    event.followUpRequested ? `${actorName} requested follow-up` : `${actorName} updated this issue`,
+    event.followUpRequested ? t("libui.chat.timeline.requestedFollowUp", { actor: actorName }) : t("libui.chat.timeline.updatedIssue", { actor: actorName }),
   ];
   if (event.statusChange) {
     lines.push(
-      `Status: ${event.statusChange.from ?? "none"} -> ${event.statusChange.to ?? "none"}`,
+      t("libui.chat.timeline.statusChange", {
+        from: event.statusChange.from ?? t("libui.chat.timeline.none"),
+        to: event.statusChange.to ?? t("libui.chat.timeline.none"),
+      }),
     );
   }
   if (event.assigneeChange) {
     const from = event.assigneeChange.from.agentId
       ? (agentMap?.get(event.assigneeChange.from.agentId)?.name ?? event.assigneeChange.from.agentId.slice(0, 8))
-      : (formatAssigneeUserLabel(event.assigneeChange.from.userId, currentUserId, userLabelMap) ?? "Unassigned");
+      : (formatAssigneeUserLabel(event.assigneeChange.from.userId, currentUserId, userLabelMap) ?? t("libui.chat.timeline.unassigned"));
     const to = event.assigneeChange.to.agentId
       ? (agentMap?.get(event.assigneeChange.to.agentId)?.name ?? event.assigneeChange.to.agentId.slice(0, 8))
-      : (formatAssigneeUserLabel(event.assigneeChange.to.userId, currentUserId, userLabelMap) ?? "Unassigned");
-    lines.push(`Assignee: ${from} -> ${to}`);
+      : (formatAssigneeUserLabel(event.assigneeChange.to.userId, currentUserId, userLabelMap) ?? t("libui.chat.timeline.unassigned"));
+    lines.push(t("libui.chat.timeline.assigneeChange", { from, to }));
   }
   if (event.workspaceChange) {
     lines.push(
-      `Workspace: ${event.workspaceChange.from.label ?? "none"} -> ${event.workspaceChange.to.label ?? "none"}`,
+      t("libui.chat.timeline.workspaceChange", {
+        from: event.workspaceChange.from.label ?? t("libui.chat.timeline.none"),
+        to: event.workspaceChange.to.label ?? t("libui.chat.timeline.none"),
+      }),
     );
   }
 
@@ -781,18 +788,18 @@ export function formatDurationWords(ms: number | null) {
   if (ms === null || !Number.isFinite(ms) || ms <= 0) return null;
   const totalSeconds = Math.max(1, Math.round(ms / 1000));
   if (totalSeconds < 60) {
-    return `${totalSeconds} second${totalSeconds === 1 ? "" : "s"}`;
+    return t("libui.chat.duration.seconds", { count: totalSeconds });
   }
   const totalMinutes = Math.round(totalSeconds / 60);
   if (totalMinutes < 60) {
-    return `${totalMinutes} minute${totalMinutes === 1 ? "" : "s"}`;
+    return t("libui.chat.duration.minutes", { count: totalMinutes });
   }
   const hours = Math.floor(totalMinutes / 60);
   const minutes = totalMinutes % 60;
   if (minutes === 0) {
-    return `${hours} hour${hours === 1 ? "" : "s"}`;
+    return t("libui.chat.duration.hours", { count: hours });
   }
-  return `${hours} hour${hours === 1 ? "" : "s"} ${minutes} minute${minutes === 1 ? "" : "s"}`;
+  return `${t("libui.chat.duration.hours", { count: hours })} ${t("libui.chat.duration.minutes", { count: minutes })}`;
 }
 
 function runDurationLabel(run: {
@@ -810,24 +817,24 @@ function runDurationLabel(run: {
   const stopReason = typeof run.resultJson?.stopReason === "string" ? run.resultJson.stopReason : null;
   switch (run.status) {
     case "succeeded":
-      return durationText ? `Worked for ${durationText}` : "Finished work";
+      return durationText ? t("libui.chat.run.workedFor", { duration: durationText }) : t("libui.chat.run.finishedWork");
     case "failed":
     case "error":
-      return durationText ? `Failed after ${durationText}` : "Run failed";
+      return durationText ? t("libui.chat.run.failedAfter", { duration: durationText }) : t("libui.chat.run.failed");
     case "timed_out":
-      return durationText ? `Timed out after ${durationText}` : "Run timed out";
+      return durationText ? t("libui.chat.run.timedOutAfter", { duration: durationText }) : t("libui.chat.run.timedOut");
     case "cancelled":
       if (isOperatorInterruptedRun(run.resultJson, run.errorCode)) {
-        return durationText ? `Interrupted by board after ${durationText}` : "Interrupted by board";
+        return durationText ? t("libui.chat.run.interruptedAfter", { duration: durationText }) : t("libui.chat.run.interrupted");
       }
       if (stopReason === "paused") {
-        return durationText ? `Paused by board after ${durationText}` : "Paused by board";
+        return durationText ? t("libui.chat.run.pausedAfter", { duration: durationText }) : t("libui.chat.run.paused");
       }
-      return durationText ? `Cancelled after ${durationText}` : "Run cancelled";
+      return durationText ? t("libui.chat.run.cancelledAfter", { duration: durationText }) : t("libui.chat.run.cancelled");
     case "queued":
-      return "Queued";
+      return t("libui.chat.run.queued");
     case "running":
-      return "Working...";
+      return t("libui.chat.run.working");
     default:
       return formatStatusLabel(run.status);
   }
@@ -866,7 +873,7 @@ function createHistoricalTranscriptMessage(args: {
   const agentName = run.agentName ?? agentMap?.get(run.agentId)?.name ?? run.agentId.slice(0, 8);
   const compactedTranscript = compactIssueChatTranscript(transcript, issueChatTranscriptMaxVisibleEntries(run.adapterType));
   const { parts, notices, segments } = buildAssistantPartsFromTranscript(compactedTranscript);
-  const waitingText = hasOutput ? "" : "Run finished";
+  const waitingText = hasOutput ? "" : t("libui.chat.run.finished");
   const content = parts.length > 0
     ? parts
     : waitingText
@@ -939,7 +946,7 @@ export function buildAssistantPartsFromTranscript(entries: readonly IssueChatTra
         family: entry.family ?? "provider_notice",
         eventType: entry.eventType ?? "provider.notice.recorded",
         status: entry.status ?? "informational",
-        title: entry.title ?? "Provider activity",
+        title: entry.title ?? t("libui.chat.providerActivity"),
         summary: entry.summary ?? "",
         payload: entry.payload ?? {},
       });
@@ -1013,13 +1020,13 @@ export function buildAssistantPartsFromTranscript(entries: readonly IssueChatTra
     if (entry.kind === "result") {
       if (entry.isError && entry.errors?.length) {
         for (const error of entry.errors) {
-          orderedParts.push({ type: "reasoning", text: `Run error: ${summarizeNotice(error)}` });
+          orderedParts.push({ type: "reasoning", text: t("libui.chat.runError", { error: summarizeNotice(error) }) });
         }
       } else if (entry.text) {
         orderedParts.push({
           type: "reasoning",
           text: entry.isError
-            ? `Run error: ${summarizeNotice(entry.text)}`
+            ? t("libui.chat.runError", { error: summarizeNotice(entry.text) })
             : summarizeNotice(entry.text),
         });
       }
@@ -1110,10 +1117,10 @@ function createLiveRunMessage(args: {
   const { parts, notices, segments } = buildAssistantPartsFromTranscript(compactedTranscript);
   const waitingText =
     run.status === "queued"
-      ? "Queued..."
+      ? t("libui.chat.run.queuedEllipsis")
       : parts.length > 0
         ? ""
-        : "Working...";
+        : t("libui.chat.run.working");
 
   const content = parts;
 

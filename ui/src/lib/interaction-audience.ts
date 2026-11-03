@@ -28,6 +28,7 @@ import {
   type IssueThreadInteractionResolverPolicyProvenance,
 } from "@paperclipai/shared";
 import type { IssueThreadInteraction } from "./issue-thread-interactions";
+import { t } from "@/i18n";
 
 /**
  * The open default. Creation surfaces present this first and requesters omit
@@ -35,20 +36,29 @@ import type { IssueThreadInteraction } from "./issue-thread-interactions";
  */
 export const DEFAULT_RESOLVER_POLICY: IssueThreadInteractionCanonicalResolverPolicy = "anyone";
 
-/** Short label for a resolver audience — badges, select options, table cells. */
-const RESOLVER_POLICY_LABELS: Record<IssueThreadInteractionCanonicalResolverPolicy, string> = {
+/** i18n key suffix per canonical resolver policy. */
+const POLICY_LABEL_KEYS: Record<IssueThreadInteractionCanonicalResolverPolicy, string> = {
+  anyone: "anyone",
+  not_creator: "notCreator",
+  human_only: "humanOnly",
+};
+
+function policyLabel(policy: IssueThreadInteractionCanonicalResolverPolicy): string {
+  return t(`libui.audience.policy.${POLICY_LABEL_KEYS[policy]}`);
+}
+
+function policyEffect(policy: IssueThreadInteractionCanonicalResolverPolicy): string {
+  return t(`libui.audience.effect.${POLICY_LABEL_KEYS[policy]}`);
+}
+
+/** English fallback values for the static choice list base (translated on read). */
+const RESOLVER_POLICY_LABELS_EN: Record<IssueThreadInteractionCanonicalResolverPolicy, string> = {
   anyone: "Anyone",
   not_creator: "Anyone except creator",
   human_only: "Human only",
 };
 
-/**
- * Plain-language preview of what a policy *does*, phrased for a surface that is
- * choosing it for future cards (company defaults and caps). Card-specific copy
- * that names the real creator/addressee comes from
- * {@link describeInteractionAudience}.
- */
-const RESOLVER_POLICY_EFFECTS: Record<IssueThreadInteractionCanonicalResolverPolicy, string> = {
+const RESOLVER_POLICY_EFFECTS_EN: Record<IssueThreadInteractionCanonicalResolverPolicy, string> = {
   anyone:
     "Anyone in the organization can respond — the board or any agent, including the one that asked.",
   not_creator:
@@ -58,12 +68,12 @@ const RESOLVER_POLICY_EFFECTS: Record<IssueThreadInteractionCanonicalResolverPol
 
 /** Accepts canonical values and the deprecated `board_*` compatibility aliases. */
 export function resolverPolicyLabel(policy: IssueThreadInteractionResolverPolicy): string {
-  return RESOLVER_POLICY_LABELS[normalizeIssueThreadInteractionResolverPolicy(policy)];
+  return policyLabel(normalizeIssueThreadInteractionResolverPolicy(policy));
 }
 
 /** Accepts canonical values and the deprecated `board_*` compatibility aliases. */
 export function resolverPolicyEffect(policy: IssueThreadInteractionResolverPolicy): string {
-  return RESOLVER_POLICY_EFFECTS[normalizeIssueThreadInteractionResolverPolicy(policy)];
+  return policyEffect(normalizeIssueThreadInteractionResolverPolicy(policy));
 }
 
 /**
@@ -76,12 +86,28 @@ export const RESOLVER_POLICY_CHOICES: readonly {
   label: string;
   effect: string;
   isDefault: boolean;
-}[] = ISSUE_THREAD_INTERACTION_CANONICAL_RESOLVER_POLICIES.map((value) => ({
-  value,
-  label: RESOLVER_POLICY_LABELS[value],
-  effect: RESOLVER_POLICY_EFFECTS[value],
-  isDefault: value === DEFAULT_RESOLVER_POLICY,
-}));
+}[] = new Proxy(
+  ISSUE_THREAD_INTERACTION_CANONICAL_RESOLVER_POLICIES.map((value) => ({
+    value,
+    label: RESOLVER_POLICY_LABELS_EN[value] ?? "",
+    effect: RESOLVER_POLICY_EFFECTS_EN[value] ?? "",
+    isDefault: value === DEFAULT_RESOLVER_POLICY,
+  })),
+  {
+    get(target, prop, receiver) {
+      if (typeof prop === "string" && /^\d+$/.test(prop)) {
+        const entry = target[Number(prop)];
+        if (!entry) return Reflect.get(target, prop, receiver);
+        return {
+          ...entry,
+          label: policyLabel(entry.value),
+          effect: policyEffect(entry.value),
+        };
+      }
+      return Reflect.get(target, prop, receiver);
+    },
+  },
+);
 
 /** Why an effective audience ended up narrower than the requested one. */
 export type InteractionAudienceNarrowing =
@@ -184,33 +210,35 @@ export function describeResolverAudience({
   // respond."). Every use below is inside a sentence.
   const midSentence = (label: string) => (label === "You" ? "you" : label);
   const addressee = midSentence(
-    addresseeLabel?.trim() || (isUserAddressee ? "the addressed user" : "the addressed agent"),
+    addresseeLabel?.trim() || (isUserAddressee ? t("libui.audience.fallback.addressedUser") : t("libui.audience.fallback.addressedAgent")),
   );
-  const creator = midSentence(creatorLabel?.trim() || "the agent that created it");
+  const creator = midSentence(creatorLabel?.trim() || t("libui.audience.fallback.creator"));
 
   const summary = isUserAddressee
-    ? `Only ${addressee} can respond.`
+    ? t("libui.audience.summary.onlyAddressee", { addressee })
     : policy === "human_only"
-    ? `${hasAddressee ? `Assigned to ${addressee}. ` : ""}Only a person on the board can respond — agents cannot resolve this card.`
+    ? hasAddressee
+      ? t("libui.audience.summary.humanOnlyAssigned", { addressee })
+      : t("libui.audience.summary.humanOnly")
     : hasAddressee
-      ? `Only ${addressee} or a person on the board can respond.`
+      ? t("libui.audience.summary.addresseeOrBoard", { addressee })
       : policy === "not_creator"
-        ? `Anyone in the organization except ${creator} can respond.`
-        : "Anyone in the organization can respond — the board or any agent, including the one that asked.";
+        ? t("libui.audience.summary.notCreator", { creator })
+        : t("libui.audience.summary.anyone");
 
   // Same fact, fewer words: a collapsed row has to answer "is this mine to
   // decide?" in one glance, next to the buttons that act on the answer.
   const shortSummary = isUserAddressee
-    ? `Only ${addressee} can respond`
+    ? t("libui.audience.short.onlyAddressee", { addressee })
     : policy === "human_only"
     ? hasAddressee
-      ? `Assigned to ${addressee} · board only`
-      : "Only the board can respond"
+      ? t("libui.audience.short.humanOnlyAssigned", { addressee })
+      : t("libui.audience.short.humanOnly")
     : hasAddressee
-      ? `Only ${addressee} or the board can respond`
+      ? t("libui.audience.short.addresseeOrBoard", { addressee })
       : policy === "not_creator"
-        ? `Anyone except ${creator} can respond`
-        : "Anyone can respond";
+        ? t("libui.audience.short.notCreator", { creator })
+        : t("libui.audience.short.anyone");
 
   const source = facts.effectiveResolverPolicySource;
   const provenance = facts.resolverPolicyProvenance;
@@ -220,11 +248,14 @@ export function describeResolverAudience({
   // open resolution existed. An explicitly requested restriction is already
   // fully described by `summary`.
   const narrowedNote = source === "governed_action"
-    ? "This card runs a governed action, so it stays human-only whatever audience was requested."
+    ? t("libui.audience.narrowedNote.governedAction")
     : source === "company_cap"
-      ? `Organization interaction governance narrowed this from ${RESOLVER_POLICY_LABELS[requestedPolicy]} to ${RESOLVER_POLICY_LABELS[policy]}.`
+      ? t("libui.audience.narrowedNote.companyCap", {
+          from: policyLabel(requestedPolicy),
+          to: policyLabel(policy),
+        })
       : provenance === "legacy_inherited_restriction"
-        ? "Created before Anyone became the default, so it stays restricted. A new card would be open."
+        ? t("libui.audience.narrowedNote.legacy")
         : null;
 
   const narrowedBy: InteractionAudienceNarrowing | null = source === "governed_action"
@@ -246,8 +277,8 @@ export function describeResolverAudience({
     // while the sentence next to it names one actor. `human_only` wins for an
     // agent addressee, while a user addressee is the narrower human audience.
     label: (policy !== "human_only" || isUserAddressee) && hasAddressee
-      ? "Addressed"
-      : RESOLVER_POLICY_LABELS[policy],
+      ? t("libui.audience.label.addressed")
+      : policyLabel(policy),
     summary,
     shortSummary,
     isOpen: policy === "anyone" && !hasAddressee,

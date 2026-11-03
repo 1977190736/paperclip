@@ -1,4 +1,5 @@
 import type { InboxTab } from "./inbox";
+import { t } from "@/i18n";
 
 /**
  * The single view registry behind the merged Tasks surface (PAP-670).
@@ -47,7 +48,7 @@ export interface TaskViewGroup {
   views: TaskView[];
 }
 
-export const TASK_VIEW_GROUPS: TaskViewGroup[] = [
+const TASK_VIEW_GROUPS_BASE: TaskViewGroup[] = [
   {
     label: "My work",
     views: [
@@ -69,8 +70,38 @@ export const TASK_VIEW_GROUPS: TaskViewGroup[] = [
   },
 ];
 
+// Labels and hints resolve through i18n at read time so a live language switch
+// is picked up; consumers read `view.label`/`view.hint` directly, so view and
+// group objects are wrapped in proxies that translate on access.
+function localizedTaskView(view: TaskView): TaskView {
+  return new Proxy(view, {
+    get(target, prop, receiver) {
+      if (prop === "label") return t(`libui.taskViews.views.${target.key}.label`);
+      if (prop === "hint") return t(`libui.taskViews.views.${target.key}.hint`);
+      return Reflect.get(target, prop, receiver);
+    },
+  });
+}
+
+const GROUP_LABEL_KEYS: Record<string, string> = {
+  mine: "myWork",
+  all: "organization",
+};
+
+function localizedTaskViewGroup(group: TaskViewGroup): TaskViewGroup {
+  return new Proxy(group, {
+    get(target, prop, receiver) {
+      if (prop === "label") return t(`libui.taskViews.groups.${GROUP_LABEL_KEYS[target.views[0]!.key]}`);
+      if (prop === "views") return target.views.map(localizedTaskView);
+      return Reflect.get(target, prop, receiver);
+    },
+  });
+}
+
+export const TASK_VIEW_GROUPS: TaskViewGroup[] = TASK_VIEW_GROUPS_BASE.map(localizedTaskViewGroup);
+
 const VIEWS_BY_KEY = new Map<TaskViewKey, TaskView>(
-  TASK_VIEW_GROUPS.flatMap((group) => group.views.map((view) => [view.key, view] as const)),
+  TASK_VIEW_GROUPS_BASE.flatMap((group) => group.views.map((view) => [view.key, localizedTaskView(view)] as const)),
 );
 
 export const DEFAULT_TASK_VIEW: TaskViewKey = "mine";

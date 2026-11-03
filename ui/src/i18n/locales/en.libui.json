@@ -1,0 +1,1231 @@
+{
+  "libui": {
+    "workspaceRestore": {
+      "failed": "Workspace restore failed.",
+      "savedPlanKept": "Workspace restore failed after the plan was saved. The saved plan is available.",
+      "filesNeedRecovery": "Workspace files need recovery.",
+      "noFinalResponse": "No final response was recorded.",
+      "affectedPath": "Affected path: {{path}}."
+    },
+    "bulk": {
+      "notAvailableForBulkEdits": "This agent is not available for bulk edits",
+      "editPoolMembers": "Edit connection pool members on the agent's configuration page",
+      "managedExternally": "Connection and model are managed externally",
+      "localCredentials": "Local credentials",
+      "connectionPool": "Connection pool",
+      "responsibleUserDefault": "Responsible user's default",
+      "assignedConnection": "Assigned connection"
+    },
+    "skillFork": {
+      "source": {
+        "url": "a URL",
+        "catalog": "the catalog",
+        "localPath": "a local path",
+        "fallback": "its source"
+      },
+      "agentUsage": {
+        "none": "No agents currently use this skill",
+        "usage_one": "{{count}} agent currently uses this skill",
+        "usage_other": "{{count}} agents currently use this skill"
+      }
+    },
+    "secretsDelivery": {
+      "mode": {
+        "env": "Env var",
+        "api": "API access",
+        "config": "Config"
+      },
+      "description": {
+        "env": "Injected as an environment variable at run start.",
+        "api": "Fetched on demand via the run-bound agent API. Never written to the environment.",
+        "config": "Provided through adapter configuration."
+      },
+      "consumer": {
+        "agentApi": "Agent API",
+        "pluginWorker": "Plugin worker",
+        "toolConnection": "Tool connection"
+      }
+    },
+    "reviewPolicy": {
+      "badge": {
+        "notCreator": {
+          "label": "Anyone else",
+          "description": "Anyone except whoever asked for the review can approve it."
+        },
+        "humanOnly": {
+          "label": "Human only",
+          "description": "Only a person can approve this review. Agents cannot give the verdict."
+        }
+      },
+      "value": {
+        "anyone": "anyone",
+        "notCreator": "anyone else",
+        "humanOnly": "human only"
+      }
+    },
+    "systemNoticeComment": {
+      "label": {
+        "neutral": "System notice",
+        "warning": "System warning",
+        "danger": "System alert"
+      },
+      "rows": {
+        "detail": "Detail",
+        "code": "Code",
+        "task": "Task",
+        "agent": "Agent",
+        "run": "Run",
+        "unknown": "unknown"
+      }
+    },
+    "systemNotice": {
+      "titles": {
+        "claudeAuthRequired": "Task paused — Claude needs re-authentication",
+        "configurationIncomplete": "Task paused — a secret/config binding is missing",
+        "workspaceProblem": "Task paused — workspace problem",
+        "waitingOnOwner": "Task paused — waiting on {{owner}}",
+        "waitingOnOwnerFallback": "Task paused — waiting on a recovery owner",
+        "fallback": "System update"
+      }
+    },
+    "cron": {
+      "disposition": {
+        "queued": "queued",
+        "coalesced": "would be coalesced",
+        "skipped": "would be skipped"
+      },
+      "note": {
+        "runsImmediately": "runs immediately",
+        "previousStillActive": "if the previous run is still active"
+      }
+    },
+    "runRetry": {
+      "reason": {
+        "nativeProviderOverloaded": "Model at capacity",
+        "aiConnectionPoolWait": "Waiting for pool usage to recover",
+        "transientFailure": "Transient failure",
+        "missingIssueComment": "Missing task comment",
+        "processLost": "Process lost",
+        "assignmentRecovery": "Assignment recovery",
+        "issueContinuationNeeded": "Continuation needed",
+        "maxTurnsContinuation": "Max-turn continuation"
+      },
+      "attempt_one": "Attempt {{count}}",
+      "attempt_other": "Attempt {{count}}",
+      "badge": {
+        "poolExhausted": "Pool exhausted",
+        "continuationScheduled": "Continuation scheduled",
+        "retryScheduled": "Retry scheduled",
+        "continuationExhausted": "Continuation exhausted",
+        "retryExhausted": "Retry exhausted",
+        "continuedRun": "Continued run",
+        "retriedRun": "Retried run"
+      },
+      "nextContinuationAt": "Next continuation {{time}}",
+      "nextRetryAt": "Next retry {{time}}",
+      "nextContinuationPending": "Next continuation pending schedule",
+      "nextRetryPending": "Next retry pending schedule",
+      "automaticRetriesExhausted": "Automatic retries exhausted",
+      "manualInterventionSuffix": "{{reason}} Manual intervention required."
+    },
+    "externalObjects": {
+      "category": {
+        "unknown": "Not yet resolved",
+        "open": "Open",
+        "waiting": "Waiting",
+        "running": "Running",
+        "succeeded": "Succeeded",
+        "failed": "Failed",
+        "blocked": "Blocked",
+        "closed": "Closed",
+        "archived": "Archived",
+        "authRequired": "Authorization required",
+        "rateLimited": "Rate limited",
+        "unreachable": "Unreachable"
+      },
+      "liveness": {
+        "unknown": "Not yet refreshed",
+        "fresh": "Fresh",
+        "stale": "Stale",
+        "authRequired": "Requires auth",
+        "rateLimited": "Rate limited",
+        "unreachable": "Unreachable"
+      },
+      "statusUnavailable": "Status unavailable",
+      "provider": {
+        "external": "External"
+      },
+      "type": {
+        "object": "object",
+        "pullRequest": "pull request",
+        "issue": "issue",
+        "deployment": "deployment",
+        "workflowRun": "workflow run",
+        "ticket": "ticket",
+        "lead": "lead",
+        "urlLink": "URL"
+      }
+    },
+    "statusCards": {
+      "lifecycle": {
+        "compiling": {
+          "label": "Setting up",
+          "description": "Just created; setting up and generating the first summary."
+        },
+        "fresh": {
+          "label": "Fresh",
+          "description": "Summary reflects all known changes; nothing pending."
+        },
+        "stale": {
+          "label": "Stale",
+          "description": "Changes are pending since the last update."
+        },
+        "updating": {
+          "label": "Updating",
+          "description": "An update is streaming in now."
+        },
+        "error": {
+          "label": "Error",
+          "description": "The last run failed; the last good summary stays visible."
+        },
+        "pausedBudget": {
+          "label": "Paused — budget",
+          "description": "The daily token cap was hit; auto-updates are suspended."
+        },
+        "pausedHours": {
+          "label": "Paused — hours",
+          "description": "Outside active hours; changes batch into one update at window open."
+        },
+        "archived": {
+          "label": "Archived",
+          "description": "No auto-updates and no watches. Restore to start watching again."
+        }
+      },
+      "refresh": {
+        "manual": "manual",
+        "interval": "every {{minutes}}m if changed",
+        "schedule": "on a schedule if changed",
+        "reactive": "on change ({{seconds}}s)"
+      }
+    },
+    "recovery": {
+      "chip": {
+        "needed": "Recovery needed",
+        "inProgress": "Recovery in progress",
+        "observeOnly": "Observing active run",
+        "escalated": "Recovery escalated"
+      },
+      "workspaceRecoveryNeeded": "Workspace recovery needed",
+      "chipProgress": "Recovery in progress · {{attempt}}/{{max}}"
+    },
+    "appsGallery": {
+      "apps": {
+        "zapier": {
+          "tagline": "Reach 9,000+ apps your team already uses.",
+          "short": "Reach 9,000+ apps from your agents."
+        },
+        "github": {
+          "tagline": "Read code and pull requests, comment on issues.",
+          "short": "Read code and pull requests, comment on issues."
+        },
+        "slack": {
+          "tagline": "Send and read messages in your team's channels.",
+          "short": "Send and read messages in your channels."
+        },
+        "notion": {
+          "tagline": "Read and update pages in your workspace.",
+          "short": "Read and update pages in your workspace."
+        },
+        "railway": {
+          "tagline": "Inspect services, read logs, and manage deployments.",
+          "short": "Connect Railway for deployments, logs, and container access."
+        },
+        "posthog": {
+          "tagline": "Explore product usage, errors, flags, and experiments.",
+          "short": "Sign in with PostHog. Project pinning and access controls are optional."
+        },
+        "ditto": {
+          "tagline": "Reuse approved product copy and follow your style guide.",
+          "short": "Sign in with Ditto. API keys are optional."
+        },
+        "gauge": {
+          "tagline": "Track your brand in AI answers and run content workflows.",
+          "short": "Sign in with Gauge and pick an organization. API keys are optional."
+        },
+        "neon": {
+          "tagline": "Manage Postgres projects, branches, and queries.",
+          "short": "Sign in with Neon. Project pinning and read-only mode are optional."
+        },
+        "superagent": {
+          "tagline": "Review security findings and run red-team checks.",
+          "short": "Connect with a Superagent API key. Billable and destructive tools stay under action policies."
+        },
+        "linear": {
+          "tagline": "Create, update and read tickets.",
+          "short": "Create, update and read tickets."
+        },
+        "google-sheets": {
+          "tagline": "Read and update selected spreadsheets.",
+          "short": "Read spreadsheets or update the files you choose."
+        },
+        "gmail": {
+          "tagline": "Read mail and create drafts for your review.",
+          "short": "Read mail and create drafts for your review."
+        },
+        "google-drive": {
+          "tagline": "Find, read, and create files in Drive.",
+          "short": "Find, read, and create files in Drive."
+        },
+        "google-docs": {
+          "tagline": "Read and update documents.",
+          "short": "Read and update documents."
+        },
+        "google-slides": {
+          "tagline": "Read and update presentations.",
+          "short": "Read and update presentations."
+        },
+        "google-calendar": {
+          "tagline": "Review calendars and manage events.",
+          "short": "Review calendars and manage events."
+        },
+        "google-chat": {
+          "tagline": "Read conversations and send messages.",
+          "short": "Read conversations and send messages."
+        },
+        "google-people": {
+          "tagline": "Look up contacts and people in your directory.",
+          "short": "Look up contacts and people in your directory."
+        },
+        "google-workspace-search": {
+          "tagline": "Search across your Google workspace.",
+          "short": "Search across your Google workspace."
+        },
+        "hubspot": {
+          "tagline": "Look up contacts and update deal stages.",
+          "short": "Look up contacts and update deal stages."
+        },
+        "intercom": {
+          "tagline": "Read and reply to customer conversations.",
+          "short": "Read and reply to customer conversations."
+        },
+        "figma": {
+          "tagline": "Read files and post comments on frames.",
+          "short": "Read files and post comments on frames."
+        },
+        "stripe": {
+          "tagline": "Read customers, invoices, and payouts.",
+          "short": "Read customers, invoices, and payouts."
+        },
+        "context7": {
+          "tagline": "Look up up-to-date docs for your libraries.",
+          "short": "Look up up-to-date docs for your libraries."
+        }
+      },
+      "generic": {
+        "tagline": "Give your agents access to this app.",
+        "short": "Give your agents access to this app."
+      },
+      "credentialField": "Your {{app}} key"
+    },
+    "skillDenial": {
+      "policyTitle": "This action is restricted by your organization policy.",
+      "policyTitleWithAction": "{{action}} is restricted by your organization policy.",
+      "policyRemediation": "An organization administrator can change the skill policy to allow this.",
+      "adminTitle": "This change needs administration access.",
+      "adminRemediation": "This requires organization administration access. Ask an administrator to make this change.",
+      "platform": {
+        "authenticationRequired": {
+          "title": "Sign in to manage skills.",
+          "remediation": "Sign in and try again."
+        },
+        "companyBoundaryDenied": {
+          "title": "This skill belongs to another organization.",
+          "remediation": "Open the skill from the organization that owns it."
+        },
+        "workspaceBoundaryDenied": {
+          "title": "This skill source is outside an allowed workspace.",
+          "remediation": "Import from a configured Paperclip workspace or the organization managed-skill directory."
+        },
+        "sourceValidationFailed": {
+          "title": "This skill source failed validation.",
+          "remediation": "Fix the flagged source and retry."
+        },
+        "unsafeContentBlocked": {
+          "title": "This skill contains unsafe content.",
+          "remediation": "Remove the fetch-and-execute or unsafe pattern before saving."
+        },
+        "secretHandlingBlocked": {
+          "title": "This skill exposes a secret value.",
+          "remediation": "Remove the secret value before saving."
+        },
+        "actorRestricted": {
+          "title": "This action isn't available for the current actor.",
+          "remediation": "Retry from an account with access to this action."
+        },
+        "fallback": {
+          "title": "This action is blocked by a platform safety rule.",
+          "remediation": "Fix the flagged issue and try again."
+        }
+      }
+    },
+    "skillStudio": {
+      "testTask": {
+        "expired": "Test task expired",
+        "deleted": "Test task deleted",
+        "unavailable": "Test task unavailable",
+        "unavailableBody": "Stored run snapshots are still shown. Harness documents, attachments, and work products are no longer available."
+      },
+      "runGate": {
+        "noFiles": "This skill has no files to test",
+        "noAgent": "Pick an agent to run",
+        "noInput": "Add or paste input text to run",
+        "unsavedEdits": "Save skill edits before running",
+        "runInFlight": "A run is already in progress"
+      },
+      "unknownEditor": "Unknown editor"
+    },
+    "searchParser": {
+      "suggestions": {
+        "statusTodo": {
+          "label": "Open todo tasks",
+          "description": "Filter by task status"
+        },
+        "statusBlocked": {
+          "label": "Blocked tasks",
+          "description": "Find blocked work"
+        },
+        "assigneeMe": {
+          "label": "Assigned to me",
+          "description": "Use your current board user"
+        },
+        "projectName": {
+          "label": "Project name",
+          "description": "Quote multi-word project names"
+        },
+        "labelBug": {
+          "label": "Label",
+          "description": "Filter by issue label"
+        },
+        "priorityHigh": {
+          "label": "High priority",
+          "description": "Filter by priority"
+        },
+        "updatedRecently": {
+          "label": "Recently updated",
+          "description": "Updated in the last 7 days"
+        }
+      }
+    },
+    "searchFilters": {
+      "sort": {
+        "relevance": "Relevance",
+        "updated": "Recently updated",
+        "created": "Newest created",
+        "priority": "Priority"
+      },
+      "updatedWithin": {
+        "24h": "Last 24 hours",
+        "7d": "Last 7 days",
+        "30d": "Last 30 days",
+        "90d": "Last 90 days",
+        "fallback": "Updated ≤ {{value}}"
+      },
+      "assignee": {
+        "unassigned": "Unassigned",
+        "agent": "Agent",
+        "me": "Me",
+        "user": "User",
+        "assignee": "Assignee"
+      },
+      "fallback": {
+        "project": "Project",
+        "label": "Label"
+      },
+      "chips": {
+        "status": "Status: {{value}}",
+        "priority": "Priority: {{value}}",
+        "assignee": "Assignee: {{value}}",
+        "project": "Project: {{value}}",
+        "label": "Label: {{value}}",
+        "updated": "Updated: {{value}}"
+      },
+      "loosen": {
+        "status": "Status: {{values}}",
+        "priority": "Priority: {{values}}",
+        "assignee": "Assignee: {{values}}",
+        "project": "Project: {{values}}",
+        "label": "Label: {{values}}",
+        "updated": "Updated window"
+      }
+    },
+    "attention": {
+      "source": {
+        "approval": "Approval",
+        "decision": "Decision",
+        "issueThreadInteraction": "Decision requested",
+        "joinRequest": "Join request",
+        "recoveryAction": "Recovery",
+        "productivityReview": "Task",
+        "blockerAttention": "Blocked dependency",
+        "review": "Review",
+        "failedRun": "Failed run",
+        "budgetAlert": "Budget",
+        "agentErrorAlert": "Agent error"
+      },
+      "severity": {
+        "critical": "Critical",
+        "high": "High",
+        "medium": "Medium",
+        "low": "Low"
+      },
+      "count": {
+        "option_one": "{{count}} option",
+        "option_other": "{{count}} options",
+        "question_one": "{{count}} question",
+        "question_other": "{{count}} questions",
+        "suggestedTask_one": "{{count}} suggested task",
+        "suggestedTask_other": "{{count}} suggested tasks"
+      },
+      "detail": {
+        "itemsToVerdict_one": "{{count}} item to verdict",
+        "itemsToVerdict_other": "{{count}} items to verdict",
+        "blockedBy": "Blocked by {{id}}{{title}}",
+        "blockedByOnly": "Blocked by {{id}}",
+        "budget": "{{percent}}% of budget used ({{observed}} / {{limit}})"
+      },
+      "desk": {
+        "decideNow": "Decide now",
+        "newToday": "New today",
+        "earlier": "Earlier"
+      },
+      "options": {
+        "today": "Today",
+        "thisWeek": "This week",
+        "whenever": "Whenever",
+        "notSet": "Not set",
+        "all": "All",
+        "yesterday": "Yesterday",
+        "last7Days": "Last 7 days",
+        "thisMonth": "This month",
+        "custom": "Custom",
+        "none": "None",
+        "date": "Date",
+        "type": "Type",
+        "project": "Project",
+        "severity": "Severity",
+        "newest": "Newest first",
+        "oldest": "Oldest first"
+      },
+      "dateBucket": {
+        "today": "Today",
+        "yesterday": "Yesterday",
+        "thisWeek": "This week",
+        "earlier": "Earlier"
+      },
+      "noProject": "No project"
+    },
+    "taskViews": {
+      "groups": {
+        "myWork": "My work",
+        "organization": "Organization"
+      },
+      "views": {
+        "mine": {
+          "label": "Mine",
+          "hint": "Assigned to you or waiting on you"
+        },
+        "unread": {
+          "label": "Unread",
+          "hint": "Tasks you touched with new activity"
+        },
+        "blocked": {
+          "label": "Blocked",
+          "hint": "Blocked tasks, grouped by blocker"
+        },
+        "recent": {
+          "label": "Recent",
+          "hint": "Everything you touched lately"
+        },
+        "everything": {
+          "label": "Everything",
+          "hint": "Tasks, approvals, failed runs and join requests"
+        },
+        "all": {
+          "label": "All tasks",
+          "hint": "Every task in the organization"
+        },
+        "active": {
+          "label": "Active",
+          "hint": "Open tasks, running or not"
+        },
+        "backlog": {
+          "label": "Backlog",
+          "hint": "Not started yet"
+        },
+        "done": {
+          "label": "Done",
+          "hint": "Completed and cancelled"
+        }
+      }
+    },
+    "audience": {
+      "policy": {
+        "anyone": "Anyone",
+        "notCreator": "Anyone except creator",
+        "humanOnly": "Human only"
+      },
+      "effect": {
+        "anyone": "Anyone in the organization can respond — the board or any agent, including the one that asked.",
+        "notCreator": "Anyone in the organization except the agent that created the card, and its run. Use this when the answer has to come from someone else.",
+        "humanOnly": "Only a person on the board can respond. Agents are turned away."
+      },
+      "fallback": {
+        "addressedUser": "the addressed user",
+        "addressedAgent": "the addressed agent",
+        "creator": "the agent that created it"
+      },
+      "summary": {
+        "onlyAddressee": "Only {{addressee}} can respond.",
+        "humanOnlyAssigned": "Assigned to {{addressee}}. Only a person on the board can respond — agents cannot resolve this card.",
+        "humanOnly": "Only a person on the board can respond — agents cannot resolve this card.",
+        "addresseeOrBoard": "Only {{addressee}} or a person on the board can respond.",
+        "notCreator": "Anyone in the organization except {{creator}} can respond.",
+        "anyone": "Anyone in the organization can respond — the board or any agent, including the one that asked."
+      },
+      "short": {
+        "onlyAddressee": "Only {{addressee}} can respond",
+        "humanOnlyAssigned": "Assigned to {{addressee}} · board only",
+        "humanOnly": "Only the board can respond",
+        "addresseeOrBoard": "Only {{addressee}} or the board can respond",
+        "notCreator": "Anyone except {{creator}} can respond",
+        "anyone": "Anyone can respond"
+      },
+      "narrowedNote": {
+        "governedAction": "This card runs a governed action, so it stays human-only whatever audience was requested.",
+        "companyCap": "Organization interaction governance narrowed this from {{from}} to {{to}}.",
+        "legacy": "Created before Anyone became the default, so it stays restricted. A new card would be open."
+      },
+      "label": {
+        "addressed": "Addressed"
+      }
+    },
+    "inbox": {
+      "kind": {
+        "issues": "Tasks",
+        "approvals": "Approvals",
+        "failedRuns": "Failed runs",
+        "joinRequests": "Join requests"
+      },
+      "group": {
+        "defaultWorkspace": "{{name}} (default)",
+        "defaultWorkspaceFallback": "Default workspace",
+        "noWorkspace": "No workspace",
+        "user": "User",
+        "unassigned": "Unassigned",
+        "noProject": "No project"
+      }
+    },
+    "interactions": {
+      "verdicts": {
+        "decided": "{{count}} decided",
+        "approved": "{{count}} approved",
+        "rejected": "{{count}} rejected",
+        "deferred": "{{count}} deferred",
+        "expiredAfterComment": "Verdicts expired after comment",
+        "expiredAfterTargetChanged": "Verdicts expired after target changed",
+        "expired": "Verdicts expired",
+        "progress": "{{decided}} of {{total}} decided"
+      },
+      "summary": {
+        "skipped": "Skipped interaction",
+        "withdrawn": "Withdrawn interaction",
+        "expiredIssueClosed": "Expired when issue closed",
+        "cancelledAddresseeDeleted": "Cancelled when addressee was deleted",
+        "acceptedOf": "Accepted {{created}} of {{count}} tasks",
+        "acceptedTasks_one": "Accepted 1 task",
+        "acceptedTasks_other": "Accepted {{count}} tasks",
+        "rejectedTasks_one": "Rejected 1 task",
+        "rejectedTasks_other": "Rejected {{count}} tasks",
+        "suggestedTasks_one": "Suggested 1 task",
+        "suggestedTasks_other": "Suggested {{count}} tasks",
+        "confirmedRequest": "Confirmed request",
+        "selectedRejectLabel": "Selected “{{label}}”",
+        "declinedRequest": "Declined request",
+        "confirmationExpiredAfterComment": "Confirmation expired after comment",
+        "confirmationExpiredAfterTargetChanged": "Confirmation expired after target changed",
+        "confirmationExpired": "Confirmation expired",
+        "requestedConfirmation": "Requested confirmation",
+        "confirmedNoOptions": "Confirmed with no options selected",
+        "confirmedOptions": "Confirmed {{selected}} of {{total}} options",
+        "declinedSelection": "Declined selection",
+        "selectionExpiredAfterComment": "Selection expired after comment",
+        "selectionExpiredAfterTargetChanged": "Selection expired after target changed",
+        "selectionExpired": "Selection expired",
+        "requestedSelection_one": "Requested a selection from 1 option",
+        "requestedSelection_other": "Requested a selection from {{count}} options",
+        "serviceConnected": "{{service}} connected",
+        "serviceDeclined": "{{service}} declined",
+        "serviceRequestSuperseded": "{{service}} request superseded",
+        "serviceRequestExpired": "{{service}} request expired",
+        "connectService": "Connect {{service}}",
+        "answeredQuestions_one": "Answered 1 question",
+        "answeredQuestions_other": "Answered {{count}} questions",
+        "cancelledQuestions_one": "Cancelled 1 question",
+        "cancelledQuestions_other": "Cancelled {{count}} questions",
+        "questionExpiredAfterComment_one": "Question expired after comment",
+        "questionExpiredAfterComment_other": "Questions expired after comment",
+        "questionExpired_one": "Question expired",
+        "questionExpired_other": "Questions expired",
+        "askedQuestions_one": "Asked 1 question",
+        "askedQuestions_other": "Asked {{count}} questions"
+      },
+      "otherAnswer": "Other: {{text}}"
+    },
+    "chat": {
+      "author": {
+        "you": "You"
+      },
+      "actor": {
+        "system": "System",
+        "board": "Board"
+      },
+      "timeline": {
+        "requestedFollowUp": "{{actor}} requested follow-up",
+        "updatedIssue": "{{actor}} updated this issue",
+        "statusChange": "Status: {{from}} -> {{to}}",
+        "none": "none",
+        "unassigned": "Unassigned",
+        "assigneeChange": "Assignee: {{from}} -> {{to}}",
+        "workspaceChange": "Workspace: {{from}} -> {{to}}"
+      },
+      "duration": {
+        "seconds_one": "{{count}} second",
+        "seconds_other": "{{count}} seconds",
+        "minutes_one": "{{count}} minute",
+        "minutes_other": "{{count}} minutes",
+        "hours_one": "{{count}} hour",
+        "hours_other": "{{count}} hours"
+      },
+      "run": {
+        "workedFor": "Worked for {{duration}}",
+        "finishedWork": "Finished work",
+        "failedAfter": "Failed after {{duration}}",
+        "failed": "Run failed",
+        "timedOutAfter": "Timed out after {{duration}}",
+        "timedOut": "Run timed out",
+        "interruptedAfter": "Interrupted by board after {{duration}}",
+        "interrupted": "Interrupted by board",
+        "pausedAfter": "Paused by board after {{duration}}",
+        "paused": "Paused by board",
+        "cancelledAfter": "Cancelled after {{duration}}",
+        "cancelled": "Run cancelled",
+        "queued": "Queued",
+        "queuedEllipsis": "Queued...",
+        "working": "Working...",
+        "finished": "Run finished"
+      },
+      "runError": "Run error: {{error}}",
+      "providerActivity": "Provider activity"
+    },
+    "activity": {
+      "rowVerb": {
+        "case_created": "created",
+        "case_updated": "updated",
+        "case_fields_changed": "updated details on",
+        "case_status_changed": "changed status on",
+        "case_issue_linked": "linked a task to",
+        "case_issue_unlinked": "unlinked a task from",
+        "case_child_linked": "linked a child to",
+        "case_attachment_added": "attached a file to",
+        "case_label_added": "added a label to",
+        "case_label_removed": "removed a label from",
+        "case_document_revised": "updated a document on",
+        "case_handoff_requested": "requested a handoff for",
+        "case_handoff_applied": "handed off",
+        "case_handoff_delivered": "delivered a handoff for",
+        "case_handoff_retry_requested": "retried a handoff for",
+        "case_handoff_cancelled": "cancelled a handoff for",
+        "case_handoff_completed": "completed",
+        "issue_created": "created",
+        "issue_updated": "updated",
+        "issue_read_marked": "read",
+        "issue_read_unmarked": "marked unread",
+        "issue_checked_out": "checked out",
+        "issue_released": "released",
+        "issue_comment_added": "commented on",
+        "issue_comment_cancelled": "cancelled a queued comment on",
+        "issue_queued_comment_edited": "edited a queued comment on",
+        "issue_queued_comments_reordered": "reordered queued comments on",
+        "issue_queued_comment_discarded": "discarded a queued comment on",
+        "issue_comment_deleted": "deleted a comment on",
+        "issue_attachment_added": "attached file to",
+        "issue_attachment_removed": "removed attachment from",
+        "issue_document_created": "created document for",
+        "issue_document_updated": "updated document on",
+        "issue_document_locked": "locked document on",
+        "issue_document_unlocked": "unlocked document on",
+        "issue_document_deleted": "deleted document from",
+        "issue_monitor_scheduled": "scheduled monitor on",
+        "issue_monitor_triggered": "triggered monitor for",
+        "issue_monitor_cleared": "cleared monitor on",
+        "issue_monitor_skipped": "skipped monitor for",
+        "issue_monitor_exhausted": "exhausted monitor on",
+        "issue_monitor_recovery_wake_queued": "queued monitor recovery for",
+        "issue_monitor_recovery_issue_created": "created monitor recovery for",
+        "issue_monitor_escalated_to_board": "escalated monitor for",
+        "issue_commented": "commented on",
+        "issue_deleted": "deleted",
+        "issue_successful_run_handoff_required": "flagged missing next step on",
+        "issue_successful_run_handoff_resolved": "recorded next step chosen on",
+        "issue_successful_run_handoff_escalated": "escalated missing next step on",
+        "issue_accepted_plan_decomposition_updated": "updated accepted-plan decomposition on",
+        "issue_recovery_action_opened": "opened a recovery action on",
+        "issue_workspace_recovered": "recovered saved work for",
+        "issue_workspace_recovery_requested": "requested workspace recovery for",
+        "issue_recovery_action_resolved": "resolved the recovery action on",
+        "issue_recovery_action_escalated": "escalated the recovery action on",
+        "agent_created": "created",
+        "agent_updated": "updated",
+        "agent_paused": "paused",
+        "agent_resumed": "resumed",
+        "agent_error_cleared": "cleared error on",
+        "agent_terminated": "terminated",
+        "agent_key_created": "created API key for",
+        "agent_budget_updated": "updated budget for",
+        "agent_runtime_session_reset": "reset session for",
+        "heartbeat_invoked": "invoked heartbeat for",
+        "heartbeat_cancelled": "cancelled heartbeat for",
+        "heartbeat_output_stale_source_resolved": "system-folded stale run on",
+        "heartbeat_output_stale_recovery_recursion_refused": "refused recovery-on-recovery for",
+        "approval_created": "requested approval",
+        "approval_approved": "approved",
+        "approval_rejected": "rejected",
+        "issue_thread_interaction_created": "asked for a decision on",
+        "issue_thread_interaction_accepted": "accepted the request on",
+        "issue_thread_interaction_rejected": "rejected the request on",
+        "issue_thread_interaction_answered": "answered the request on",
+        "issue_thread_interaction_withdrawn": "withdrew the request on",
+        "issue_thread_interaction_cancelled": "cancelled the request on",
+        "issue_thread_interaction_skipped": "skipped the request on",
+        "issue_thread_interaction_dismissed": "deferred the request on",
+        "issue_thread_interaction_expired": "expired the request on",
+        "issue_thread_interaction_item_verdicts_submitted": "submitted verdicts on",
+        "issue_stalled_review_decided": "recorded a review verdict on",
+        "project_created": "created",
+        "project_updated": "updated",
+        "project_deleted": "deleted",
+        "goal_created": "created",
+        "goal_updated": "updated",
+        "goal_deleted": "deleted",
+        "cost_reported": "reported cost for",
+        "cost_recorded": "recorded cost for",
+        "company_created": "created organization",
+        "company_updated": "updated organization",
+        "company_archived": "archived",
+        "company_reactivated": "reactivated",
+        "company_budget_updated": "updated budget for",
+        "audit_exported": "exported the agent audit log for",
+        "tool_app_connected": "connected",
+        "tool_app_oauth_connected": "connected credentials for",
+        "tool_app_oauth_failed": "failed to connect credentials for",
+        "tool_app_oauth_access_finalized": "finished credential access for",
+        "tool_app_finished": "finished setup for",
+        "tool_app_reconnected": "reconnected",
+        "tool_connection_created": "created",
+        "tool_connection_updated": "updated",
+        "tool_connection_archived": "removed",
+        "tool_connection_catalog_refresh": "refreshed actions for",
+        "tool_connection_installs_synced": "changed agent installs for",
+        "tool_connection_install_access_extended": "extended agent access for",
+        "tool_connection_grant_audience_replaced": "changed human access for",
+        "tool_connection_grant_added": "added credentials to",
+        "tool_connection_grant_revoked": "revoked credentials from",
+        "tool_connection_grant_delegated": "delegated credentials for",
+        "tool_connection_grant_delegation_revoked": "revoked credential delegation for"
+      },
+      "issueAction": {
+        "issue_created": "created the issue",
+        "issue_updated": "updated the issue",
+        "issue_checked_out": "checked out the issue",
+        "issue_released": "released the issue",
+        "issue_comment_added": "added a comment",
+        "issue_comment_cancelled": "cancelled a queued comment",
+        "issue_queued_comment_edited": "edited a queued comment",
+        "issue_queued_comments_reordered": "reordered queued comments",
+        "issue_queued_comment_discarded": "discarded a queued comment",
+        "issue_comment_deleted": "deleted a comment",
+        "issue_feedback_vote_saved": "saved feedback on an AI output",
+        "issue_attachment_added": "added an attachment",
+        "issue_attachment_removed": "removed an attachment",
+        "issue_document_created": "created a document",
+        "issue_document_updated": "updated a document",
+        "issue_document_locked": "locked a document",
+        "issue_document_unlocked": "unlocked a document",
+        "issue_document_deleted": "deleted a document",
+        "issue_monitor_scheduled": "scheduled a monitor",
+        "issue_monitor_triggered": "triggered a monitor",
+        "issue_monitor_cleared": "cleared a monitor",
+        "issue_monitor_skipped": "skipped a monitor",
+        "issue_monitor_exhausted": "exhausted a monitor",
+        "issue_monitor_recovery_wake_queued": "queued a monitor recovery wake",
+        "issue_monitor_recovery_issue_created": "created a monitor recovery issue",
+        "issue_monitor_escalated_to_board": "escalated a monitor to the board",
+        "issue_deleted": "deleted the issue",
+        "issue_successful_run_handoff_required": "Run finished without a clear next step",
+        "issue_successful_run_handoff_resolved": "Next step chosen",
+        "issue_successful_run_handoff_escalated": "Run finished without a next step - recovery escalated",
+        "issue_cross_issue_influence_cap_rejected": "hit the per-run cross-task write cap",
+        "issue_cross_issue_influence_observed": "made a cross-task write",
+        "issue_attribution_spoof_rejected": "tried to choose its own responsible user",
+        "issue_recovery_action_opened": "Opened a source-scoped recovery action",
+        "issue_workspace_recovered": "Saved work recovered.",
+        "issue_workspace_recovery_requested": "Requested workspace recovery",
+        "issue_recovery_action_resolved": "Resolved the recovery action",
+        "issue_recovery_action_escalated": "Escalated the recovery action",
+        "issue_accepted_plan_decomposition_updated": "updated the accepted-plan decomposition",
+        "agent_created": "created an agent",
+        "agent_updated": "updated the agent",
+        "agent_paused": "paused the agent",
+        "agent_resumed": "resumed the agent",
+        "agent_error_cleared": "cleared the agent error",
+        "agent_terminated": "terminated the agent",
+        "heartbeat_invoked": "invoked a heartbeat",
+        "heartbeat_cancelled": "cancelled a heartbeat",
+        "heartbeat_output_stale_source_resolved": "System folded a stale run",
+        "heartbeat_output_stale_recovery_recursion_refused": "Refused recovery-on-recovery escalation",
+        "approval_created": "requested approval",
+        "approval_approved": "approved",
+        "approval_rejected": "rejected",
+        "issue_thread_interaction_created": "asked for a decision",
+        "issue_thread_interaction_accepted": "accepted the request",
+        "issue_thread_interaction_rejected": "rejected the request",
+        "issue_thread_interaction_answered": "answered the request",
+        "issue_thread_interaction_withdrawn": "withdrew the request",
+        "issue_thread_interaction_cancelled": "cancelled the request",
+        "issue_thread_interaction_skipped": "skipped the request",
+        "issue_thread_interaction_dismissed": "deferred the request",
+        "issue_thread_interaction_expired": "expired the request",
+        "issue_thread_interaction_item_verdicts_submitted": "submitted verdicts on the request",
+        "issue_stalled_review_decided": "recorded a review verdict"
+      },
+      "stalledReview": {
+        "approve": "approved the review",
+        "requestChanges": "requested changes on the review",
+        "sendBack": "sent the review back to work"
+      },
+      "interactionAccepted": {
+        "confirmation": "approved the request",
+        "checkboxConfirmation": "approved the request",
+        "suggestTasks": "accepted the task suggestions",
+        "askQuestions": "accepted the answers"
+      },
+      "interactionRejected": {
+        "confirmation": "rejected the request",
+        "checkboxConfirmation": "rejected the request",
+        "suggestTasks": "declined the task suggestions",
+        "askQuestions": "declined the questions"
+      },
+      "actor": {
+        "board": "Board",
+        "you": "You",
+        "user": "user {{id}}",
+        "agent": "agent",
+        "task": "task"
+      },
+      "entity": {
+        "blocker_one": "blocker {{label}}",
+        "blocker_other": "{{count}} blockers",
+        "reviewer_one": "reviewer {{label}}",
+        "reviewer_other": "{{count}} reviewers",
+        "approver_one": "approver {{label}}",
+        "approver_other": "{{count}} approvers"
+      },
+      "decomposition": {
+        "createdNew": "created {{count}} new",
+        "reusedExisting": "reused {{count}} existing",
+        "requested": "{{count}} requested",
+        "completedWithSummary": "decomposition completed ({{summary}})",
+        "completed": "decomposition completed",
+        "inFlightWithSummary": "decomposition in flight ({{summary}})"
+      },
+      "issueUpdatedVerb": {
+        "statusFromTo": "changed status from {{from}} to {{to}} on",
+        "statusTo": "changed status to {{to}} on",
+        "priorityFromTo": "changed priority from {{from}} to {{to}} on",
+        "priorityTo": "changed priority to {{to}} on"
+      },
+      "issueUpdatedAction": {
+        "statusFromTo": "changed the status from {{from}} to {{to}}",
+        "statusTo": "changed the status to {{to}}",
+        "priorityFromTo": "changed the priority from {{from}} to {{to}}",
+        "priorityTo": "changed the priority to {{to}}",
+        "madeResponsible": "made {{name}} responsible for the task",
+        "clearedResponsible": "cleared the responsible",
+        "changedApprover": "changed who can approve to {{value}}",
+        "updatedTitle": "updated the title",
+        "updatedDescription": "updated the description"
+      },
+      "blockers": {
+        "added": "added {{changed}}",
+        "addedTo": "added {{changed}} to",
+        "removed": "removed {{changed}}",
+        "removedTo": "removed {{changed}} from",
+        "updated": "updated blockers",
+        "updatedOn": "updated blockers on"
+      },
+      "reviewers": {
+        "added": "added {{changed}}",
+        "addedTo": "added {{changed}} to",
+        "removed": "removed {{changed}}",
+        "removedTo": "removed {{changed}} from",
+        "updated": "updated reviewers",
+        "updatedOn": "updated reviewers on"
+      },
+      "approvers": {
+        "added": "added {{changed}}",
+        "addedTo": "added {{changed}} to",
+        "removed": "removed {{changed}}",
+        "removedTo": "removed {{changed}} from",
+        "updated": "updated approvers",
+        "updatedOn": "updated approvers on"
+      },
+      "toolGateway": {
+        "appAction": "an app action",
+        "callCompletedTest": "tested {{tool}} on",
+        "callCompletedUse": "used {{tool}} on",
+        "callAllowedTest": "started a test of {{tool}} on",
+        "callAllowed": "was allowed to use {{tool}} on",
+        "callDenied": "was blocked from using {{tool}} on",
+        "approvalRequested": "asked to use {{tool}} on",
+        "sessionCreated": "opened an app session for",
+        "sessionRejected": "was blocked from opening an app session for",
+        "discovery": "discovered app actions for"
+      },
+      "forService": "{{action}} for {{service}}",
+      "documentAction": "{{action}} {{key}}"
+    },
+    "handoff": {
+      "status": {
+        "interrupted": "interrupted",
+        "interruptedSrHint": "interrupted by board comment"
+      },
+      "composer": {
+        "interruptAndHandOff": "Interrupt current run, hand off to",
+        "wake": "Wake",
+        "handOffTo": "Hand off to",
+        "noAgentNotifiedSuffix": "— no agent will be notified",
+        "clearResponsible": "Clear responsible — no agent will be notified",
+        "notify": "Notify",
+        "mentionedAgentSuffix": "the mentioned agent",
+        "plainTextOnly": "No agent will be notified. Use @ to mention an agent."
+      },
+      "timeline": {
+        "responsibleAgent": "the responsible agent",
+        "interruptedRunSuffix": " (interrupted run attached)",
+        "wakeQueued": "queued for {{who}}",
+        "userHandoff": "not created — this is a handoff to a board user",
+        "unassigned": "not created — no agent selected. Mention @agent or pick a responsible to dispatch."
+      },
+      "reassign": {
+        "anAgent": "An agent",
+        "banner": "{{who}} is running — changing the responsible will interrupt this run.",
+        "confirmTitle": "Interrupt the current run?",
+        "confirmAction": "Interrupt & assign",
+        "cancelAction": "Cancel"
+      },
+      "pauseBuckets": {
+        "liveRuns": {
+          "label": "Live agent runs",
+          "detail": "interrupted now, re-queued when you resume"
+        },
+        "queuedWakes": {
+          "label": "Queued wakes",
+          "detail": "held — they won't start until you resume"
+        },
+        "agentOwned": {
+          "label": "Agent-owned",
+          "detail": "responsible agent; no run is live"
+        },
+        "humanOwned": {
+          "label": "Human-owned",
+          "detail": "owned by a board user; pausing won't notify them"
+        },
+        "static": {
+          "label": "Static",
+          "detail": "no responsible; nothing was going to run"
+        }
+      }
+    },
+    "changeReceipt": {
+      "field": {
+        "assigneeAgentId": "Assignee",
+        "assigneeUserId": "Assignee (user)",
+        "responsibleUserId": "Responsible user",
+        "blockedByIssueIds": "Blockers",
+        "labelIds": "Labels",
+        "parentId": "Parent",
+        "projectId": "Project",
+        "goalId": "Goal",
+        "workMode": "Work mode",
+        "reviewPolicy": "Who can approve",
+        "billingCode": "Billing code",
+        "checkoutRunId": "Checkout run",
+        "executionRunId": "Execution run",
+        "hiddenAt": "Hidden",
+        "startedAt": "Started",
+        "completedAt": "Completed",
+        "cancelledAt": "Cancelled",
+        "requestDepth": "Request depth",
+        "sourceTrust": "Source trust",
+        "executionPolicy": "Execution policy",
+        "executionWorkspaceId": "Execution workspace",
+        "projectWorkspaceId": "Project workspace"
+      },
+      "value": {
+        "none": "none",
+        "yes": "yes",
+        "no": "no",
+        "items_one": "1 item",
+        "items_other": "{{count}} items",
+        "itemsLabel": "{{n}} items",
+        "updated": "updated"
+      },
+      "authReason": {
+        "allowVisibleIssueWrite": "default-open write on a visible task",
+        "allowScopedAgentWrite": "scoped agent write",
+        "allowBoardActor": "board actor",
+        "allowSelf": "own task",
+        "allowIssueMentionGrant": "mention grant",
+        "allowDirectParentReport": "direct parent report",
+        "allowLowTrustBoundary": "low-trust boundary allowance",
+        "allowExplicitGrant": "explicit permission grant",
+        "allowInstanceAdmin": "instance admin",
+        "allowLocalBoard": "local board",
+        "internalAgentWrite": "internal agent write"
+      }
+    },
+    "transcript": {
+      "executingCommand": "Executing command",
+      "inspectInput": "Inspect {{name}} input",
+      "noInput": "No {{name}} input",
+      "singleField": "{{field}} payload",
+      "fieldsSummary": "{{count}} fields: {{fields}}",
+      "pathsSummary": "{{count}} paths, starting with {{first}}",
+      "pathsMore": ", +{{count}} more",
+      "labels": {
+        "intent": "Intent",
+        "path": "Path",
+        "directory": "Directory",
+        "query": "Query",
+        "target": "Target",
+        "prompt": "Prompt",
+        "pattern": "Pattern",
+        "name": "Name",
+        "paths": "Paths",
+        "command": "Command",
+        "input": "Input"
+      },
+      "toolFailed": "Tool failed",
+      "waitingForResult": "Waiting for result",
+      "completed": "Completed",
+      "failed": "Failed",
+      "failedWithExitCode": "Failed with exit code {{code}}"
+    },
+    "agentConfig": {
+      "steps": {
+        "agentConfiguration": "Agent configuration",
+        "instructionsLocation": "Instructions location (load the destination files)",
+        "instructionsFile": "Instructions: {{path}}",
+        "removeInstructionsFile": "Remove instruction file: {{path}}",
+        "skillsAndVersionPins": "Skills and version pins",
+        "permissionsAndTrust": "Permissions and trust",
+        "createSecret": "Create secret: {{name}}",
+        "rotateSecret": "Rotate secret: {{id}}",
+        "updateSecret": "Update secret: {{id}}",
+        "secretProposal": "Secret proposal: {{id}}",
+        "revokeApiKey": "Revoke API key: {{name}}",
+        "createApiKey": "Create API key: {{name}}",
+        "restoreRevision": "Restore configuration revision"
+      }
+    },
+    "workspaceAccess": {
+      "action": {
+        "viewRepairLog": "View repair log",
+        "viewProvisioningLog": "View provisioning log",
+        "repairInProgress": "Repair in progress",
+        "provisioning": "Provisioning",
+        "repairWorkspace": "Repair workspace",
+        "startWorkspace": "Start workspace",
+        "openWorkspace": "Open workspace",
+        "validating": "Validating",
+        "startingWorkspace": "Starting workspace"
+      },
+      "reason": {
+        "handoffNotConfigured": "This instance has no workspace login handoff configured, so opening the board falls back to snapshot-local credentials.",
+        "noBoardIdentity": "Your session has no cloned user to sign in as, so opening the board falls back to snapshot-local credentials.",
+        "runtimeNotRunning": "No healthy runtime service is publishing a URL for this workspace yet.",
+        "runtimeUrlUnusable": "The runtime row is publishing a URL Paperclip cannot open.",
+        "workspaceNotReady": "The cloned database is not ready to accept a login yet."
+      },
+      "readiness": {
+        "databaseUnreachable": "The isolated database is not answering.",
+        "cloneDataMissing": "The clone restored no organization or issue rows.",
+        "cloneDataUnreadable": "The cloned product tables could not be read.",
+        "clonedMembershipMissing": "No cloned user has an active organization membership.",
+        "clonedIdentityUnreadable": "The cloned identity tables could not be read.",
+        "authHandoffNotConfigured": "The workspace was started without a login handoff key.",
+        "seedManifestUnreadable": "The seed manifest is unreadable, so the restore cannot be trusted."
+      },
+      "lastRecordedPhase": "Last recorded phase: {{phase}}.",
+      "repairFailed": {
+        "title": "Repair failed",
+        "phase": "The repair stopped during {{phase}}. The pre-repair backup was kept.",
+        "plain": "The repair stopped before the workspace became usable. The pre-repair backup was kept."
+      },
+      "provisionFailed": {
+        "title": "Database provisioning failed",
+        "phase": "The earlier clone attempt failed during {{phase}}. The workspace later became usable.",
+        "plain": "An earlier clone attempt failed, but the workspace later became usable."
+      },
+      "provisioning": {
+        "title": "Provisioning database",
+        "description": "Restoring the isolated database clone for this workspace. This runs once before the first start."
+      },
+      "provisionFailedState": {
+        "phase": "The clone failed during {{phase}}. Repairing replaces only the isolated database.",
+        "plain": "The clone did not finish, so this workspace has no usable database yet."
+      },
+      "repairing": {
+        "title": "Repairing workspace database",
+        "phase": "Only the isolated database is replaced; the git worktree and your files are preserved. Current phase: {{phase}}.",
+        "plain": "Only the isolated database is replaced; the git worktree and your files are preserved."
+      },
+      "stopped": {
+        "title": "Workspace is not running",
+        "description": "Start the workspace runtime to publish its board."
+      },
+      "degraded": {
+        "title": "Workspace is degraded",
+        "causeFallback": "The workspace is serving, but its clone did not pass the readiness contract.",
+        "unhealthyFallback": "The runtime is up but did not report a usable database, so Paperclip will not publish it as ready."
+      },
+      "validating": {
+        "title": "Validating clone"
+      },
+      "validatingNote": "Paperclip is still confirming the clone.",
+      "repairNote": "One bounded repair replaces the isolated database.",
+      "snapshotSignIn": {
+        "title": "Ready — snapshot-local sign-in",
+        "description": "Opening the board will ask for the credentials captured in this snapshot."
+      },
+      "starting": {
+        "title": "Workspace is starting",
+        "description": "Paperclip is starting the workspace runtime and waiting for its board URL."
+      },
+      "ready": {
+        "title": "Ready",
+        "description": "Opening the workspace signs you in to the cloned board without a password."
+      }
+    }
+  }
+}

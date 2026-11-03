@@ -3,17 +3,18 @@ import { Button } from "@/components/ui/button";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Input } from "@/components/ui/input";
 import { nextCronFires, parseCronExpression } from "../lib/cron-fires";
+import { i18n, t } from "@/i18n";
 
 export type SchedulePreset = "every_minute" | "every_hour" | "every_day" | "weekdays" | "weekly" | "monthly" | "custom";
 
 const PRESETS: { value: SchedulePreset; label: string }[] = [
-  { value: "every_minute", label: "Every minute" },
-  { value: "every_hour", label: "Every hour" },
-  { value: "every_day", label: "Every day" },
-  { value: "weekdays", label: "Weekdays" },
-  { value: "weekly", label: "Weekly" },
-  { value: "monthly", label: "Monthly" },
-  { value: "custom", label: "Custom (cron)" },
+  { value: "every_minute", label: "comps3.schedule.everyMinute" },
+  { value: "every_hour", label: "comps3.schedule.everyHour" },
+  { value: "every_day", label: "comps3.schedule.everyDay" },
+  { value: "weekdays", label: "comps3.schedule.weekdays" },
+  { value: "weekly", label: "comps3.schedule.weekly" },
+  { value: "monthly", label: "comps3.schedule.monthly" },
+  { value: "custom", label: "comps3.schedule.custom" },
 ];
 
 const HOURS = Array.from({ length: 24 }, (_, i) => ({
@@ -126,21 +127,25 @@ function describeSchedule(cron: string): string {
 
   switch (preset) {
     case "every_minute":
-      return "Every minute";
+      return t("comps3.schedule.everyMinute");
     case "every_hour":
-      return `Every hour at :${minute.padStart(2, "0")}`;
+      return t("comps3.schedule.everyHourAt", { minute: minute.padStart(2, "0") });
     case "every_day":
-      return `Every day at ${timeStr}`;
+      return t("comps3.schedule.everyDayAt", { time: timeStr });
     case "weekdays":
-      return `Weekdays at ${timeStr}`;
+      return t("comps3.schedule.weekdaysAt", { time: timeStr });
     case "weekly": {
       const day = DAYS_OF_WEEK.find((d) => d.value === dayOfWeek)?.label ?? dayOfWeek;
-      return `Every ${day} at ${timeStr}`;
+      return t("comps3.schedule.weeklyAt", { day, time: timeStr });
     }
-    case "monthly":
-      return `Monthly on the ${dayOfMonth}${ordinalSuffix(Number(dayOfMonth))} at ${timeStr}`;
+    case "monthly": {
+      // English ordinals ("15th") have no Chinese equivalent; keep the
+      // {{ordinal}} placeholder in every locale but only fill it for English.
+      const useOrdinal = (i18n.language || "en").startsWith("en");
+      return t("comps3.schedule.monthlyOn", { day: dayOfMonth, ord: useOrdinal ? ordinalSuffix(Number(dayOfMonth)) : "", time: timeStr });
+    }
     case "custom":
-      return cron || "No schedule set";
+      return cron || t("comps3.schedule.noSchedule");
   }
 }
 
@@ -161,7 +166,7 @@ export function getScheduleCronValidation(cron: string): {
   if (!trimmed) {
     return {
       valid: false,
-      message: "Enter a 5-field cron expression.",
+      message: t("comps3.schedule.cronRequired"),
       nextFires: [],
     };
   }
@@ -170,7 +175,7 @@ export function getScheduleCronValidation(cron: string): {
   if (fields.length !== 5) {
     return {
       valid: false,
-      message: `Use exactly 5 fields; this has ${fields.length}.`,
+      message: t("comps3.schedule.fieldCount", { number: fields.length }),
       nextFires: [],
     };
   }
@@ -178,7 +183,7 @@ export function getScheduleCronValidation(cron: string): {
   if (!parseCronExpression(trimmed)) {
     return {
       valid: false,
-      message: "Cron fields must use valid numbers, ranges, lists, wildcards, or steps.",
+      message: t("comps3.schedule.invalidFields"),
       nextFires: [],
     };
   }
@@ -186,7 +191,7 @@ export function getScheduleCronValidation(cron: string): {
   const nextFires = nextCronFires(trimmed, 3, { timeZone: "UTC" });
   return {
     valid: true,
-    message: nextFires.length > 0 ? "Valid cron." : "Valid cron, but no upcoming fires were found.",
+    message: nextFires.length > 0 ? t("comps3.schedule.valid") : t("comps3.schedule.validNoFires"),
     nextFires,
   };
 }
@@ -247,13 +252,13 @@ export function ScheduleEditor({
   return (
     <div className="space-y-3">
       <Select value={preset} onValueChange={(v) => handlePresetChange(v as SchedulePreset)}>
-        <SelectTrigger className="w-full" aria-label="Schedule frequency">
-          <SelectValue placeholder="Choose frequency..." />
+        <SelectTrigger className="w-full" aria-label={t("comps3.schedule.frequencyAria")}>
+          <SelectValue placeholder={t("comps3.schedule.frequencyPlaceholder")} />
         </SelectTrigger>
         <SelectContent>
           {PRESETS.map((p) => (
             <SelectItem key={p.value} value={p.value}>
-              {p.label}
+              {t(p.label)}
             </SelectItem>
           ))}
         </SelectContent>
@@ -277,12 +282,12 @@ export function ScheduleEditor({
               }
             }}
             placeholder="0 10 * * *"
-            aria-label="Cron expression"
+            aria-label={t("comps3.schedule.cronAria")}
             aria-invalid={!customValidation.valid}
             className="font-mono text-sm"
           />
           <p className="text-xs text-muted-foreground">
-            Five fields: minute hour day-of-month month day-of-week
+            {t("comps3.schedule.fieldsHint")}
           </p>
           <p
             className={customValidation.valid ? "text-xs text-muted-foreground" : "text-xs text-destructive"}
@@ -290,7 +295,7 @@ export function ScheduleEditor({
           >
             {customValidation.message}
             {customValidation.valid && customValidation.nextFires.length > 0
-              ? ` Next: ${customValidation.nextFires.map((fire) => fire.toLocaleString()).join(", ")}.`
+              ? t("comps3.schedule.nextFires", { list: customValidation.nextFires.map((fire) => fire.toLocaleString()).join(", ") })
               : null}
           </p>
         </div>
@@ -298,7 +303,7 @@ export function ScheduleEditor({
         <div className="flex flex-wrap items-center gap-2">
           {preset !== "every_minute" && preset !== "every_hour" && (
             <>
-              <span className="text-sm text-muted-foreground">at</span>
+              <span className="text-sm text-muted-foreground">{t("comps3.schedule.at")}</span>
               <Select
                 value={hour}
                 onValueChange={(h) => {
@@ -341,7 +346,7 @@ export function ScheduleEditor({
 
           {preset === "every_hour" && (
             <>
-              <span className="text-sm text-muted-foreground">at minute</span>
+              <span className="text-sm text-muted-foreground">{t("comps3.schedule.atMinute")}</span>
               <Select
                 value={minute}
                 onValueChange={(m) => {
@@ -365,7 +370,7 @@ export function ScheduleEditor({
 
           {preset === "weekly" && (
             <>
-              <span className="text-sm text-muted-foreground">on</span>
+              <span className="text-sm text-muted-foreground">{t("comps3.schedule.on")}</span>
               <div className="flex gap-1">
                 {DAYS_OF_WEEK.map((d) => (
                   <Button
@@ -389,7 +394,7 @@ export function ScheduleEditor({
 
           {preset === "monthly" && (
             <>
-              <span className="text-sm text-muted-foreground">on day</span>
+              <span className="text-sm text-muted-foreground">{t("comps3.schedule.onDay")}</span>
               <Select
                 value={dayOfMonth}
                 onValueChange={(dom) => {

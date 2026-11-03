@@ -1,4 +1,5 @@
 import type { StatusCard, StatusCardRefreshPolicy } from "@paperclipai/shared";
+import { t } from "@/i18n";
 
 /**
  * The lifecycle states a status card renders as on the board (plan §7,
@@ -47,7 +48,18 @@ export interface StatusCardLifecyclePresentation {
   keepsLastSummary: boolean;
 }
 
-export const STATUS_CARD_LIFECYCLE_PRESENTATION: Record<
+const LIFECYCLE_KEY: Record<StatusCardLifecycle, string> = {
+  compiling: "compiling",
+  fresh: "fresh",
+  stale: "stale",
+  updating: "updating",
+  error: "error",
+  paused_budget: "pausedBudget",
+  paused_hours: "pausedHours",
+  archived: "archived",
+};
+
+const STATUS_CARD_LIFECYCLE_PRESENTATION_BASE: Record<
   StatusCardLifecycle,
   StatusCardLifecyclePresentation
 > = {
@@ -111,6 +123,26 @@ export const STATUS_CARD_LIFECYCLE_PRESENTATION: Record<
   },
 };
 
+// Labels and descriptions resolve through i18n at access time (consumers read
+// `.label`/`.description` directly), so the record is wrapped in a proxy that
+// translates on read while every other field passes through untouched.
+export const STATUS_CARD_LIFECYCLE_PRESENTATION: Record<
+  StatusCardLifecycle,
+  StatusCardLifecyclePresentation
+> = new Proxy(STATUS_CARD_LIFECYCLE_PRESENTATION_BASE, {
+  get(target, prop, receiver) {
+    if (typeof prop === "string" && Object.hasOwn(target, prop)) {
+      const base = target[prop as StatusCardLifecycle];
+      return {
+        ...base,
+        label: t(`libui.statusCards.lifecycle.${LIFECYCLE_KEY[prop as StatusCardLifecycle]}.label`),
+        description: t(`libui.statusCards.lifecycle.${LIFECYCLE_KEY[prop as StatusCardLifecycle]}.description`),
+      };
+    }
+    return Reflect.get(target, prop, receiver);
+  },
+});
+
 /** Compact token count, e.g. `1.1k`, `950`, `12.4k`. */
 export function formatTokens(tokens: number): string {
   if (tokens < 1000) return `${tokens}`;
@@ -128,16 +160,16 @@ export function formatUsdFromCents(cents: number): string {
 export function describeRefreshPolicy(policy: StatusCardRefreshPolicy): string {
   switch (policy.mode) {
     case "manual":
-      return "manual";
+      return t("libui.statusCards.refresh.manual");
     case "interval":
       return policy.intervalMinutes
-        ? `every ${policy.intervalMinutes}m if changed`
-        : "on a schedule if changed";
+        ? t("libui.statusCards.refresh.interval", { minutes: policy.intervalMinutes })
+        : t("libui.statusCards.refresh.schedule");
     case "reactive": {
       const debounce = policy.debounceSeconds ?? 60;
-      return `on change (${debounce}s)`;
+      return t("libui.statusCards.refresh.reactive", { seconds: debounce });
     }
     default:
-      return "manual";
+      return t("libui.statusCards.refresh.manual");
   }
 }

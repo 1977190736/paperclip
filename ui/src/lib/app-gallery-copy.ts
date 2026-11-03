@@ -10,6 +10,8 @@
  * surface (app names, fallback taglines).
  */
 
+import { t } from "@/i18n";
+
 /** Words that must never appear in prosumer-facing copy on the Apps surface. */
 const BANNED_WORDS = [
   "mcp",
@@ -49,123 +51,56 @@ export interface AppCopy {
  * (https://happy-grove-jzyc.here.now/). Apps without an entry fall back to a
  * generic, gate-safe line.
  */
-const APP_COPY: Record<string, AppCopy> = {
-  zapier: {
-    tagline: "Reach 9,000+ apps your team already uses.",
-    short: "Reach 9,000+ apps from your agents.",
-  },
-  github: {
-    tagline: "Read code and pull requests, comment on issues.",
-    short: "Read code and pull requests, comment on issues.",
-  },
-  slack: {
-    tagline: "Send and read messages in your team's channels.",
-    short: "Send and read messages in your channels.",
-  },
-  notion: {
-    tagline: "Read and update pages in your workspace.",
-    short: "Read and update pages in your workspace.",
-  },
-  railway: {
-    tagline: "Inspect services, read logs, and manage deployments.",
-    short: "Connect Railway for deployments, logs, and container access.",
-  },
-  posthog: {
-    tagline: "Explore product usage, errors, flags, and experiments.",
-    short: "Sign in with PostHog. Project pinning and access controls are optional.",
-  },
-  ditto: {
-    tagline: "Reuse approved product copy and follow your style guide.",
-    short: "Sign in with Ditto. API keys are optional.",
-  },
-  gauge: {
-    tagline: "Track your brand in AI answers and run content workflows.",
-    short: "Sign in with Gauge and pick an organization. API keys are optional.",
-  },
-  neon: {
-    tagline: "Manage Postgres projects, branches, and queries.",
-    short: "Sign in with Neon. Project pinning and read-only mode are optional.",
-  },
-  superagent: {
-    tagline: "Review security findings and run red-team checks.",
-    short: "Connect with a Superagent API key. Billable and destructive tools stay under action policies.",
-  },
-  linear: {
-    tagline: "Create, update and read tickets.",
-    short: "Create, update and read tickets.",
-  },
-  "google-sheets": {
-    tagline: "Read and update selected spreadsheets.",
-    short: "Read spreadsheets or update the files you choose.",
-  },
-  gmail: {
-    tagline: "Read mail and create drafts for your review.",
-    short: "Read mail and create drafts for your review.",
-  },
-  "google-drive": {
-    tagline: "Find, read, and create files in Drive.",
-    short: "Find, read, and create files in Drive.",
-  },
-  "google-docs": {
-    tagline: "Read and update documents.",
-    short: "Read and update documents.",
-  },
-  "google-slides": {
-    tagline: "Read and update presentations.",
-    short: "Read and update presentations.",
-  },
-  "google-calendar": {
-    tagline: "Review calendars and manage events.",
-    short: "Review calendars and manage events.",
-  },
-  "google-chat": {
-    tagline: "Read conversations and send messages.",
-    short: "Read conversations and send messages.",
-  },
-  "google-people": {
-    tagline: "Look up contacts and people in your directory.",
-    short: "Look up contacts and people in your directory.",
-  },
-  "google-workspace-search": {
-    tagline: "Search across your Google workspace.",
-    short: "Search across your Google workspace.",
-  },
-  hubspot: {
-    tagline: "Look up contacts and update deal stages.",
-    short: "Look up contacts and update deal stages.",
-  },
-  intercom: {
-    tagline: "Read and reply to customer conversations.",
-    short: "Read and reply to customer conversations.",
-  },
-  figma: {
-    tagline: "Read files and post comments on frames.",
-    short: "Read files and post comments on frames.",
-  },
-  stripe: {
-    tagline: "Read customers, invoices, and payouts.",
-    short: "Read customers, invoices, and payouts.",
-  },
-  context7: {
-    tagline: "Look up up-to-date docs for your libraries.",
-    short: "Look up up-to-date docs for your libraries.",
-  },
-};
+const CURATED_APP_KEYS = [
+  "zapier",
+  "github",
+  "slack",
+  "notion",
+  "railway",
+  "posthog",
+  "ditto",
+  "gauge",
+  "neon",
+  "superagent",
+  "linear",
+  "google-sheets",
+  "gmail",
+  "google-drive",
+  "google-docs",
+  "google-slides",
+  "google-calendar",
+  "google-chat",
+  "google-people",
+  "google-workspace-search",
+  "hubspot",
+  "intercom",
+  "figma",
+  "stripe",
+  "context7",
+] as const;
 
-const GENERIC: AppCopy = {
-  tagline: "Give your agents access to this app.",
-  short: "Give your agents access to this app.",
-};
+const CURATED_APP_KEY_SET: ReadonlySet<string> = new Set(CURATED_APP_KEYS);
+
+function curatedCopyFor(key: string): AppCopy | null {
+  if (!CURATED_APP_KEY_SET.has(key)) return null;
+  return {
+    tagline: t(`libui.appsGallery.apps.${key}.tagline`),
+    short: t(`libui.appsGallery.apps.${key}.short`),
+  };
+}
 
 /** Curated, gate-safe copy for a gallery app. */
 export function appCopyFor(key: string, fallbackTagline?: string | null): AppCopy {
-  const curated = APP_COPY[key];
+  const curated = curatedCopyFor(key);
   if (curated) return curated;
   if (fallbackTagline) {
     const cleaned = sanitizeProsumerCopy(fallbackTagline);
     if (cleaned) return { tagline: cleaned, short: cleaned };
   }
-  return GENERIC;
+  return {
+    tagline: t("libui.appsGallery.generic.tagline"),
+    short: t("libui.appsGallery.generic.short"),
+  };
 }
 
 /**
@@ -180,7 +115,7 @@ export function credentialFieldLabel(
   fieldCount: number,
 ): string {
   if (/^Paste your\b/.test(rawLabel)) return sanitizeProsumerCopy(rawLabel);
-  if (fieldCount <= 1) return `Your ${appName} key`;
+  if (fieldCount <= 1) return t("libui.appsGallery.credentialField", { app: appName });
   const cleaned = sanitizeProsumerCopy(rawLabel);
-  return cleaned || `Your ${appName} key`;
+  return cleaned || t("libui.appsGallery.credentialField", { app: appName });
 }

@@ -1,4 +1,5 @@
 import { safeWorkspaceRestorePath } from "@paperclipai/shared";
+import { t } from "@/i18n";
 
 export function workspaceRestoreMarkerDetail(input: {
   result: Record<string, unknown> | null | undefined;
@@ -6,13 +7,13 @@ export function workspaceRestoreMarkerDetail(input: {
   hasResponse: boolean;
 }): string {
   const parts = [input.savedPlan
-    ? "Workspace restore failed after the plan was saved. The saved plan is available."
-    : "Workspace restore failed."];
-  parts.push("Workspace files need recovery.");
+    ? t("libui.workspaceRestore.savedPlanKept")
+    : t("libui.workspaceRestore.failed")];
+  parts.push(t("libui.workspaceRestore.filesNeedRecovery"));
   if (!input.hasResponse && input.result?.finalResponseRecorded === false) {
-    parts.push("No final response was recorded.");
+    parts.push(t("libui.workspaceRestore.noFinalResponse"));
   }
   const relativePath = safeWorkspaceRestorePath(input.result?.workspaceRestorePath);
-  if (relativePath) parts.push(`Affected path: ${relativePath}.`);
+  if (relativePath) parts.push(t("libui.workspaceRestore.affectedPath", { path: relativePath }));
   return parts.join(" ");
 }

@@ -3,6 +3,7 @@ import type { UIAdapterModule } from "../types";
 import { parseCodexStdoutLine, buildPaperclipRunnerConfig } from "@paperclipai/adapter-codex-local/ui";
 import { CodexLocalConfigFields } from "../codex-local/config-fields";
 import { isRunLogOnlyProviderEvent } from "@/components/transcript/run-log-only-events";
+import { t } from "@/i18n";
 
 type JsonRecord = Record<string, unknown>;
 
@@ -111,7 +112,7 @@ function commandEntries(
     ts,
     toolUseId: id,
     toolName: "command",
-    content: detail || text(item.status, "command completed"),
+    content: detail || text(item.status, t("tools.runner.completed.command")),
     isError: toolFailure(item),
   }];
 }
@@ -159,7 +160,7 @@ function fileChangeEntries(
       ts,
       toolUseId: id,
       toolName: "file_change",
-      content: paths.length > 0 ? paths.join("\n") : "file change completed",
+      content: paths.length > 0 ? paths.join("\n") : t("tools.runner.completed.fileChange"),
       isError: toolFailure(item),
     },
   ];
@@ -172,7 +173,7 @@ function dynamicToolEntries(
   ts: string,
 ): TranscriptEntry[] {
   const id = itemId(event, item);
-  const name = text(item.tool, text(item.name, "Paperclip tool"));
+  const name = text(item.tool, text(item.name, t("tools.runner.fallbackNames.paperclipTool")));
   if (phase === "started") {
     return [{ kind: "tool_call", ts, name, toolUseId: id, input: item.arguments ?? item.input ?? {} }];
   }
@@ -181,7 +182,7 @@ function dynamicToolEntries(
     ts,
     toolUseId: id,
     toolName: name,
-    content: stringify(item.contentItems ?? item.result ?? item.output) || `${name} completed`,
+    content: stringify(item.contentItems ?? item.result ?? item.output) || t("tools.runner.completed.named", { name }),
     isError: toolFailure(item),
   }];
 }
@@ -193,7 +194,7 @@ function genericToolEntries(
   ts: string,
 ): TranscriptEntry[] {
   const id = itemId(event, item);
-  const name = text(item.name, text(item.tool, "Tool"));
+  const name = text(item.name, text(item.tool, t("tools.runner.fallbackNames.tool")));
   if (phase === "started") {
     return [{ kind: "tool_call", ts, name, toolUseId: id, input: item.input ?? item.arguments ?? {} }];
   }
@@ -202,7 +203,7 @@ function genericToolEntries(
     ts,
     toolUseId: text(item.tool_use_id, id),
     toolName: name,
-    content: stringify(item.content ?? item.result ?? item.output ?? item.error) || `${name} completed`,
+    content: stringify(item.content ?? item.result ?? item.output ?? item.error) || t("tools.runner.completed.named", { name }),
     isError: toolFailure(item),
   }];
 }
@@ -446,10 +447,10 @@ function runtimeRequestEntry(
     .filter((choice) => choice.key && choice.label)
     .slice(0, 32);
   const actionLabels: Record<string, string> = {
-    accept: "Allow once",
-    accept_for_session: "Allow for session",
-    decline: "Deny",
-    cancel: "Cancel",
+    accept: t("tools.runner.actionLabels.accept"),
+    accept_for_session: t("tools.runner.actionLabels.accept_for_session"),
+    decline: t("tools.runner.actionLabels.decline"),
+    cancel: t("tools.runner.actionLabels.cancel"),
   };
   const actions = (Array.isArray(request.actions) ? request.actions : [])
     .filter((action): action is string => typeof action === "string" && action in actionLabels)
@@ -475,7 +476,7 @@ function runtimeRequestEntry(
     .map(record)
     .map((field, index) => ({
       name: text(field.name, `answer_${index + 1}`).slice(0, 160),
-      label: text(field.label, text(field.name, `Answer ${index + 1}`)).slice(0, 240),
+      label: text(field.label, text(field.name, t("tools.runner.answerFallback", { n: index + 1 }))).slice(0, 240),
       placeholder: nullableText(field.placeholder)?.slice(0, 500) ?? null,
     }))
     .filter((field) => field.name && field.label)
@@ -492,7 +493,7 @@ function runtimeRequestEntry(
     turnId: nullableText(request.turnId) ?? nullableText(payload.turnId) ?? nullableText(event.turnId) ?? previous?.turnId ?? null,
     requestType,
     status,
-    prompt: text(request.prompt, previous?.prompt ?? "Runtime approval requested"),
+    prompt: text(request.prompt, previous?.prompt ?? t("tools.runner.runtimeApprovalRequested")),
     choices,
     fields,
     questionSet,
@@ -539,7 +540,7 @@ function parseQuestionSet(value: unknown): PaperclipQuestionSet | null {
     const answerMode: PaperclipQuestion["answerMode"] = question.answerMode === "single_select" || question.answerMode === "multi_select" ? question.answerMode : "text";
     const options = (Array.isArray(question.options) ? question.options : []).map(record).slice(0, 128).map((option, optionIndex) => ({
       id: text(option.id, `option-${optionIndex + 1}`).slice(0, 160),
-      label: text(option.label, `Option ${optionIndex + 1}`).slice(0, 1_000),
+      label: text(option.label, t("tools.runner.optionFallback", { n: optionIndex + 1 })).slice(0, 1_000),
       ...(nullableText(option.description) ? { description: text(option.description).slice(0, 4_000) } : {}),
     }));
     const customAnswer = record(question.customAnswer);
@@ -551,7 +552,7 @@ function parseQuestionSet(value: unknown): PaperclipQuestionSet | null {
     const parsedQuestion: PaperclipQuestion = {
       id: text(question.id, `question-${questionIndex + 1}`).slice(0, 160),
       ...(nullableText(question.header) ? { header: text(question.header).slice(0, 1_000) } : {}),
-      prompt: text(question.prompt, `Question ${questionIndex + 1}`).slice(0, 4_000),
+      prompt: text(question.prompt, t("tools.runner.questionFallback", { n: questionIndex + 1 })).slice(0, 4_000),
       ...(nullableText(question.helpText) ? { helpText: text(question.helpText).slice(0, 4_000) } : {}),
       required: question.required === true,
       answerMode,
@@ -713,7 +714,22 @@ function parsePrpEvent(
       : rawStatus === "failed" || rawStatus === "denied" ? "failed"
         : rawStatus === "interrupted" || rawStatus === "cancelled" ? "interrupted"
           : (family === "plan" && payload.complete === true) || eventType.endsWith("completed") || rawStatus === "completed" ? "completed" : "informational";
-    const title = ({ plan: "Plan", tool_execution: "Tool execution", research: "Research", delegation: "Delegation", model_identity: "Model", context: "Context", artifact: "Artifact", review: "Review mode", hook: "Hook", memory: "Memory citation", safety: "Safety review", terminal: "Terminal input", wait: "Intentional wait", provider_notice: "Provider notice" } as const)[family];
+    const title = ({
+      plan: t("tools.runner.activityTitles.plan"),
+      tool_execution: t("tools.runner.activityTitles.tool_execution"),
+      research: t("tools.runner.activityTitles.research"),
+      delegation: t("tools.runner.activityTitles.delegation"),
+      model_identity: t("tools.runner.activityTitles.model_identity"),
+      context: t("tools.runner.activityTitles.context"),
+      artifact: t("tools.runner.activityTitles.artifact"),
+      review: t("tools.runner.activityTitles.review"),
+      hook: t("tools.runner.activityTitles.hook"),
+      memory: t("tools.runner.activityTitles.memory"),
+      safety: t("tools.runner.activityTitles.safety"),
+      terminal: t("tools.runner.activityTitles.terminal"),
+      wait: t("tools.runner.activityTitles.wait"),
+      provider_notice: t("tools.runner.activityTitles.provider_notice"),
+    } as const)[family];
     const summary = family === "model_identity"
       ? text(payload.summary, text(payload.effectiveModel, text(payload.requestedModel, text(payload.provider, eventType))))
       : text(payload.summary, text(payload.name, text(payload.query, eventType)));
@@ -724,13 +740,13 @@ function parsePrpEvent(
   }
   if (eventType === "workspace.file.referenced") {
     const entry = workspaceFileReferenceEntry(payload, ts);
-    return entry ? [entry] : [{ kind: "system", ts, text: "Runner: Ignored an unsafe workspace file reference" }];
+    return entry ? [entry] : [{ kind: "system", ts, text: t("tools.runner.unsafeWorkspaceRef") }];
   }
   if (eventType.startsWith("runtime_request.")) {
     const request = record(payload.request ?? payload);
     const input = record(request.input);
     if (typeof input.description === "string" && input.description.length > 100_000) {
-      return [{ kind: "system", ts, text: "Runner: Cannot display this input request because its complete context exceeds 100,000 characters. No decision can be submitted from this request." }];
+      return [{ kind: "system", ts, text: t("tools.runner.oversizedInput") }];
     }
     const entry = runtimeRequestEntry(eventType, payload, event, ts, state);
     return entry ? [entry] : [];
@@ -747,11 +763,11 @@ function parsePrpEvent(
     const context = record(payload.context);
     const model = text(context.model, text(record(payload.model).name, "Paperclip runner"));
     const sessionId = text(payload.providerSessionId, text(payload.driverSessionId, text(event.normalizedSessionId)));
-    return [{ kind: "system", ts, text: `Paperclip session ${eventType === "session.resumed" ? "resumed" : "started"} · ${model}${sessionId ? ` · ${sessionId}` : ""}` }];
+    return [{ kind: "system", ts, text: t(eventType === "session.resumed" ? "tools.runner.sessionResumed" : "tools.runner.sessionStarted", { detail: `${model}${sessionId ? ` · ${sessionId}` : ""}` }) }];
   }
-  if (eventType === "turn.started") return [{ kind: "system", ts, text: "Turn started" }];
-  if (eventType === "turn.completed") return [{ kind: "system", ts, text: "Turn completed" }];
-  if (eventType === "turn.failed") return [{ kind: "stderr", ts, text: text(record(payload.error).message, "Turn failed") }];
+  if (eventType === "turn.started") return [{ kind: "system", ts, text: t("tools.runner.turnStarted") }];
+  if (eventType === "turn.completed") return [{ kind: "system", ts, text: t("tools.runner.turnCompleted") }];
+  if (eventType === "turn.failed") return [{ kind: "stderr", ts, text: text(record(payload.error).message, t("tools.runner.turnFailed")) }];
   if (eventType === "item.started" || eventType === "item.completed") {
     if (payload.kind === "usage") return [usageEntry(payload, ts)];
     return parseItemEvent(event, payload, eventType === "item.started" ? "started" : "completed", ts, state);
@@ -759,7 +775,7 @@ function parsePrpEvent(
   if (eventType === "item.failed") {
     const item = record(payload.item);
     const error = record(payload.error);
-    return [{ kind: "stderr", ts, text: text(error.message, text(item.error, "Runner item failed")) }];
+    return [{ kind: "stderr", ts, text: text(error.message, text(item.error, t("tools.runner.itemFailed"))) }];
   }
   if (eventType === "item.delta") return parseDeltaEvent(event, payload, ts, state);
   if (eventType === "usage.reported") return [usageEntry(payload, ts)];
@@ -776,7 +792,7 @@ function parsePrpEvent(
   }
   if (eventType === "run.terminal") return [runTerminalEntry(payload, ts)];
   if (eventType === "harness.diagnostic" || eventType === "runner.diagnostic" || eventType === "session.failed" || eventType === "mcp_app.failed") {
-    return [{ kind: "system", ts, text: `Runner: ${text(payload.message, text(payload.code, eventType))}` }];
+    return [{ kind: "system", ts, text: t("tools.runner.runnerDiagnostic", { message: text(payload.message, text(payload.code, eventType)) }) }];
   }
   return [];
 }

@@ -1,4 +1,5 @@
 import { agentRuntimeSettingsHarness, aiRuntimeConnectionBindingSchema, type Agent, type AiConnectionBinding, type AiConnectionList, type AiRuntimeConnectionBinding } from "@paperclipai/shared";
+import { t } from "@/i18n";
 
 export const bulkAgentHarness = (agent: Agent) => agentRuntimeSettingsHarness(agent.adapterType, agent.adapterConfig);
 export const agentDefaultModel = (agent: Agent) => typeof agent.adapterConfig.model === "string" ? agent.adapterConfig.model.trim() || null : null;
@@ -9,9 +10,9 @@ export const sameBinding = (a: AiRuntimeConnectionBinding | undefined, b: AiRunt
 };
 
 export function bulkAgentDisabledReason(agent: Agent): string | undefined {
-  if (["terminated", "pending_approval"].includes(agent.status)) return "This agent is not available for bulk edits";
-  if (agentConnection(agent)?.mode === "router") return "Edit connection pool members on the agent's configuration page";
-  if (!["codex_local", "claude_local", "gemini_local", "grok_local", "opencode_local", "hermes_local", "pi_local", "copilot_runtime", "antigravity_runtime", "cursor_local"].includes(bulkAgentHarness(agent))) return "Connection and model are managed externally";
+  if (["terminated", "pending_approval"].includes(agent.status)) return t("libui.bulk.notAvailableForBulkEdits");
+  if (agentConnection(agent)?.mode === "router") return t("libui.bulk.editPoolMembers");
+  if (!["codex_local", "claude_local", "gemini_local", "grok_local", "opencode_local", "hermes_local", "pi_local", "copilot_runtime", "antigravity_runtime", "cursor_local"].includes(bulkAgentHarness(agent))) return t("libui.bulk.managedExternally");
 }
 
 export function resolveBulkConnection(binding: AiConnectionBinding | undefined, accounts: AiConnectionList) {
@@ -21,10 +22,10 @@ export function resolveBulkConnection(binding: AiConnectionBinding | undefined, 
 }
 
 export function bulkConnectionName(binding: AiRuntimeConnectionBinding | undefined, accounts?: AiConnectionList) {
-  if (!binding) return "Local credentials";
-  if (binding.mode === "router") return "Connection pool";
-  if (binding.mode === "responsible_user") return "Responsible user's default";
-  return accounts?.connections.find(c => c.id === binding.connectionId && c.grantId === binding.grantId)?.name ?? "Assigned connection";
+  if (!binding) return t("libui.bulk.localCredentials");
+  if (binding.mode === "router") return t("libui.bulk.connectionPool");
+  if (binding.mode === "responsible_user") return t("libui.bulk.responsibleUserDefault");
+  return accounts?.connections.find(c => c.id === binding.connectionId && c.grantId === binding.grantId)?.name ?? t("libui.bulk.assignedConnection");
 }
 
 /** Bound probes and mutations; failures belong to individual agents. */

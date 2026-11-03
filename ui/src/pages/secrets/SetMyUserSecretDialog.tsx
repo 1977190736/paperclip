@@ -17,6 +17,7 @@ import { ApiError } from "../../api/client";
 import { queryKeys } from "../../lib/queryKeys";
 import { useToastActions } from "../../context/ToastContext";
 import { UserSecretChip } from "./user-secret-presentation";
+import { useTranslation } from "@/i18n";
 
 /**
  * Shared "set my value" dialog for a user-secret definition. Used both from the
@@ -41,6 +42,7 @@ export function SetMyUserSecretDialog({
 }) {
   const queryClient = useQueryClient();
   const { pushToast } = useToastActions();
+  const { t } = useTranslation();
   const [value, setValue] = useState("");
   const [externalRef, setExternalRef] = useState("");
   const [error, setError] = useState<string | null>(null);
@@ -57,7 +59,7 @@ export function SetMyUserSecretDialog({
 
   const save = useMutation({
     mutationFn: async () => {
-      if (!definition) throw new Error("No definition selected");
+      if (!definition) throw new Error(t("tail1.userSecrets.noDefinitionSelected"));
       const payload = isExternal
         ? { externalRef: externalRef.trim() }
         : { value: value.trim() };
@@ -75,7 +77,7 @@ export function SetMyUserSecretDialog({
       queryClient.invalidateQueries({ queryKey: queryKeys.secrets.myUserSecrets(companyId) });
       queryClient.invalidateQueries({ queryKey: queryKeys.secrets.userDefinitions(companyId) });
       pushToast({
-        title: existingSecret ? "Value updated" : "Value saved",
+        title: existingSecret ? t("tail1.userSecrets.valueUpdated") : t("tail1.userSecrets.valueSaved"),
         body: definition?.name,
         tone: "success",
       });
@@ -88,7 +90,7 @@ export function SetMyUserSecretDialog({
           ? err.message
           : err instanceof Error
             ? err.message
-            : "Failed to save value",
+            : t("tail1.userSecrets.valueSaveFailed"),
       );
     },
   });
@@ -100,14 +102,13 @@ export function SetMyUserSecretDialog({
       <DialogContent>
         <DialogHeader>
           <DialogTitle className="flex items-center gap-2">
-            {existingSecret ? "Update your value" : "Set your value"}
+            {existingSecret ? t("tail1.userSecrets.updateYourValue") : t("tail1.userSecrets.setYourValue")}
             <UserSecretChip />
           </DialogTitle>
           <DialogDescription>
             {definition ? (
               <>
-                This value is yours only. It is used when you are the user responsible for a run that
-                needs <span className="font-mono">{definition.key}</span>.
+                {t("tail1.userSecrets.valueDescBefore")} <span className="font-mono">{definition.key}</span>.
               </>
             ) : null}
           </DialogDescription>
@@ -127,31 +128,30 @@ export function SetMyUserSecretDialog({
 
             {isExternal ? (
               <div className="space-y-1">
-                <label className="text-xs font-medium text-foreground">External reference</label>
+                <label className="text-xs font-medium text-foreground">{t("secrets.create.externalRefLabel")}</label>
                 <Input
                   value={externalRef}
                   onChange={(event) => setExternalRef(event.target.value)}
-                  placeholder="provider reference or ARN"
+                  placeholder={t("tail1.userSecrets.externalRefPlaceholder")}
                   className="font-mono text-sm"
                   autoFocus
                 />
                 <p className="text-(length:--text-micro) text-muted-foreground">
-                  Points at your own credential in the configured provider. Paperclip stores the
-                  reference, not the value.
+                  {t("tail1.userSecrets.externalRefNote")}
                 </p>
               </div>
             ) : (
               <div className="space-y-1">
-                <label className="text-xs font-medium text-foreground">Your value</label>
+                <label className="text-xs font-medium text-foreground">{t("tail1.userSecrets.yourValue")}</label>
                 <Textarea
                   value={value}
                   onChange={(event) => setValue(event.target.value)}
-                  placeholder="Paste your token or credential"
+                  placeholder={t("tail1.userSecrets.valuePlaceholder")}
                   className="font-mono text-sm min-h-(--sz-80px)"
                   autoFocus
                 />
                 <p className="text-(length:--text-micro) text-muted-foreground">
-                  Stored encrypted. Never shown back to anyone, including admins.
+                  {t("tail1.userSecrets.valueNote")}
                 </p>
               </div>
             )}
@@ -162,10 +162,10 @@ export function SetMyUserSecretDialog({
 
         <DialogFooter>
           <Button variant="ghost" onClick={() => onOpenChange(false)} disabled={save.isPending}>
-            Cancel
+            {t("secrets.common.cancel")}
           </Button>
           <Button onClick={() => save.mutate()} disabled={!canSave || save.isPending}>
-            {save.isPending ? "Saving…" : existingSecret ? "Update value" : "Save value"}
+            {save.isPending ? t("tail1.userSecrets.saving") : existingSecret ? t("secrets.actions.updateValue") : t("tail1.userSecrets.saveValue")}
           </Button>
         </DialogFooter>
       </DialogContent>

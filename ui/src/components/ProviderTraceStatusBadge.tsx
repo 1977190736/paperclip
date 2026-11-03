@@ -1,6 +1,7 @@
 import type { ProviderTraceMetadata } from "@paperclipai/shared";
 import { Bug, CircleOff } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { t, useTranslation } from "@/i18n";
 
 export function runRequestedProviderTrace(
   contextSnapshot: Record<string, unknown> | null | undefined,
@@ -26,29 +27,33 @@ export function ProviderTraceStatusBadge({
   showOff?: boolean;
   className?: string;
 }) {
+  const { t } = useTranslation();
   const status = trace?.status;
   const expired = trace
     ? new Date(trace.expiresAt).getTime() <= Date.now()
     : false;
-  const label = expired
-    ? "Trace expired"
-    : status === "capturing"
-      ? "Raw tracing enabled"
-      : status === "complete"
-        ? "Trace captured"
-        : status === "incomplete"
-          ? "Trace incomplete"
-          : status === "truncated"
-            ? "Trace truncated"
-            : status === "expired"
-              ? "Trace expired"
-              : status === "deleted"
-                ? "Trace deleted"
-                : requested
-                  ? "Trace requested"
-                  : showOff
-                    ? "Trace off"
-                    : null;
+  let label: string | null = null;
+  let off = false;
+  if (expired) {
+    label = t("comps3.traceBadge.expired");
+  } else if (status === "capturing") {
+    label = t("comps3.traceBadge.capturing");
+  } else if (status === "complete") {
+    label = t("comps3.traceBadge.complete");
+  } else if (status === "incomplete") {
+    label = t("comps3.traceBadge.incomplete");
+  } else if (status === "truncated") {
+    label = t("comps3.traceBadge.truncated");
+  } else if (status === "expired") {
+    label = t("comps3.traceBadge.expired");
+  } else if (status === "deleted") {
+    label = t("comps3.traceBadge.deleted");
+  } else if (requested) {
+    label = t("comps3.traceBadge.requested");
+  } else if (showOff) {
+    label = t("comps3.traceBadge.off");
+    off = true;
+  }
   if (!label) return null;
   const warning =
     status === "incomplete" ||
@@ -56,12 +61,13 @@ export function ProviderTraceStatusBadge({
     status === "expired" ||
     status === "deleted" ||
     expired;
-  const Icon = label === "Trace off" ? CircleOff : Bug;
+  const muted = off || status === "deleted" || expired;
+  const Icon = off ? CircleOff : Bug;
   return (
     <span
       className={cn(
         "inline-flex items-center gap-1 rounded-md border px-1.5 py-0.5 text-(length:--text-micro) font-medium",
-        label === "Trace off" || label === "Trace deleted" || label === "Trace expired"
+        muted
           ? "border-border bg-background text-muted-foreground"
           : warning
             ? "border-red-500/30 bg-red-500/10 text-red-700 dark:text-red-300"
@@ -70,10 +76,14 @@ export function ProviderTraceStatusBadge({
       )}
       title={
         trace
-          ? `${trace.frameCount} frames · ${trace.byteCount} bytes · expires ${new Date(trace.expiresAt).toLocaleString()}`
+          ? t("comps3.traceBadge.detail", {
+              frames: trace.frameCount,
+              bytes: trace.byteCount,
+              time: new Date(trace.expiresAt).toLocaleString(),
+            })
           : requested
-            ? "This run requested sensitive provider-frame capture."
-            : "Raw provider-frame capture was disabled for this run."
+            ? t("comps3.traceBadge.requestedDetail")
+            : t("comps3.traceBadge.offDetail")
       }
     >
       <Icon className="h-3 w-3" />

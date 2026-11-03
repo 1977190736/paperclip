@@ -1,0 +1,1054 @@
+{
+  "tools": {
+    "profilesTab": {
+      "selectorTypes": {
+        "toolName": "Tool name",
+        "riskLevel": "Risk level",
+        "application": "Application",
+        "connection": "Connection",
+        "catalogEntry": "Catalog entry ID"
+      },
+      "targetTypes": {
+        "company": "Company",
+        "agent": "Agent",
+        "project": "Project",
+        "routine": "Routine",
+        "issue": "Issue ID"
+      },
+      "entryFallback": {
+        "application": "application",
+        "connection": "connection",
+        "catalogEntry": "catalog entry",
+        "riskLevel": "risk level",
+        "tool": "tool"
+      },
+      "bindingCompany": "Company",
+      "bindings": {
+        "unbound": "unbound",
+        "boundToAgents_one": "bound to {{count}} agent",
+        "boundToAgents_other": "bound to {{count}} agents",
+        "count_one": "{{count}} binding",
+        "count_other": "{{count}} bindings"
+      },
+      "fields": {
+        "selector": "Selector",
+        "effect": "Effect",
+        "include": "Include",
+        "exclude": "Exclude",
+        "application": "Application",
+        "selectApplication": "Select an application",
+        "connection": "Connection",
+        "selectConnection": "Select a connection",
+        "catalogEntryId": "Catalog entry ID",
+        "toolName": "Tool name",
+        "toolNamePlaceholder": "e.g. send_email or slack.list_*",
+        "riskLevel": "Risk level"
+      },
+      "effective": {
+        "agent": "Agent",
+        "pickAgent": "Pick an agent to see what it can use right now.",
+        "checking": "Checking access...",
+        "canUse": "Can use",
+        "toolsCount": "{{n}} tools",
+        "noneAvailable": "This agent cannot use any app tools right now.",
+        "profiles": "Access profiles",
+        "noActiveProfile": "No active profile applies to this agent.",
+        "orgDefault": "Organization default"
+      },
+      "source": {
+        "explicit": "explicit",
+        "defaultAllow": "default allow",
+        "pattern": "pattern {{label}}"
+      },
+      "allowList": {
+        "title": "Allow list",
+        "summary_one": "{{count}} tool",
+        "summary_other": "{{count}} tools",
+        "explicitSuffix": " · {{count}} explicit",
+        "patternSuffix": " · {{count}} via pattern",
+        "defaultSuffix": " · {{count}} via default",
+        "resolving": "Resolving allowed tools…",
+        "empty": "No tools resolved for this profile. Add an include selector or refresh the tool catalog.",
+        "colTool": "Tool",
+        "colApplication": "Application",
+        "colCapabilities": "Capabilities",
+        "colRisk": "Risk",
+        "colSource": "Source",
+        "patternWarningPrefix": "Tools marked ",
+        "patternWarningEmphasis": "pattern",
+        "patternWarningSuffix": " were pulled in by a wildcard, application, connection, or risk selector rather than named explicitly — review them when the catalog changes."
+      },
+      "toasts": {
+        "created": "Profile created",
+        "createFailed": "Could not create profile",
+        "updated": "Profile updated",
+        "updateFailed": "Could not update profile",
+        "entryAdded": "Entry added",
+        "entryAddFailed": "Could not add entry",
+        "entryRemoved": "Entry removed",
+        "entryRemoveFailed": "Could not remove entry",
+        "bound": "Profile bound",
+        "bindFailed": "Could not bind profile",
+        "bindingRemoved": "Binding removed",
+        "unbindFailed": "Could not remove binding",
+        "entryTargetRequired": "Entry target required",
+        "bindingTargetRequired": "Binding target required"
+      },
+      "header": {
+        "title": "Access profiles",
+        "description": "Reusable bundles of allowed applications, connections, and tools, assignable to agents, projects, routines, or issues.",
+        "newProfile": "New profile"
+      },
+      "empty": {
+        "message": "No access profiles yet",
+        "description": "Create a profile to group tool selectors, then bind it to the organization or a specific agent.",
+        "action": "New profile"
+      },
+      "listRow_one": "{{count}} tool · {{subtitle}}",
+      "listRow_other": "{{count}} tools · {{subtitle}}",
+      "dialog": {
+        "editTitle": "Edit profile",
+        "newTitle": "New profile",
+        "description": "Profile rules are enforced by the tool gateway policy service.",
+        "key": "Key",
+        "namePlaceholder": "Engineering write tools",
+        "descriptionLabel": "Description",
+        "descriptionPlaceholder": "Optional context for reviewers.",
+        "defaultAction": "Default action",
+        "denyUnlessIncluded": "Deny unless included",
+        "allowUnlessExcluded": "Allow unless excluded",
+        "status": "Status",
+        "statusActive": "Active",
+        "statusDisabled": "Disabled",
+        "statusArchived": "Archived",
+        "creating": "Creating...",
+        "create": "Create"
+      },
+      "entryDialog": {
+        "title": "Add entry",
+        "add": "Add entry"
+      },
+      "bindDialog": {
+        "title": "Bind profile",
+        "targetType": "Target type",
+        "agent": "Agent",
+        "project": "Project",
+        "selectProject": "Select a project",
+        "routine": "Routine",
+        "selectRoutine": "Select a routine",
+        "issueId": "Issue ID",
+        "priority": "Priority",
+        "bind": "Bind"
+      },
+      "detail": {
+        "defaultBadge": "default {{action}}",
+        "updated": "updated",
+        "edit": "Edit",
+        "entry": "Entry",
+        "bind": "Bind",
+        "targets": "Targets",
+        "noTargets": "No targets bound.",
+        "removeBindingAria": "Remove {{type}} binding",
+        "effectiveScope": "Effective scope",
+        "defaultLabel": "Default",
+        "toolsAllowedSuffix_one": "tool allowed",
+        "toolsAllowedSuffix_other": "tools allowed",
+        "includeWord": "include",
+        "excludeWord": "exclude",
+        "selectors": "Selectors",
+        "noSelectors": "No selectors.",
+        "deleteEntryAria": "Delete {{type}} entry"
+      }
+    },
+    "gateways": {
+      "profileUnavailable": "Profile unavailable",
+      "toolsAllowed_one": "{{count}} tool allowed",
+      "toolsAllowed_other": "{{count}} tools allowed",
+      "noToolsAllowed": "No tools allowed",
+      "ownerAgent": "Agent {{id}}",
+      "ownerBoardUser": "Board user {{id}}",
+      "ownerBoard": "Board",
+      "scopeProject": "Project {{name}}",
+      "scopeAgent": "Agent {{name}}",
+      "scopeOther": "{{type}} {{id}}",
+      "scopeIssue": "Issue {{id}}",
+      "scopeCompany": "Company",
+      "toasts": {
+        "created": "Gateway created",
+        "createFailed": "Gateway was not created",
+        "tokenIssued": "Token issued",
+        "tokenIssuedBody": "{{name}} was created. Copy it now; it will not be shown again.",
+        "tokenIssueFailed": "Token was not issued",
+        "tokenRevoked": "Token revoked",
+        "tokenRevokeFailed": "Token was not revoked",
+        "copiedToClipboard": "Copied to clipboard",
+        "clipboardUnavailable": "Clipboard access is unavailable."
+      },
+      "pickProfileTitle": "Pick a profile",
+      "pickProfileBody": "A gateway needs an access profile before it can be created.",
+      "pickActionsTitle": "Pick token actions",
+      "pickActionsBody": "Gateway tokens need at least one allowed MCP action.",
+      "loading": "Loading gateways...",
+      "header": {
+        "title": "Named MCP gateways",
+        "description": "Stable endpoints for external clients that use the same profiles, rules, and audit trail as agent tool access.",
+        "create": "Create gateway"
+      },
+      "form": {
+        "nameLabel": "Gateway name",
+        "namePlaceholder": "Engineering laptops",
+        "profileLabel": "Access profile",
+        "loadingProfiles": "Loading profiles...",
+        "chooseProfile": "Choose a profile",
+        "descriptionLabel": "Description",
+        "descriptionPlaceholder": "Who this endpoint is for and when it should be rotated.",
+        "noProfilesHint": "Create an access profile before adding a gateway.",
+        "creating": "Creating...",
+        "create": "Create gateway"
+      },
+      "empty": "No named gateways yet. Create one here, then issue a token for the client that will connect to it.",
+      "copyEndpoint": "Copy endpoint",
+      "issueToken": "Issue token",
+      "copyLabels": {
+        "endpoint": "Gateway endpoint",
+        "bearerToken": "Gateway bearer token",
+        "snippet": "{{label}} snippet"
+      },
+      "meta": {
+        "owner": "Owner",
+        "scope": "Scope",
+        "allowedTools": "Allowed tools",
+        "allowedToolsValue": "{{tools}} via {{profile}}",
+        "profileId": "Profile {{id}}",
+        "lastActivity": "Last activity",
+        "neverUsed": "Never used"
+      },
+      "tokenForm": {
+        "nameLabel": "Token name",
+        "namePlaceholder": "Dotta's MacBook",
+        "clientLabel": "Client label",
+        "clientPlaceholder": "Cursor on work laptop",
+        "ownerNote": "Owner note",
+        "ownerNotePlaceholder": "Who owns this token and why it exists",
+        "expires": "Expires",
+        "issuing": "Issuing...",
+        "issue": "Issue token"
+      },
+      "createdToken": {
+        "title": "New token for {{name}}",
+        "copyToken": "Copy token"
+      },
+      "tokens": {
+        "title": "Tokens",
+        "empty": "No tokens issued.",
+        "revoked": "revoked",
+        "expires": "expires",
+        "noExpiry": "no expiry",
+        "revokeAria": "Revoke {{name}}",
+        "revoke": "Revoke",
+        "confirmPrompt": "Revoke this token now?",
+        "confirm": "Confirm"
+      },
+      "snippets": {
+        "title": "Client snippets",
+        "empty": "No snippets available."
+      }
+    },
+    "connectionDialogs": {
+      "transport": {
+        "mcp_remote": "remote http",
+        "local_stdio": "local stdio"
+      },
+      "catalog": {
+        "title": "Tool catalog — {{name}}",
+        "empty": "No tools discovered yet. Use “Refresh catalog” to discover tools from this connection."
+      },
+      "add": {
+        "title": "Add application",
+        "description": "Choose an existing application or create one as part of the same connection flow. Credentials stay as vault references and the connection is probed before activation.",
+        "stepApplication": "1 Application",
+        "stepConnection": "2 Connection",
+        "application": "Application",
+        "useExisting": "Use existing application",
+        "createNew": "Create new application",
+        "existingApplication": "Existing application",
+        "selectApplication": "Select an application",
+        "newName": "New application name",
+        "newNamePlaceholder": "e.g. GitHub Triage",
+        "inferredHint": "Application type is inferred from the transport you choose next.",
+        "willBeCreatedSuffix": "will be created as {{type}}.",
+        "connectionName": "Connection name",
+        "connectionNamePlaceholder": "e.g. Production GitHub",
+        "transport": "Transport",
+        "transportRemote": "Remote HTTP (no local process)",
+        "transportLocal": "Local stdio (approved template)",
+        "endpointUrl": "Endpoint URL",
+        "commandTemplate": "Command template",
+        "selectTemplate": "Select an approved template",
+        "templateHint": "Only board-approved command templates can run. Arbitrary commands are never accepted.",
+        "credentialRefs": "Credential references",
+        "removeCredAria": "Remove credential reference for {{name}}",
+        "selectSecret": "Select a vault secret",
+        "headerPlaceholder": "Header",
+        "headerAria": "Header name",
+        "add": "Add",
+        "vaultNoteBefore": "Free-text secrets are not accepted — pick a vault entry; Paperclip stores only the",
+        "vaultNoteAfter": "reference and resolves it at gateway use time.",
+        "probing": "Probing connection…",
+        "probeResult": "Probe result",
+        "toolsDiscovered": "tools discovered",
+        "probeLatency": "probe latency",
+        "quarantined": "quarantined",
+        "latencyNote": "Probe latency is a single round-trip sample. Aggregate p95 latency across traffic is tracked on the Runtime tab once the connection is live.",
+        "creatingDraft": "Creating draft…",
+        "createAndProbe": "Create & probe",
+        "probingShort": "Probing…",
+        "reprobe": "Re-probe",
+        "activating": "Activating…",
+        "activate": "Activate"
+      },
+      "toasts": {
+        "createFailed": "Could not create connection",
+        "probeFailed": "Probe failed",
+        "activated": "Connection activated",
+        "activationFailed": "Activation failed"
+      }
+    },
+    "pasteConfig": {
+      "keyFallback": "Key",
+      "draftSummary": {
+        "runsInWorkspace": "Runs in your workspace",
+        "connectsOverWeb": "Connects over the web",
+        "noKeys": "no keys needed",
+        "needsKeys_one": "needs {{count}} key",
+        "needsKeys_other": "needs {{count}} keys"
+      },
+      "oauthStartFailed": "Paperclip couldn’t start secure sign-in. Try again.",
+      "remoteOnlyError": "Only remote HTTP drafts can be checked and activated from pasted config.",
+      "manualClientRequired": "This server requires OAuth client details from its provider settings. Continue in setup to add them.",
+      "importedAppFallback": "Imported app",
+      "invalidJson": "That doesn't look like valid JSON yet — paste the whole snippet, including the outer braces.",
+      "intro": "Paste the MCP config snippet from the tool's README and we'll turn it into a friendly setup.",
+      "justUrl": "Just a URL?",
+      "justUrlSuffix": "instead.",
+      "browsePlanned": "Browse planned app connections",
+      "pasteHint": "Paste an MCP config — the snippet a README tells you to copy.",
+      "checking": "Checking…",
+      "checkConfig": "Check config",
+      "previewNote": "We'll read it and show what we found before anything is saved.",
+      "noAppFound": "We couldn't find an app in that config. Double-check you pasted the whole snippet.",
+      "foundApps_one": "We found {{count}} app in that config",
+      "foundApps_other": "We found {{count}} apps in that config",
+      "remoteNote": "Checking a remote app creates a draft connection, stores any header replacements as Paperclip secrets, and runs health/catalog discovery before activation.",
+      "localNote": "We humanized the field names from the config. These run-in-your-workspace tools stay as drafts until an admin maps them to an approved template.",
+      "draftCard": {
+        "checkActions": "Check actions",
+        "connectionName": "Connection name",
+        "replacementPlaceholder": "Paste replacement value",
+        "keysDraftOnly": "Keys from this config stay draft-only until an admin maps them to an approved template.",
+        "noKeys": "No keys needed for this one."
+      },
+      "review": {
+        "title": "Review actions for {{app}}",
+        "subtitle": "Health and catalog checks passed. Every discovered action starts allowed; you can narrow access after activation.",
+        "activate": "Activate {{enabled}} of {{total}}",
+        "readOnly": "Read-only",
+        "canMakeChanges": "Can make changes",
+        "activeForAllAgents": "{{name}} is active for all agents.",
+        "turnAllOn": "Turn all on",
+        "turnAllOff": "Turn all off",
+        "askFirst": "Ask first when enabled"
+      }
+    },
+    "toolsAccess": {
+      "companyFallback": "Company",
+      "apps": "Apps",
+      "advancedSetup": "Advanced setup",
+      "advancedBadge": "Advanced",
+      "developerTools": "Developer tools",
+      "selectOrg": "Select an organization to open advanced setup.",
+      "subtitlePrefix": "For tools that aren't in the gallery. You'll need details from the tool's documentation. Most people never need this — if the app you want is in the gallery, ",
+      "subtitleLink": "connect it there instead",
+      "subtitleSuffix": ".",
+      "devSurfacePrompt": "Looking for the developer surface?",
+      "openDeveloperTools": "Open developer tools"
+    },
+    "profilesIndex": {
+      "toasts": {
+        "duplicated": "Profile duplicated",
+        "duplicatedBody": "The copy is not assigned to anyone yet.",
+        "duplicateFailed": "Could not duplicate",
+        "archived": "Profile archived",
+        "archiveFailed": "Could not archive",
+        "restored": "Profile restored",
+        "restoreFailed": "Could not restore",
+        "deleted": "Profile deleted",
+        "deleteFailed": "Could not delete"
+      },
+      "header": {
+        "title": "Access profiles",
+        "description": "Decide which tools your agents can use. Build a profile once, then assign it to the agents that need it.",
+        "checkAccess": "Check an agent's access",
+        "newProfile": "New profile"
+      },
+      "resolver": {
+        "title": "Check an agent's access",
+        "description": "See exactly which tools an agent can use right now, and which profile allows each one."
+      },
+      "loading": "Loading profiles…",
+      "filter": {
+        "active": "Active",
+        "archived": "Archived",
+        "noArchived": "No archived profiles."
+      },
+      "table": {
+        "profile": "Profile",
+        "allows": "Allows",
+        "assignedTo": "Assigned to",
+        "status": "Status",
+        "updated": "Updated"
+      },
+      "newBadge": "{{n}} new",
+      "unassignedHint": "— does not change access",
+      "resume": "Resume",
+      "menu": {
+        "aria": "Profile actions",
+        "edit": "Edit",
+        "duplicate": "Duplicate",
+        "restore": "Restore",
+        "archive": "Archive",
+        "delete": "Delete"
+      },
+      "emptyPicker": {
+        "title": "Create your first access profile",
+        "description": "Pick a starting point. You can fine-tune exactly which tools it allows in the next step."
+      }
+    },
+    "profileSummary": {
+      "allTools": "All tools",
+      "allExcept_one": "All except {{count}} tool",
+      "allExcept_other": "All except {{count}} tools",
+      "tools_one": "{{count}} tool",
+      "tools_other": "{{count}} tools",
+      "apps_one": "{{count}} app",
+      "apps_other": "{{count}} apps",
+      "agents_one": "{{count}} agent",
+      "agents_other": "{{count}} agents",
+      "assignments_one": "{{count}} assignment",
+      "assignments_other": "{{count}} assignments",
+      "orgDefault": "Organization default",
+      "notAssigned": "Not assigned yet",
+      "status": {
+        "draft": "Draft",
+        "active": "Active",
+        "disabled": "Off",
+        "archived": "Archived"
+      }
+    },
+    "profileModel": {
+      "capability": {
+        "read": "Read-only",
+        "write": "Makes changes",
+        "destructive": "Destructive"
+      },
+      "fallbackGroupName": "Tools",
+      "noneSelected": "None selected",
+      "allAppTools": "All {{app}} tools ({{total}})",
+      "allAppExcept": "All {{app}} except {{n}}",
+      "someOfTools": "{{n}} of {{total}} {{app}} tools",
+      "templates": {
+        "readOnly": {
+          "title": "Read-only",
+          "description": "See and fetch, but never change anything."
+        },
+        "everyday": {
+          "title": "Everyday work",
+          "description": "Read and make routine changes — no destructive tools."
+        },
+        "fullAccess": {
+          "title": "Full access",
+          "description": "Everything every connected app offers."
+        },
+        "scratch": {
+          "title": "Start from scratch",
+          "description": "An empty profile you build up tool by tool."
+        },
+        "copy": {
+          "title": "Copy an existing profile",
+          "description": "Start from a profile you already have."
+        }
+      }
+    },
+    "profileActionDialog": {
+      "archive": {
+        "title": "Archive profile",
+        "body_one": "This profile stops applying to {{count}} agent. You can restore it later.",
+        "body_other": "This profile stops applying to {{count}} agents. You can restore it later.",
+        "confirm": "Archive"
+      },
+      "restore": {
+        "title": "Restore profile",
+        "body": "This profile will be active again and can be assigned to agents.",
+        "confirm": "Restore"
+      },
+      "delete": {
+        "title": "Delete profile",
+        "bodyDefaultBlocked": "This profile is the organization default. Reassign the organization default to another profile before deleting it.",
+        "body_one": "This permanently deletes the profile and removes {{count}} assignment.",
+        "body_other": "This permanently deletes the profile and removes {{count}} assignments.",
+        "confirm": "Delete"
+      },
+      "reassignFirst": "Choose another access profile and make it the organization default first."
+    },
+    "routes": {
+      "companyFallback": "Company",
+      "orgFallback": "Organization",
+      "apps": "Apps",
+      "accessProfiles": "Access profiles",
+      "profileDetail": "Profile detail",
+      "selectOrgProfile": "Select an organization and profile.",
+      "resumeDraft": "Resume draft",
+      "newProfile": "New profile",
+      "selectOrgCreate": "Select an organization to create a profile.",
+      "finishTitle": "Finish your profile",
+      "newTitle": "New access profile",
+      "subtitle": "Choose which tools this profile allows, then assign it to the agents that need them."
+    },
+    "profileWizard": {
+      "steps": {
+        "name": "Name",
+        "chooseTools": "Choose tools",
+        "assign": "Assign"
+      },
+      "untitledProfile": "Untitled profile",
+      "toasts": {
+        "saveFailed": "Could not save",
+        "saved": "Profile saved",
+        "saveProfileFailed": "Could not save profile",
+        "draftSaved": "Draft saved",
+        "draftSavedBody": "Pick it back up from the profiles list."
+      },
+      "noDraftError": "No draft to finish",
+      "loading": "Loading draft…",
+      "footer": {
+        "allows": "Allows {{allowed}} of {{total}} tools",
+        "saveFinishLater": "Save & finish later",
+        "saveProfile": "Save profile"
+      },
+      "stepName": {
+        "startFrom": "Start from",
+        "whichProfile": "Which profile?",
+        "noCopyOptions": "You don't have another profile to copy yet.",
+        "namePlaceholder": "e.g. Everyday work",
+        "descriptionLabel": "Description (optional)",
+        "descriptionPlaceholder": "What is this profile for?",
+        "identifier": "Identifier",
+        "identifierHint": "Used in exports and the API. Auto-filled from the name."
+      },
+      "stepAssign": {
+        "orgDefault": "Make this the organization default",
+        "orgDefaultHint": "Every agent without its own profile uses this one.",
+        "replaces": "Replaces “{{name}}”.",
+        "assignToAgents": "Assign to agents",
+        "contextOrgDefault": "organization default",
+        "alreadyHas": "already has: {{list}}",
+        "noProfilesYet": "no profiles yet",
+        "overlapHint": "If an agent has several profiles, it can use anything any of them allows.",
+        "moreTargets": "More targets",
+        "moreTargetsHint": "Assign this profile to a whole project or a scheduled routine instead of (or as well as) individual agents.",
+        "projects": "Projects",
+        "routines": "Routines"
+      },
+      "errors": {
+        "updateAssignment": "Could not update assignment {{key}}",
+        "rollbackFailures": "; {{n}} rollback operation(s) also failed"
+      }
+    },
+    "wizardToolsStep": {
+      "loading": "Loading tools…",
+      "coldState": {
+        "title": "App connections are coming soon",
+        "body": "Profiles will be available once app connections are ready. Browse the planned integrations in the meantime.",
+        "browse": "Browse app connections"
+      },
+      "searchPlaceholder": "Search tools…",
+      "noMatch": "No tools match “{{search}}”.",
+      "clearSearch": "Clear search",
+      "appRow": {
+        "aria": "All {{app}} tools",
+        "title": "All {{app}} tools ({{n}})",
+        "includesLater": "includes tools {{app}} adds later"
+      },
+      "newTools": {
+        "legend": "New tools that appear later",
+        "deny": "Stay blocked until someone allows them",
+        "denyHint": "New tools an app adds later won't be usable until you review them.",
+        "allow": "Allowed automatically",
+        "allowHint": "Any tool an app adds later becomes usable right away.",
+        "recommended": "Recommended",
+        "risky": "(risky)"
+      },
+      "rules": {
+        "kindToolName": "Tool name pattern",
+        "kindRiskLevel": "Risk level",
+        "kindCatalogEntry": "By tool ID",
+        "allow": "Allow",
+        "block": "Block",
+        "summaryMatching": "{{verb}} tools matching {{value}}",
+        "summaryRisk": "{{verb}} {{level}} tools",
+        "summaryTool": "{{verb}} tool {{value}}",
+        "title": "Advanced rules",
+        "hint": "Match tools by a name pattern, a risk level, or a specific tool ID. These run on top of the choices above.",
+        "removeAria": "Remove rule",
+        "valueToolPlaceholder": "e.g. gmail.send*",
+        "valueIdPlaceholder": "tool ID",
+        "add": "Add rule"
+      }
+    },
+    "profileDetail": {
+      "toasts": {
+        "updated": "Profile updated",
+        "updateFailed": "Could not update profile",
+        "duplicated": "Profile duplicated",
+        "duplicatedBody": "The copy is not assigned to anyone yet.",
+        "duplicateFailed": "Could not duplicate",
+        "deleted": "Profile deleted",
+        "deleteFailed": "Could not delete",
+        "assignmentRemoved": "Assignment removed",
+        "assignmentRemoveFailed": "Could not remove assignment",
+        "reviewSubmitted": "New tools reviewed",
+        "reviewFailed": "Could not submit review"
+      },
+      "loading": "Loading profile...",
+      "notFound": {
+        "title": "Profile not found",
+        "description": "This access profile may have been deleted.",
+        "back": "Back to profiles"
+      },
+      "actions": {
+        "edit": "Edit",
+        "duplicate": "Duplicate",
+        "restore": "Restore",
+        "archive": "Archive",
+        "delete": "Delete"
+      },
+      "updated": "Updated",
+      "createdBanner": {
+        "title": "Profile saved",
+        "unassignedBody": "Assign it to agents before it changes their access.",
+        "assignedBody": "Assignments are active now.",
+        "assign": "Assign",
+        "dismiss": "Dismiss"
+      },
+      "archivedBanner": "This profile is archived. It does not apply to agents until it is restored.",
+      "sections": {
+        "allows": "What it allows",
+        "editTools": "Edit tools",
+        "whoHasIt": "Who has it",
+        "assign": "Assign",
+        "newTools": "New tools that appear later"
+      },
+      "checkAccess": "Check what an agent can actually do",
+      "newToolsBanner": {
+        "loading": "New tools need review",
+        "body_one": "{{app}} added {{count}} new tool since your last review",
+        "body_other": "{{app}} added {{count}} new tools since your last review",
+        "subtitle": "Choose which ones this profile should allow.",
+        "review": "Review"
+      },
+      "reviewDialog": {
+        "title": "Review new tools",
+        "description": "Allow the tools this profile should use. Keep the rest blocked.",
+        "loading": "Loading new tools...",
+        "empty": "There are no new tools waiting for review.",
+        "appToolFallback": "App tool",
+        "added": "added {{date}}",
+        "allow": "Allow",
+        "keepBlocked": "Keep blocked",
+        "submit": "Submit review"
+      },
+      "allowList": {
+        "zero": "This profile allows 0 tools. Agents with only this profile will not be able to use app tools.",
+        "colTool": "Tool",
+        "colApp": "App",
+        "colCapabilities": "Capabilities",
+        "colSource": "Source",
+        "reconnect": "Reconnect",
+        "disconnected": "{{app}} is disconnected",
+        "addedAutomatically": "added automatically · {{date}}",
+        "showingFirstN": "Showing 80 of {{n}} allowed tools.",
+        "allowsOf": "Allows {{n}} of {{total}} known tools."
+      },
+      "assignments": {
+        "notAssigned": "Not assigned yet",
+        "notAssignedHint": "Assign this profile before it changes access.",
+        "remove": "Remove"
+      },
+      "newToolsSetting": {
+        "denyTitle": "Stay blocked until reviewed",
+        "denyBody": "New tools do not become available automatically.",
+        "allowTitle": "Allowed automatically",
+        "allowBody": "New tools from selected apps become available right away."
+      },
+      "editDialog": {
+        "title": "Edit profile",
+        "description": "Update the profile name and description.",
+        "duplicateName": "Another profile already uses this name."
+      },
+      "duplicateDialog": {
+        "title": "Duplicate profile",
+        "description": "The copy starts unassigned unless you choose to copy assignments too.",
+        "duplicateName": "Another profile already uses this name.",
+        "alsoCopyAssignments": "Also copy assignments?",
+        "duplicate": "Duplicate"
+      },
+      "removeAssignmentDialog": {
+        "title": "Remove assignment",
+        "companyBody": "Removing the organization default changes access for every agent that relies on it.",
+        "body": "Remove this profile from {{label}}.",
+        "remove": "Remove"
+      },
+      "source": {
+        "direct": "added directly",
+        "ruleAllApp": "added by rule: all {{app}}",
+        "ruleRisk": "added by rule: {{level}} tools"
+      },
+      "capability": {
+        "destructive": "Destructive",
+        "write": "Write",
+        "read": "Read"
+      },
+      "newToolsApp": {
+        "fallback": "An app",
+        "unknownApp": "Unknown app",
+        "two": "{{a}} and {{b}}",
+        "more": "{{a}} and {{n}} more apps"
+      },
+      "assignment": {
+        "orgDefault": "Organization default",
+        "unknownAgent": "Unknown agent",
+        "unknownProject": "Unknown project",
+        "unknownRoutine": "Unknown routine",
+        "organization": "Organization",
+        "typeCompany": "Organization default",
+        "typeAgent": "Agent",
+        "typeProject": "Project",
+        "typeRoutine": "Routine",
+        "typeOther": "Scoped assignment"
+      },
+      "noDescription": "No description yet."
+    },
+    "runner": {
+      "actionLabels": {
+        "accept": "Allow once",
+        "accept_for_session": "Allow for session",
+        "decline": "Deny",
+        "cancel": "Cancel"
+      },
+      "runtimeApprovalRequested": "Runtime approval requested",
+      "answerFallback": "Answer {{n}}",
+      "questionFallback": "Question {{n}}",
+      "optionFallback": "Option {{n}}",
+      "activityTitles": {
+        "plan": "Plan",
+        "tool_execution": "Tool execution",
+        "research": "Research",
+        "delegation": "Delegation",
+        "model_identity": "Model",
+        "context": "Context",
+        "artifact": "Artifact",
+        "review": "Review mode",
+        "hook": "Hook",
+        "memory": "Memory citation",
+        "safety": "Safety review",
+        "terminal": "Terminal input",
+        "wait": "Intentional wait",
+        "provider_notice": "Provider notice"
+      },
+      "turnStarted": "Turn started",
+      "turnCompleted": "Turn completed",
+      "turnFailed": "Turn failed",
+      "sessionStarted": "Paperclip session started · {{detail}}",
+      "sessionResumed": "Paperclip session resumed · {{detail}}",
+      "unsafeWorkspaceRef": "Runner: Ignored an unsafe workspace file reference",
+      "oversizedInput": "Runner: Cannot display this input request because its complete context exceeds 100,000 characters. No decision can be submitted from this request.",
+      "runnerDiagnostic": "Runner: {{message}}",
+      "fallbackNames": {
+        "paperclipTool": "Paperclip tool",
+        "tool": "Tool"
+      },
+      "completed": {
+        "command": "command completed",
+        "fileChange": "file change completed",
+        "named": "{{name}} completed"
+      },
+      "itemFailed": "Runner item failed"
+    },
+    "adapters": {
+      "suffix": {
+        "gateway": "gateway"
+      },
+      "externalAdapter": "External adapter",
+      "externalScopedAdapter": "External {{suffix}} adapter",
+      "labels": {
+        "process": "Process"
+      },
+      "descriptions": {
+        "antigravityRuntime": "Antigravity through Paperclip Runner",
+        "copilotRuntime": "Copilot through Paperclip Runner",
+        "kimiRuntime": "Kimi Code through Paperclip Runner",
+        "acpxRetired": "Retired standalone ACPX adapter",
+        "acpxDisabled": "Use Claude Code or Codex with the ACP engine",
+        "claudeLocal": "Claude Code CLI harness",
+        "codexLocal": "Codex CLI harness",
+        "paperclipRunner": "Experimental Rust runner with a Codex provider",
+        "geminiLocal": "Gemini CLI harness",
+        "grokLocal": "Grok Build harness",
+        "kimiLocal": "Kimi Code CLI harness",
+        "hermesGateway": "Remote Hermes API server",
+        "hermesLocal": "Hermes harness",
+        "opencodeLocal": "OpenCode multi-provider harness",
+        "piLocal": "Pi harness",
+        "cursor": "Cursor CLI harness",
+        "grokBot": "An existing external Bot in Grok",
+        "openaiDot": "Your Dot in ChatGPT",
+        "muse": "Your personal Muse at muse.ai",
+        "cursorCloud": "Managed remote Cursor agent",
+        "openclawGateway": "External gateway adapter",
+        "openclawDisabled": "Invite external agents from the add-agent modal",
+        "process": "Internal process adapter",
+        "http": "Internal HTTP adapter"
+      }
+    },
+    "codexLocal": {
+      "instructionsFileHint": "Absolute path to a markdown file (e.g. AGENTS.md) that defines this agent's behavior. Injected into the system prompt at runtime. Note: Codex may still auto-apply repo-scoped AGENTS.md files from the workspace.",
+      "harnessAcpAgents": "ACP agents",
+      "fastMode": {
+        "manualModel": "Fast mode will be passed through for this manual model. If Codex rejects it, turn the toggle off.",
+        "supported": "Fast mode consumes credits/tokens much faster than standard Codex runs.",
+        "unsupported": "Fast mode currently only works on {{models}} or manual model IDs. Paperclip will ignore this toggle until the model is switched."
+      },
+      "engine": {
+        "label": "Execution engine",
+        "hint": "Default uses ACP. If ACP is unavailable, the run fails with a setup error. Choose CLI explicitly to use it.",
+        "aria": "Execution engine",
+        "auto": "Default (ACP)",
+        "cli": "Codex CLI",
+        "acp": "ACP"
+      },
+      "harness": {
+        "label": "Harness",
+        "hint": "Choose the agent harness that runs your tasks.",
+        "aria": "Harness",
+        "unknownProvider": "{{provider}} (unknown provider)"
+      },
+      "dot": {
+        "connection": "Dot connection",
+        "connectionHint": "A verified event round trip is required before assigning work.",
+        "readAttachments": "Read task attachments",
+        "readAttachmentsHint": "Let Dot read files attached to its current assigned task. File contents are sent to OpenAI. Does not require workspace command access; off by default.",
+        "workspace": "Workspace files and commands",
+        "workspaceHint": "Let Dot read and write its assigned workspace and publish files. Requires a local Runner. Commands are available only on Linux with bubblewrap; they cannot read your home directory or use injected credentials.",
+        "unmetered": "Allow externally billed provider",
+        "unmeteredHint": "Dot does not report token usage or cost. Paperclip cannot enforce a provider spend ceiling; known company and agent budget limits still apply."
+      },
+      "muse": {
+        "connection": "Muse connection",
+        "connectionHint": "Pairing, receiver contact, background reply, and agent setup are verified separately.",
+        "unmetered": "Allow externally billed provider",
+        "unmeteredHint": "Muse does not report usage or cost. Paperclip cannot enforce a Muse spend ceiling; known company and agent budget limits still apply."
+      },
+      "acpx": {
+        "agent": "ACP agent",
+        "agentHint": "Choose a qualified harness and enter its exact model ID.",
+        "aria": "ACP agent",
+        "qualificationPending": " — qualification pending",
+        "cursorMode": "Cursor mode",
+        "cursorModeHint": "Select Cursor's session mode. Permissions and company approval rules still apply.",
+        "ariaCursorMode": "Cursor mode",
+        "unsupportedMode": "Unsupported saved mode — select Agent, Plan, or Ask",
+        "optionAgent": "Agent",
+        "optionPlan": "Plan",
+        "optionAsk": "Ask",
+        "piLevel": "Pi thinking level",
+        "piLevelHint": "The runner verifies this exact level before each session can prompt. Changing it starts a new session.",
+        "ariaPiLevel": "Pi thinking level",
+        "unsupportedPi": "Unsupported saved thinking level",
+        "off": "Off",
+        "low": "Low",
+        "high": "High",
+        "max": "Max"
+      },
+      "managed": {
+        "profile": "Managed Agent profile",
+        "profileHint": "Company-scoped qualified profile ID or key. Remote resource identity is loaded from the stored profile, not this agent config.",
+        "spendCeiling": "Session spend ceiling (USD)",
+        "spendCeilingHint": "Optional per-agent hard ceiling. Leave 1.00 to use a conservative default.",
+        "retention": "Acknowledge managed retention",
+        "retentionHint": "Claude Managed is a stateful beta service and is not eligible for ZDR or HIPAA modes."
+      },
+      "agentCore": {
+        "profile": "AgentCore profile",
+        "profileHint": "Company-scoped qualified profile ID or key. Harness, Memory, IAM, and context-store identity come from the stored profile.",
+        "ceiling": "Estimated session ceiling (USD)",
+        "ceilingHint": "Paperclip estimate; AWS does not provide a per-session currency hard stop.",
+        "maxIterations": "Maximum iterations",
+        "maxIterationsHint": "Qualified range is 1–8. Invalid values fail closed to 8.",
+        "maxOutputTokens": "Maximum output tokens",
+        "maxOutputTokensHint": "Qualified range is 1–4096.",
+        "timeout": "Invocation timeout (seconds)",
+        "timeoutHint": "Qualified range is 1–300 seconds.",
+        "retention": "Acknowledge 90-day Memory retention",
+        "retentionHint": "The qualified AgentCore profile retains short-term Memory events for exactly 90 days."
+      },
+      "permissionMode": {
+        "label": "Permission mode",
+        "hintSuffix": " The selected mode does not widen Paperclip's workspace, network, credential, or planning boundaries.",
+        "aria": "Permission mode",
+        "unsupported": "Unsupported saved mode — select a qualified mode",
+        "codexUnsupportedError": "This saved Codex mode cannot start or recover a Paperclip Runner run. Select Automatic (isolated) to remediate it."
+      },
+      "lifecycle": {
+        "label": "Runner lifecycle",
+        "hint": "Turn by turn suspends after each run. Warm keeps the same provider process available between governed runs.",
+        "aria": "Runner lifecycle",
+        "perTurn": "Turn by turn",
+        "warm": "Warm session"
+      },
+      "idleTimeout": {
+        "label": "Warm idle timeout (ms)",
+        "hint": "After this much inactivity, runnerd checkpoints and suspends the provider session. The maximum is 24 hours."
+      },
+      "acpServer": {
+        "label": "ACP server command",
+        "hint": "Optional override for the Codex ACP server command. Defaults to the package-local codex-acp binary."
+      },
+      "acpSession": {
+        "label": "ACP session mode",
+        "hint": "Persistent keeps ACP session state between runs. One-shot starts fresh each run.",
+        "aria": "ACP session mode",
+        "persistent": "Persistent",
+        "oneshot": "One-shot"
+      },
+      "acpPermissions": {
+        "label": "ACP non-interactive permissions",
+        "hint": "Fallback if the ACP agent asks for input outside an interactive session.",
+        "aria": "ACP non-interactive permissions",
+        "deny": "Deny",
+        "fail": "Fail"
+      },
+      "acpStateDir": {
+        "label": "ACP state directory",
+        "hint": "Optional ACP session state directory. Defaults to Paperclip-managed organization/agent scoped storage."
+      },
+      "acpWarmIdle": {
+        "label": "ACP warm process idle ms",
+        "hint": "Defaults to 0, which closes the ACP process after each run while retaining persistent session state."
+      },
+      "instructionsFile": {
+        "label": "Agent instructions file"
+      },
+      "toggles": {
+        "bypassSandbox": "Bypass sandbox",
+        "enableSearch": "Enable search",
+        "fastMode": "Fast mode"
+      }
+    },
+    "hermesGateway": {
+      "secret": {
+        "showAria": "Show {{label}}",
+        "hideAria": "Hide {{label}}",
+        "storedPlaceholder": "Stored secret; enter a new value to replace it"
+      },
+      "apiBaseUrl": {
+        "label": "API base URL",
+        "hint": "Hermes API server base URL that Paperclip can reach, such as http://127.0.0.1:8642 or a private HTTPS URL. Default dashboard root/chat URLs such as http://127.0.0.1:9119/chat are accepted and map to /api."
+      },
+      "paperclipApiUrl": {
+        "label": "Paperclip API URL",
+        "hint": "Optional Paperclip API URL reachable by the Hermes host. This is not a credential."
+      },
+      "sessionKeyStrategy": {
+        "label": "Session key strategy",
+        "hint": "Controls X-Hermes-Session-Key. Issue scoped prevents cross-task memory bleed by default.",
+        "issue": "Issue scoped",
+        "agent": "Agent scoped",
+        "run": "Run scoped",
+        "none": "None"
+      },
+      "timeout": {
+        "label": "Timeout seconds"
+      },
+      "eventReconnect": {
+        "label": "Event reconnect ms",
+        "hint": "Delay before reconnecting the Hermes SSE events stream after a nonterminal disconnect."
+      },
+      "insecureHttp": {
+        "label": "Dangerously allow remote HTTP",
+        "hint": "Unsafe dev-only escape hatch. Remote Hermes gateways should use HTTPS; loopback HTTP remains allowed."
+      },
+      "extraHeaders": {
+        "label": "Extra headers",
+        "hint": "Optional JSON object of extra nonsecret headers. Security-critical headers are generated by the adapter."
+      },
+      "instructions": {
+        "label": "Instructions",
+        "hint": "Optional stable Hermes instructions sent separately from the wake input."
+      }
+    },
+    "openclawGateway": {
+      "gatewayUrl": {
+        "label": "Gateway URL"
+      },
+      "authToken": {
+        "label": "Gateway auth token",
+        "placeholder": "OpenClaw gateway token"
+      },
+      "agentId": {
+        "label": "Agent ID"
+      },
+      "sessionStrategy": {
+        "label": "Session strategy",
+        "fixed": "Fixed",
+        "perIssue": "Per issue",
+        "perRun": "Per run"
+      },
+      "sessionKey": {
+        "label": "Session key"
+      },
+      "password": {
+        "label": "Password (alternative auth)",
+        "placeholder": "Gateway shared password"
+      },
+      "role": {
+        "label": "Role"
+      },
+      "scopes": {
+        "label": "Scopes (comma-separated)"
+      },
+      "apiUrlOverride": {
+        "label": "Paperclip API URL override"
+      },
+      "timeout": {
+        "label": "Timeout (seconds)"
+      },
+      "headersJson": {
+        "label": "Headers JSON"
+      },
+      "claimedKeyPath": {
+        "label": "Claimed API key path"
+      },
+      "waitTimeout": {
+        "label": "Wait timeout (ms)"
+      },
+      "deviceAuth": {
+        "label": "Disable device auth",
+        "labelInfo": "Device auth",
+        "skip": "Skip device key authentication",
+        "autoPair": "Auto-pair on first connect",
+        "autoPairHint": "Automatically approve device pairing",
+        "info": "When enabled, Paperclip persists a device key during onboarding so pairing approvals remain stable across runs."
+      }
+    }
+  }
+}

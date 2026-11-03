@@ -9,6 +9,7 @@ import type {
   AttentionSourceKind,
   AttentionWorkspaceRef,
 } from "@paperclipai/shared";
+import { t } from "@/i18n";
 
 export type AttentionListOptions = AttentionFeedQuery;
 
@@ -47,23 +48,25 @@ interface SourceMeta {
   label: string;
 }
 
-const SOURCE_META: Record<AttentionSourceKind, SourceMeta> = {
-  approval: { label: "Approval" },
-  decision: { label: "Decision" },
-  issue_thread_interaction: { label: "Decision requested" },
-  join_request: { label: "Join request" },
-  recovery_action: { label: "Recovery" },
+/** i18n key suffix per attention source kind. */
+const SOURCE_LABEL_KEYS: Record<AttentionSourceKind, string> = {
+  approval: "approval",
+  decision: "decision",
+  issue_thread_interaction: "issueThreadInteraction",
+  join_request: "joinRequest",
+  recovery_action: "recoveryAction",
   // Read compatibility for persisted decisions from the retired feature.
-  productivity_review: { label: "Task" },
-  blocker_attention: { label: "Blocked dependency" },
-  review: { label: "Review" },
-  failed_run: { label: "Failed run" },
-  budget_alert: { label: "Budget" },
-  agent_error_alert: { label: "Agent error" },
+  productivity_review: "productivityReview",
+  blocker_attention: "blockerAttention",
+  review: "review",
+  failed_run: "failedRun",
+  budget_alert: "budgetAlert",
+  agent_error_alert: "agentErrorAlert",
 };
 
 export function sourceMeta(kind: AttentionSourceKind): SourceMeta {
-  return SOURCE_META[kind] ?? { label: kind.replaceAll("_", " ") };
+  const key = SOURCE_LABEL_KEYS[kind];
+  return { label: key ? t(`libui.attention.source.${key}`) : kind.replaceAll("_", " ") };
 }
 
 interface SeverityStyle {
@@ -73,12 +76,31 @@ interface SeverityStyle {
   label: string;
 }
 
-const SEVERITY_STYLE: Record<AttentionSeverity, SeverityStyle> = {
+const SEVERITY_STYLE_BASE: Record<AttentionSeverity, SeverityStyle> = {
   critical: { accent: "bg-red-500", dot: "bg-red-500", label: "Critical" },
   high: { accent: "bg-orange-500", dot: "bg-orange-500", label: "High" },
   medium: { accent: "bg-yellow-500", dot: "bg-yellow-500", label: "Medium" },
   low: { accent: "bg-blue-500", dot: "bg-blue-500", label: "Low" },
 };
+
+const SEVERITY_LABEL_KEYS: Record<AttentionSeverity, string> = {
+  critical: "critical",
+  high: "high",
+  medium: "medium",
+  low: "low",
+};
+
+// Consumers read `.label` directly, so the record is wrapped in a proxy that
+// translates the label on read while accent/dot classes pass through untouched.
+const SEVERITY_STYLE: Record<AttentionSeverity, SeverityStyle> = new Proxy(SEVERITY_STYLE_BASE, {
+  get(target, prop, receiver) {
+    if (typeof prop === "string" && Object.hasOwn(target, prop)) {
+      const base = target[prop as AttentionSeverity];
+      return { ...base, label: t(`libui.attention.severity.${SEVERITY_LABEL_KEYS[prop as AttentionSeverity]}`) };
+    }
+    return Reflect.get(target, prop, receiver);
+  },
+});
 
 export function severityStyle(severity: AttentionSeverity): SeverityStyle {
   return SEVERITY_STYLE[severity] ?? SEVERITY_STYLE.low;
@@ -187,8 +209,9 @@ function quote(text: string | null | undefined): string | null {
   return `“${trimmed}”`;
 }
 
-function countNoun(count: number, singular: string): string {
-  return `${count} ${count === 1 ? singular : `${singular}s`}`;
+/** Plural-aware count noun. Keys live under `libui.attention.count.*`. */
+function countNoun(count: number, noun: "option" | "question" | "suggestedTask"): string {
+  return t(`libui.attention.count.${noun}`, { count });
 }
 
 /**
@@ -219,12 +242,12 @@ export function attentionDetailLine(item: AttentionItem): string | null {
     }
     case "suggested_tasks": {
       const q = quote(detail.firstTaskTitle);
-      const label = countNoun(detail.taskCount, "suggested task");
+      const label = countNoun(detail.taskCount, "suggestedTask");
       return q ? `${label} — ${q}` : label;
     }
     case "item_verdicts": {
       const q = quote(detail.promptExcerpt);
-      const label = `${countNoun(detail.itemCount, "item")} to verdict`;
+      const label = t("libui.attention.detail.itemsToVerdict", { count: detail.itemCount });
       return q ? `${label} — ${q}` : label;
     }
     case "failed_run":
@@ -237,10 +260,18 @@ export function attentionDetailLine(item: AttentionItem): string | null {
       const b = detail.blockingIssue;
       if (!b) return null;
       const id = b.identifier ? `${b.identifier} ` : "";
-      return b.title ? `Blocked by ${id}${b.title}` : b.identifier ? `Blocked by ${b.identifier}` : null;
+      return b.title
+        ? t("libui.attention.detail.blockedBy", { id, title: b.title })
+        : b.identifier
+          ? t("libui.attention.detail.blockedByOnly", { id: b.identifier })
+          : null;
     }
     case "budget":
-      return `${Math.round(detail.observedPercent)}% of budget used ($${detail.amountObserved} / $${detail.amountLimit})`;
+      return t("libui.attention.detail.budget", {
+        percent: Math.round(detail.observedPercent),
+        observed: `$${detail.amountObserved}`,
+        limit: `$${detail.amountLimit}`,
+      });
     case "generic":
       return quote(detail.summaryExcerpt);
     default:
@@ -371,9 +402,9 @@ export function buildDeskShelves(items: AttentionItem[], now: number): DeskShelf
   const earlier = rest.filter((item) => !attentionIsNewToday(item, now));
 
   const shelves: DeskShelf[] = [];
-  if (decideNow.length > 0) shelves.push({ key: "desk:decide-now", label: "Decide now", items: decideNow });
-  if (newToday.length > 0) shelves.push({ key: "desk:new-today", label: "New today", items: newToday });
-  if (earlier.length > 0) shelves.push({ key: "desk:earlier", label: "Earlier", items: earlier });
+  if (decideNow.length > 0) shelves.push({ key: "desk:decide-now", label: t("libui.attention.desk.decideNow"), items: decideNow });
+  if (newToday.length > 0) shelves.push({ key: "desk:new-today", label: t("libui.attention.desk.newToday"), items: newToday });
+  if (earlier.length > 0) shelves.push({ key: "desk:earlier", label: t("libui.attention.desk.earlier"), items: earlier });
   return shelves;
 }
 
@@ -412,18 +443,41 @@ export function attentionIdleDays(item: AttentionItem, now: number): number {
 
 export type DecideByPreset = "today" | "this_week" | "whenever";
 
-export const DECIDE_BY_OPTIONS: ReadonlyArray<[DecideByPreset, string]> = [
+// Option labels translate at read time (consumers index the tuples), so the
+// exported list is a proxy over the static base.
+const DECIDE_BY_OPTIONS_BASE: ReadonlyArray<[DecideByPreset, string]> = [
   ["today", "Today"],
   ["this_week", "This week"],
   ["whenever", "Whenever"],
 ];
 
+function translatedOptionList<T extends string>(
+  base: ReadonlyArray<[T, string]>,
+  keys: Record<T, string>,
+): ReadonlyArray<[T, string]> {
+  return new Proxy(base, {
+    get(target, prop, receiver) {
+      if (typeof prop === "string" && /^\d+$/.test(prop)) {
+        const entry = target[Number(prop)];
+        return entry && [entry[0], t(`libui.attention.options.${keys[entry[0]]}`)] as [T, string];
+      }
+      return Reflect.get(target, prop, receiver);
+    },
+  });
+}
+
+export const DECIDE_BY_OPTIONS: ReadonlyArray<[DecideByPreset, string]> = translatedOptionList(DECIDE_BY_OPTIONS_BASE, {
+  today: "today",
+  this_week: "thisWeek",
+  whenever: "whenever",
+});
+
 /** Human label for any stored `decideBy` value (preset or `YYYY-MM-DD`). */
 export function decideByLabel(decideBy: string | null): string {
-  if (!decideBy) return "Not set";
-  if (decideBy === "today") return "Today";
-  if (decideBy === "this_week") return "This week";
-  if (decideBy === "whenever") return "Whenever";
+  if (!decideBy) return t("libui.attention.options.notSet");
+  if (decideBy === "today") return t("libui.attention.options.today");
+  if (decideBy === "this_week") return t("libui.attention.options.thisWeek");
+  if (decideBy === "whenever") return t("libui.attention.options.whenever");
   if (/^\d{4}-\d{2}-\d{2}$/.test(decideBy)) {
     const parsed = new Date(`${decideBy}T00:00:00.000Z`);
     return Number.isFinite(parsed.getTime())
@@ -441,13 +495,23 @@ export function decideByLabel(decideBy: string | null): string {
 
 export type AttentionDateRangeId = "all" | "today" | "yesterday" | "last_7_days" | "this_month" | "custom";
 
-export const ATTENTION_DATE_RANGE_OPTIONS: ReadonlyArray<[AttentionDateRangeId, string]> = [
+const ATTENTION_DATE_RANGE_OPTIONS_BASE: ReadonlyArray<[AttentionDateRangeId, string]> = [
   ["all", "All"],
-  ["today", "Today"],
-  ["yesterday", "Yesterday"],
   ["last_7_days", "Last 7 days"],
   ["this_month", "This month"],
 ];
+
+export const ATTENTION_DATE_RANGE_OPTIONS: ReadonlyArray<[AttentionDateRangeId, string]> = translatedOptionList(
+  ATTENTION_DATE_RANGE_OPTIONS_BASE,
+  {
+    all: "all",
+    today: "today",
+    yesterday: "yesterday",
+    last_7_days: "last7Days",
+    this_month: "thisMonth",
+    custom: "custom",
+  },
+);
 
 export interface AttentionActivityBounds {
   activitySince?: string;
@@ -521,7 +585,7 @@ export type AttentionGroupBy = "none" | "date" | "type" | "project" | "severity"
 export type AttentionSortOrder = "newest" | "oldest";
 
 /** Ordered list used to render the group-by picker (label + value). */
-export const ATTENTION_GROUP_BY_OPTIONS: ReadonlyArray<[AttentionGroupBy, string]> = [
+const ATTENTION_GROUP_BY_OPTIONS_BASE: ReadonlyArray<[AttentionGroupBy, string]> = [
   ["none", "None"],
   ["date", "Date"],
   ["type", "Type"],
@@ -529,10 +593,29 @@ export const ATTENTION_GROUP_BY_OPTIONS: ReadonlyArray<[AttentionGroupBy, string
   ["severity", "Severity"],
 ];
 
-export const ATTENTION_SORT_OPTIONS: ReadonlyArray<[AttentionSortOrder, string]> = [
+export const ATTENTION_GROUP_BY_OPTIONS: ReadonlyArray<[AttentionGroupBy, string]> = translatedOptionList(
+  ATTENTION_GROUP_BY_OPTIONS_BASE,
+  {
+    none: "none",
+    date: "date",
+    type: "type",
+    project: "project",
+    severity: "severity",
+  },
+);
+
+const ATTENTION_SORT_OPTIONS_BASE: ReadonlyArray<[AttentionSortOrder, string]> = [
   ["newest", "Newest first"],
   ["oldest", "Oldest first"],
 ];
+
+export const ATTENTION_SORT_OPTIONS: ReadonlyArray<[AttentionSortOrder, string]> = translatedOptionList(
+  ATTENTION_SORT_OPTIONS_BASE,
+  {
+    newest: "newest",
+    oldest: "oldest",
+  },
+);
 
 /**
  * Filter selections. Empty arrays mean "no filter" (show everything). The
@@ -818,11 +901,11 @@ export function planAttentionRenderRows(options: {
 const DATE_BUCKET_ORDER = ["today", "yesterday", "this_week", "earlier"] as const;
 type DateBucket = (typeof DATE_BUCKET_ORDER)[number];
 
-const DATE_BUCKET_LABELS: Record<DateBucket, string> = {
-  today: "Today",
-  yesterday: "Yesterday",
-  this_week: "This week",
-  earlier: "Earlier",
+const DATE_BUCKET_LABEL_KEYS: Record<DateBucket, string> = {
+  today: "today",
+  yesterday: "yesterday",
+  this_week: "thisWeek",
+  earlier: "earlier",
 };
 
 const MS_PER_DAY = 24 * 60 * 60 * 1000;
@@ -840,13 +923,6 @@ export function attentionDateBucket(activityAt: string, now: number): DateBucket
   if (ts >= todayStart - 6 * MS_PER_DAY) return "this_week";
   return "earlier";
 }
-
-const SEVERITY_LABEL: Record<AttentionSeverity, string> = {
-  critical: "Critical",
-  high: "High",
-  medium: "Medium",
-  low: "Low",
-};
 
 /**
  * Bucket items into ordered sections. Item order *within* each group is
@@ -876,7 +952,7 @@ export function groupAttentionItems(
     }
     return DATE_BUCKET_ORDER.filter((bucket) => buckets.has(bucket)).map((bucket) => ({
       key: `date:${bucket}`,
-      label: DATE_BUCKET_LABELS[bucket],
+      label: t(`libui.attention.dateBucket.${DATE_BUCKET_LABEL_KEYS[bucket]}`),
       items: buckets.get(bucket)!,
     }));
   }
@@ -890,7 +966,7 @@ export function groupAttentionItems(
     }
     return ALL_SEVERITIES.filter((s) => buckets.has(s)).map((severity) => ({
       key: `severity:${severity}`,
-      label: SEVERITY_LABEL[severity],
+      label: t(`libui.attention.severity.${SEVERITY_LABEL_KEYS[severity]}`),
       items: buckets.get(severity)!,
     }));
   }
@@ -904,7 +980,7 @@ export function groupAttentionItems(
         ? { key: `type:${item.sourceKind}`, label: sourceMeta(item.sourceKind).label }
         : item.project
           ? { key: `project:${item.project.id}`, label: item.project.name }
-          : { key: `project:${NO_GROUP_SENTINEL}`, label: "No project" };
+          : { key: `project:${NO_GROUP_SENTINEL}`, label: t("libui.attention.noProject") };
     const existing = groups.get(resolved.key);
     const ts = attentionActivityTimestamp(item);
     if (existing) {

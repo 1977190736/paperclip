@@ -8,6 +8,7 @@ import {
   type IssueDisplayStatus,
 } from "@paperclipai/shared";
 import type { CompanySearchParams } from "@/api/search";
+import { t } from "@/i18n";
 
 const SEARCH_FILTER_PARAM_KEYS = [
   "status",
@@ -39,7 +40,11 @@ export interface SearchOperatorSuggestion {
 
 export const SEARCH_OPERATOR_QUICK_FILTERS = ["assignee:me", "is:open", "updated:>7d"] as const;
 
-export const SEARCH_OPERATOR_SUGGESTIONS: SearchOperatorSuggestion[] = [
+// Suggestion `token`s are search-query syntax and stay verbatim in every
+// locale; only the human label/description translate, and they resolve at
+// access time so a live language switch is picked up. Consumers read entries
+// by index, so the list is wrapped in a proxy that translates on read.
+const SEARCH_OPERATOR_SUGGESTION_BASE: SearchOperatorSuggestion[] = [
   { token: "status:todo", label: "Open todo tasks", description: "Filter by task status" },
   { token: "status:blocked", label: "Blocked tasks", description: "Find blocked work" },
   { token: "assignee:me", label: "Assigned to me", description: "Use your current board user" },
@@ -48,6 +53,32 @@ export const SEARCH_OPERATOR_SUGGESTIONS: SearchOperatorSuggestion[] = [
   { token: "priority:high", label: "High priority", description: "Filter by priority" },
   { token: "updated:>7d", label: "Recently updated", description: "Updated in the last 7 days" },
 ];
+
+const SUGGESTION_LABEL_KEYS: Record<string, string> = {
+  "status:todo": "statusTodo",
+  "status:blocked": "statusBlocked",
+  "assignee:me": "assigneeMe",
+  "project:\"Paperclip App\"": "projectName",
+  "label:bug": "labelBug",
+  "priority:high": "priorityHigh",
+  "updated:>7d": "updatedRecently",
+};
+
+export const SEARCH_OPERATOR_SUGGESTIONS: SearchOperatorSuggestion[] = new Proxy(SEARCH_OPERATOR_SUGGESTION_BASE, {
+  get(target, prop, receiver) {
+    if (typeof prop === "string" && /^\d+$/.test(prop)) {
+      const entry = target[Number(prop)];
+      const key = SUGGESTION_LABEL_KEYS[entry.token];
+      if (!key) return Reflect.get(target, prop, receiver);
+      return {
+        ...entry,
+        label: t(`libui.searchParser.suggestions.${key}.label`),
+        description: t(`libui.searchParser.suggestions.${key}.description`),
+      };
+    }
+    return Reflect.get(target, prop, receiver);
+  },
+});
 
 export interface SearchQueryParserContext {
   currentAgentId?: string | null;

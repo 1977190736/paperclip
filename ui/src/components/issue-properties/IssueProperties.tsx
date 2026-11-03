@@ -1345,7 +1345,7 @@ export function IssueProperties({
     ? monitorPaused
       ? canCheckMonitorNow ? t("comps1.props.checkNowHint") : t("comps1.props.resumeToCheckHint")
       : monitorIsDueNow
-      ? t("comps1.monitor.checkingMomentarily")
+      ? t("comps1.props.checkingMomentarilyHint")
       : `${formatMonitorAbsolute(monitorNextCheckAt, {}, monitorNow)}${monitorIsOverdue ? t("comps1.props.firesNextTickSuffix") : monitorAttemptCount > 0 ? t("comps1.monitor.attemptSuffix", { count: monitorAttemptCount }) : ""}`
     : monitorState?.status === "cleared"
       ? [

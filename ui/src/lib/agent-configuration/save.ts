@@ -7,6 +7,7 @@ import { planToolChanges } from "./tools";
 import { planChannelChanges } from "./channels";
 import { requireItem, unique, type ConfigurationStep, type AddConfigurationStep } from "./steps";
 import { resolveAgentConfiguration } from "./resolve";
+import { t } from "@/i18n";
 
 export interface ConfigurationReceipt { label: string; id: string; token?: string }
 export class ConfigurationSaveInterrupted extends Error {
@@ -34,7 +35,7 @@ function planInstructions(snapshot: AgentConfigurationSnapshot, document: AgentC
     if (next.mode === "managed" && previous.mode === "managed" && next.rootPath !== previous.rootPath) {
       throw new Error("The managed instructions root is assigned by Paperclip. Choose external mode to use another folder.");
     }
-    add("Instructions location (load the destination files)", () => agentsApi.updateInstructionsBundle(snapshot.agent.id, {
+    add(t("libui.agentConfig.steps.instructionsLocation"), () => agentsApi.updateInstructionsBundle(snapshot.agent.id, {
       ...(next.mode ? { mode: next.mode } : {}), rootPath: next.rootPath, entryFile: next.entryFile,
     }, snapshot.agent.companyId));
     return;
@@ -42,7 +43,7 @@ function planInstructions(snapshot: AgentConfigurationSnapshot, document: AgentC
   const currentFiles = snapshot.files;
   for (const [path, content] of Object.entries(next.files)) {
     if (previous.files[path] === content) continue;
-    add(`Instructions: ${path}`, () => {
+    add(t("libui.agentConfig.steps.instructionsFile", { path }), () => {
       const file = currentFiles.get(path);
       if (file?.content === content) return Promise.resolve();
       return agentsApi.saveInstructionsFile(snapshot.agent.id, {
@@ -52,7 +53,7 @@ function planInstructions(snapshot: AgentConfigurationSnapshot, document: AgentC
   }
   for (const path of Object.keys(previous.files)) {
     if (Object.hasOwn(next.files, path)) continue;
-    add(`Remove instruction file: ${path}`, async () => {
+    add(t("libui.agentConfig.steps.removeInstructionsFile", { path }), async () => {
       const file = currentFiles.get(path);
       if (!file) return;
       return agentsApi.deleteInstructionsFile(snapshot.agent.id, path, snapshot.agent.companyId, file.contentHash);
@@ -83,7 +84,7 @@ function planSecrets(snapshot: AgentConfigurationSnapshot, document: AgentConfig
       for (const key of operation.bind.env) if (!equal(env(config)[key], env(snapshot.document.spec.adapterConfig)[key])) throw new Error(`env.${key} changed before secret binding. Reload saved before saving.`);
       for (const alias of operation.bind.api) if (!equal(config[`access.${alias}`], snapshot.document.spec.adapterConfig[`access.${alias}`])) throw new Error(`access.${alias} changed before secret binding. Reload saved before saving.`);
     };
-    add(`Create secret: ${operation.secret.name}`, async () => {
+    add(t("libui.agentConfig.steps.createSecret", { name: operation.secret.name }), async () => {
       if (operation.bind.env.length || operation.bind.api.length) assertBindingsCurrent((await agentsApi.getConfiguration(id, companyId)).adapterConfig);
       const created = await secretsApi.create(companyId, operation.secret);
       receipt({ label: `Secret: ${created.name}`, id: created.id });
@@ -98,12 +99,12 @@ function planSecrets(snapshot: AgentConfigurationSnapshot, document: AgentConfig
       await agentsApi.update(id, { adapterConfig, replaceAdapterConfig: true, expectedConfigurationRevision: current.configurationRevision }, companyId);
     });
   }
-  for (const operation of next.rotate) add(`Rotate secret: ${operation.id}`, () => secretsApi.rotate(operation.id, operation.input));
-  for (const operation of next.update) add(`Update secret: ${operation.id}`, () => secretsApi.update(operation.id, operation.input));
+  for (const operation of next.rotate) add(t("libui.agentConfig.steps.rotateSecret", { id: operation.id }), () => secretsApi.rotate(operation.id, operation.input));
+  for (const operation of next.update) add(t("libui.agentConfig.steps.updateSecret", { id: operation.id }), () => secretsApi.update(operation.id, operation.input));
   for (const operation of next.proposals) {
     requireItem(snapshot.proposals, proposal => proposal.id === operation.id && (proposal.target?.id === id || proposal.proposedBy.id === id), `Secret proposal ${operation.id}`);
     if (operation.decision === "reject" && !operation.reason?.trim()) throw new Error("A rejected secret proposal requires a reason.");
-    add(`Secret proposal: ${operation.id}`, () => operation.decision === "approve"
+    add(t("libui.agentConfig.steps.secretProposal", { id: operation.id }), () => operation.decision === "approve"
       ? secretsApi.approveProposal(companyId, operation.id)
       : secretsApi.rejectProposal(companyId, operation.id, { reason: operation.reason! }));
   }
@@ -121,7 +122,7 @@ function planResolvedConfiguration(snapshot: AgentConfigurationSnapshot, documen
   const adapterConfig = { ...document.spec.adapterConfig };
   for (const key of ownedAdapterKeys) if (Object.hasOwn(snapshot.core.adapterConfig, key)) adapterConfig[key] = snapshot.core.adapterConfig[key];
   const corePatch = agentConfigurationPatch({ ...document, spec: { ...document.spec, adapterConfig } }, snapshot.core);
-  if (Object.keys(corePatch).length) add("Agent configuration", () => agentsApi.update(snapshot.agent.id, {
+  if (Object.keys(corePatch).length) add(t("libui.agentConfig.steps.agentConfiguration"), () => agentsApi.update(snapshot.agent.id, {
     ...corePatch, expectedConfigurationRevision: snapshot.core.configurationRevision,
   }, snapshot.agent.companyId));
   if (document.spec.permissions && !document.spec.permissions.canAssignTasks && (document.spec.role === "ceo" || document.spec.permissions.canCreateAgents)) {
@@ -130,13 +131,13 @@ function planResolvedConfiguration(snapshot: AgentConfigurationSnapshot, documen
   planInstructions(snapshot, document, add);
   if (document.spec.skills && !equal(document.spec.skills, snapshot.document.spec.skills)) {
     unique(document.spec.skills.map(skill => typeof skill === "string" ? skill : skill.key), "skills");
-    add("Skills and version pins", () => agentsApi.syncSkills(snapshot.agent.id, document.spec.skills!, "replace", snapshot.agent.companyId));
+    add(t("libui.agentConfig.steps.skillsAndVersionPins"), () => agentsApi.syncSkills(snapshot.agent.id, document.spec.skills!, "replace", snapshot.agent.companyId));
   }
   planToolChanges(snapshot, document, add);
   planChannelChanges(snapshot, document, add);
   planSecrets(snapshot, document, add, receipt);
   if (document.spec.permissions && !equal(document.spec.permissions, snapshot.document.spec.permissions)) {
-    add("Permissions and trust", () => agentsApi.updatePermissions(snapshot.agent.id, { ...document.spec.permissions!,
+    add(t("libui.agentConfig.steps.permissionsAndTrust"), () => agentsApi.updatePermissions(snapshot.agent.id, { ...document.spec.permissions!,
       authorizationPolicy: document.spec.permissions!.authorizationPolicy ?? {},
     }, snapshot.agent.companyId));
   }
@@ -146,9 +147,9 @@ function planResolvedConfiguration(snapshot: AgentConfigurationSnapshot, documen
     unique(keys.create.map(key => key.name), "apiKeys.create");
     for (const id of keys.revoke) {
       const key = requireItem(snapshot.keys, key => key.id === id, `API key ${id}`);
-      if (!key.revokedAt) add(`Revoke API key: ${key.name}`, () => agentsApi.revokeKey(snapshot.agent.id, id, snapshot.agent.companyId));
+      if (!key.revokedAt) add(t("libui.agentConfig.steps.revokeApiKey", { name: key.name }), () => agentsApi.revokeKey(snapshot.agent.id, id, snapshot.agent.companyId));
     }
-    for (const input of keys.create) add(`Create API key: ${input.name}`, async () => {
+    for (const input of keys.create) add(t("libui.agentConfig.steps.createApiKey", { name: input.name }), async () => {
       const key = await agentsApi.createKey(snapshot.agent.id, input.name, snapshot.agent.companyId, input.scope);
       receipt({ label: `API key: ${key.name}`, id: key.id, token: key.token });
     });
@@ -157,7 +158,7 @@ function planResolvedConfiguration(snapshot: AgentConfigurationSnapshot, documen
     const id = document.spec.revisions.restore;
     requireItem(snapshot.revisions, revision => revision.id === id, `Revision ${id}`);
     if (steps.length) throw new Error("Restore a revision in its own save, then edit the restored configuration.");
-    add("Restore configuration revision", () => agentsApi.rollbackConfigRevision(snapshot.agent.id, id, snapshot.agent.companyId));
+    add(t("libui.agentConfig.steps.restoreRevision"), () => agentsApi.rollbackConfigRevision(snapshot.agent.id, id, snapshot.agent.companyId));
   }
   return steps;
 }

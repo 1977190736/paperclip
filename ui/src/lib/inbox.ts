@@ -13,6 +13,7 @@ import {
   type IssueFilterWorkspaceContext,
 } from "./issue-filters";
 import { formatAssigneeUserLabel } from "./assignees";
+import { t } from "@/i18n";
 
 export const RECENT_ISSUES_LIMIT = 100;
 export const ACTIONABLE_APPROVAL_STATUSES = new Set(["pending", "revision_requested"]);
@@ -524,7 +525,7 @@ export function getInboxSearchSupplementIssues({
 
 function formatDefaultWorkspaceGroupLabel(name: string | null | undefined): string {
   const normalizedName = name?.trim();
-  return normalizedName ? `${normalizedName} (default)` : "Default workspace";
+  return normalizedName ? t("libui.inbox.group.defaultWorkspace", { name: normalizedName }) : t("libui.inbox.group.defaultWorkspaceFallback");
 }
 
 function resolveDefaultProjectWorkspaceInfo(
@@ -640,7 +641,7 @@ export function resolveIssueWorkspaceGroup(
 
   return {
     key: "workspace:none",
-    label: "No workspace",
+    label: t("libui.inbox.group.noWorkspace"),
   };
 }
 
@@ -845,12 +846,16 @@ const inboxWorkItemKindOrder: InboxWorkItem["kind"][] = [
   "join_request",
 ];
 
-const inboxWorkItemKindLabels: Record<InboxWorkItem["kind"], string> = {
-  issue: "Tasks",
-  approval: "Approvals",
-  failed_run: "Failed runs",
-  join_request: "Join requests",
+const inboxWorkItemKindLabelKeys: Record<InboxWorkItem["kind"], string> = {
+  issue: "issues",
+  approval: "approvals",
+  failed_run: "failedRuns",
+  join_request: "joinRequests",
 };
+
+function inboxWorkItemKindLabel(kind: InboxWorkItem["kind"]): string {
+  return t(`libui.inbox.kind.${inboxWorkItemKindLabelKeys[kind]}`);
+}
 
 function resolveIssueAssigneeGroup(
   issue: Pick<Issue, "assigneeAgentId" | "assigneeUserId">,
@@ -871,18 +876,18 @@ function resolveIssueAssigneeGroup(
   if (issue.assigneeUserId) {
     return {
       key: `assignee:user:${issue.assigneeUserId}`,
-      label: formatAssigneeUserLabel(issue.assigneeUserId, currentUserId, userLabelById) ?? "User",
+      label: formatAssigneeUserLabel(issue.assigneeUserId, currentUserId, userLabelById) ?? t("libui.inbox.group.user"),
     };
   }
 
-  return { key: "assignee:none", label: "Unassigned" };
+  return { key: "assignee:none", label: t("libui.inbox.group.unassigned") };
 }
 
 function resolveIssueProjectGroup(
   issue: Pick<Issue, "projectId">,
   { projectById }: Pick<InboxWorkspaceGroupingOptions, "projectById">,
 ): { key: string; label: string } {
-  if (!issue.projectId) return { key: "project:none", label: "No project" };
+  if (!issue.projectId) return { key: "project:none", label: t("libui.inbox.group.noProject") };
 
   const projectName = projectById?.get(issue.projectId)?.name?.trim();
   return {
@@ -899,7 +904,7 @@ function groupInboxWorkItemsByIssueGroup(
   for (const item of items) {
     const resolvedGroup = item.kind === "issue"
       ? resolveIssueGroup(item.issue)
-      : { key: `kind:${item.kind}`, label: inboxWorkItemKindLabels[item.kind] };
+      : { key: `kind:${item.kind}`, label: inboxWorkItemKindLabel(item.kind) };
     const existing = groups.get(resolvedGroup.key);
     if (existing) {
       existing.items.push(item);
@@ -966,7 +971,7 @@ export function groupInboxWorkItems(
     if (groupItems.length === 0) continue;
     orderedGroups.push({
         key: kind,
-        label: inboxWorkItemKindLabels[kind],
+        label: inboxWorkItemKindLabel(kind),
         items: groupItems,
     });
   }

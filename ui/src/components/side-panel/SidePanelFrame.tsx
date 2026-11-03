@@ -5,6 +5,7 @@ import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip
 import { cn } from "@/lib/utils";
 import type { SidePanelContentMode, SidePanelPresentation } from "./types";
 import { useScrollbarWhileScrolling } from "./use-scrollbar-while-scrolling";
+import { useTranslation } from "@/i18n";
 
 export interface SidePanelFrameProps {
   children: ReactNode;
@@ -33,16 +34,17 @@ export function SidePanelFrame({
   open = true,
   maximized = false,
   resizing = false,
-  label = "Side panel",
+  label,
   headerSize = "default",
   className,
   bodyClassName,
   style,
 }: SidePanelFrameProps) {
+  const { t } = useTranslation();
   const handleScroll = useScrollbarWhileScrolling();
   return (
     <section
-      aria-label={label}
+      aria-label={label ?? t("comps3.sidePanel.sidePanel")}
       aria-hidden={!open}
       data-presentation={presentation}
       data-open={open ? "true" : "false"}
@@ -110,7 +112,8 @@ export function SidePanelToggleButton({
   className?: string;
   highlightWhenOpen?: boolean;
 }) {
-  const label = "Toggle side panel";
+  const { t } = useTranslation();
+  const label = t("comps3.sidePanel.toggleAria");
   return (
     <Tooltip>
       <TooltipTrigger asChild>
@@ -148,6 +151,7 @@ export function SidePanelWindowControls({
   onToggle: () => void;
   closeControl?: "toggle" | "close";
 }) {
+  const { t } = useTranslation();
   return (
     <>
       <Button
@@ -156,8 +160,8 @@ export function SidePanelWindowControls({
         size="icon-sm"
         className="h-(--side-panel-tab-height) w-(--side-panel-tab-height) text-muted-foreground hover:text-foreground focus-visible:text-foreground"
         onClick={() => onMaximizedChange(!maximized)}
-        aria-label={maximized ? "Restore side panel" : "Maximize side panel"}
-        title={maximized ? "Restore side panel" : "Maximize side panel"}
+        aria-label={maximized ? t("comps3.sidePanel.restoreAria") : t("comps3.sidePanel.maximizeAria")}
+        title={maximized ? t("comps3.sidePanel.restoreAria") : t("comps3.sidePanel.maximizeAria")}
       >
         {maximized ? <Minimize2 aria-hidden /> : <Maximize2 aria-hidden />}
       </Button>
@@ -168,8 +172,8 @@ export function SidePanelWindowControls({
           size="icon-sm"
           className="h-(--side-panel-tab-height) w-(--side-panel-tab-height) text-muted-foreground hover:text-foreground focus-visible:text-foreground"
           onClick={onToggle}
-          aria-label="Close side panel"
-          title="Close side panel"
+          aria-label={t("comps3.taskSidePanel.closeSidePanelAria")}
+          title={t("comps3.taskSidePanel.closeSidePanelAria")}
         >
           <X aria-hidden />
         </Button>

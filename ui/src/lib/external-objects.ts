@@ -16,6 +16,7 @@ import {
   type LucideIcon,
 } from "lucide-react";
 import { GithubIcon } from "@/components/icons/github-icon";
+import { t } from "@/i18n";
 import type {
   ExternalObjectLivenessState,
   ExternalObjectStatusCategory,
@@ -76,36 +77,38 @@ export function externalObjectIconForLiveness(liveness: string): LucideIcon | nu
   return null;
 }
 
-const CATEGORY_LABELS: Record<string, string> = {
-  unknown: "Not yet resolved",
-  open: "Open",
-  waiting: "Waiting",
-  running: "Running",
-  succeeded: "Succeeded",
-  failed: "Failed",
-  blocked: "Blocked",
-  closed: "Closed",
-  archived: "Archived",
-  auth_required: "Authorization required",
-  rate_limited: "Rate limited",
-  unreachable: "Unreachable",
+const CATEGORY_LABEL_KEYS: Record<string, string> = {
+  unknown: "unknown",
+  open: "open",
+  waiting: "waiting",
+  running: "running",
+  succeeded: "succeeded",
+  failed: "failed",
+  blocked: "blocked",
+  closed: "closed",
+  archived: "archived",
+  auth_required: "authRequired",
+  rate_limited: "rateLimited",
+  unreachable: "unreachable",
 };
 
 export function externalObjectCategoryLabel(category: string): string {
-  return CATEGORY_LABELS[category] ?? category.replace(/_/g, " ");
+  const key = CATEGORY_LABEL_KEYS[category];
+  return key ? t(`libui.externalObjects.category.${key}`) : category.replace(/_/g, " ");
 }
 
-const LIVENESS_LABELS: Record<string, string> = {
-  unknown: "Not yet refreshed",
-  fresh: "Fresh",
-  stale: "Stale",
-  auth_required: "Requires auth",
-  rate_limited: "Rate limited",
-  unreachable: "Unreachable",
+const LIVENESS_LABEL_KEYS: Record<string, string> = {
+  unknown: "unknown",
+  fresh: "fresh",
+  stale: "stale",
+  auth_required: "authRequired",
+  rate_limited: "rateLimited",
+  unreachable: "unreachable",
 };
 
 export function externalObjectLivenessLabel(liveness: string): string {
-  return LIVENESS_LABELS[liveness] ?? liveness.replace(/_/g, " ");
+  const key = LIVENESS_LABEL_KEYS[liveness];
+  return key ? t(`libui.externalObjects.liveness.${key}`) : liveness.replace(/_/g, " ");
 }
 
 export function externalObjectDisplayStatusLabel(input: {
@@ -120,7 +123,7 @@ export function externalObjectDisplayStatusLabel(input: {
   const isGenericUrl = input.providerKey === "url" && input.objectType === "link";
   const hasKnownObjectType = Boolean(input.providerKey && input.objectType);
   if (input.statusCategory === "unknown" && hasKnownObjectType && !isGenericUrl) {
-    if (input.liveness === "fresh") return "Status unavailable";
+    if (input.liveness === "fresh") return t("libui.externalObjects.statusUnavailable");
     return externalObjectLivenessLabel(input.liveness);
   }
   return externalObjectCategoryLabel(input.statusCategory);
@@ -165,6 +168,7 @@ export function externalObjectFallbackTone(
   return CATEGORY_TONE_FALLBACK[category] ?? "neutral";
 }
 
+// Provider labels are brand names and stay identical across locales.
 const PROVIDER_LABELS: Record<string, string> = {
   github: "GitHub",
   github_pull_request: "GitHub",
@@ -177,7 +181,7 @@ const PROVIDER_LABELS: Record<string, string> = {
 };
 
 export function externalObjectProviderLabel(providerKey: string | null | undefined): string {
-  if (!providerKey) return "External";
+  if (!providerKey) return t("libui.externalObjects.provider.external");
   const lookup = PROVIDER_LABELS[providerKey];
   if (lookup) return lookup;
   return providerKey
@@ -186,19 +190,20 @@ export function externalObjectProviderLabel(providerKey: string | null | undefin
     .join(" ");
 }
 
-const OBJECT_TYPE_LABELS: Record<string, string> = {
-  pull_request: "pull request",
+const OBJECT_TYPE_LABEL_KEYS: Record<string, string> = {
+  pull_request: "pullRequest",
   issue: "issue",
   deployment: "deployment",
-  workflow_run: "workflow run",
+  workflow_run: "workflowRun",
   ticket: "ticket",
   lead: "lead",
-  url_link: "URL",
+  url_link: "urlLink",
 };
 
 export function externalObjectTypeLabel(objectType: string | null | undefined): string {
-  if (!objectType) return "object";
-  return OBJECT_TYPE_LABELS[objectType] ?? objectType.replace(/_/g, " ");
+  if (!objectType) return t("libui.externalObjects.type.object");
+  const key = OBJECT_TYPE_LABEL_KEYS[objectType];
+  return key ? t(`libui.externalObjects.type.${key}`) : objectType.replace(/_/g, " ");
 }
 
 export function externalObjectDisplayLabel(
@@ -208,7 +213,7 @@ export function externalObjectDisplayLabel(
 ): string {
   const trimmedDisplayKey = displayKey?.trim();
   if (trimmedDisplayKey) return trimmedDisplayKey;
-  if (providerKey === "url" && objectType === "link") return "URL";
+  if (providerKey === "url" && objectType === "link") return t("libui.externalObjects.type.urlLink");
   return `${externalObjectProviderLabel(providerKey)} ${externalObjectTypeLabel(objectType)}`;
 }
 

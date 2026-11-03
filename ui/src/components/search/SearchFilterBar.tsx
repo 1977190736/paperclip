@@ -19,6 +19,7 @@ import {
   updatedWithinLabel,
   type SearchFilters,
 } from "@/lib/search-filters";
+import { t, useTranslation } from "@/i18n";
 
 export interface SearchFilterAgent {
   id: string;
@@ -90,7 +91,7 @@ export function buildSearchFilterOptions({
   if (currentUserId) {
     assignee.push({
       value: "me",
-      label: "Me",
+      label: t("comps1.filterPanel.me"),
       icon: <User className="h-3.5 w-3.5 text-muted-foreground" />,
       count: count(counts?.assigneeUserId, currentUserId),
       searchText: "me mine",
@@ -98,7 +99,7 @@ export function buildSearchFilterOptions({
   }
   assignee.push({
     value: "none",
-    label: "Unassigned",
+    label: t("comps1.columns.unassigned"),
     icon: <UserX className="h-3.5 w-3.5 text-muted-foreground" />,
     searchText: "unassigned none nobody",
   });
@@ -148,6 +149,7 @@ export function SearchFilterBar({
   onSortChange: (next: CompanySearchSort) => void;
   data: SearchFilterDataProps;
 }) {
+  const { t } = useTranslation();
   const options = useMemo(() => buildSearchFilterOptions(data), [data]);
 
   function toggleMulti(dimension: "status" | "priority", value: string) {
@@ -163,45 +165,45 @@ export function SearchFilterBar({
   return (
     <div className="flex flex-wrap items-center gap-1.5" data-testid="search-filter-bar">
       <SearchFilterMenu
-        label="Status"
+        label={t("comps3.searchBar.status")}
         multi
         options={options.status}
         selected={filters.status ?? []}
         onToggle={(value) => toggleMulti("status", value)}
         onClear={() => onChange({ ...filters, status: [] })}
-        presets={[{ label: "Open items", values: OPEN_STATUS_PRESET }]}
+        presets={[{ label: t("comps3.searchBar.openItems"), values: OPEN_STATUS_PRESET }]}
       />
       <SearchFilterMenu
-        label="Assignee"
+        label={t("comps3.searchBar.assignee")}
         options={options.assignee}
         selected={selectedAssignee ? [selectedAssignee] : []}
         onSelect={(value) => onChange(applyAssigneeToken(filters, value, data.currentUserId))}
         searchable
-        searchPlaceholder="Search assignees…"
-        emptyMessage="No assignees"
+        searchPlaceholder={t("comps3.searchBar.searchAssignees")}
+        emptyMessage={t("comps3.searchBar.noAssignees")}
       />
       <SearchFilterMenu
-        label="Project"
+        label={t("comps3.searchBar.project")}
         options={options.project}
         selected={filters.projectId ? [filters.projectId] : []}
         onSelect={(value) => onChange({ ...filters, projectId: value })}
         searchable
-        searchPlaceholder="Search projects…"
-        emptyMessage="No projects"
+        searchPlaceholder={t("comps3.searchBar.searchProjects")}
+        emptyMessage={t("comps3.searchBar.noProjects")}
       />
       <SearchFilterMenu
-        label="Label"
+        label={t("comps3.searchBar.label")}
         options={options.label}
         selected={filters.labelId ? [filters.labelId] : []}
         onSelect={(value) => onChange({ ...filters, labelId: value })}
         searchable
-        searchPlaceholder="Search labels…"
-        emptyMessage="No labels"
+        searchPlaceholder={t("comps3.searchBar.searchLabels")}
+        emptyMessage={t("comps3.searchBar.noLabels")}
       />
       {/* PAP-411: Priority filter menu hidden behind SHOW_TASK_PRIORITY_UI (search DSL stays intact). */}
       {SHOW_TASK_PRIORITY_UI && (
       <SearchFilterMenu
-        label="Priority"
+        label={t("comps3.searchBar.priority")}
         multi
         options={options.priority}
         selected={filters.priority ?? []}
@@ -210,7 +212,7 @@ export function SearchFilterBar({
       />
       )}
       <SearchFilterMenu
-        label="Updated"
+        label={t("comps3.searchBar.updated")}
         options={options.updated}
         selected={filters.updatedWithin ? [filters.updatedWithin] : []}
         onSelect={(value) => onChange({ ...filters, updatedWithin: value })}

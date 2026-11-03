@@ -111,3 +111,6 @@ test-results/
 
 # Content-addressed CI task results
 .turbo/
+
+# Test-run logs
+/*.log

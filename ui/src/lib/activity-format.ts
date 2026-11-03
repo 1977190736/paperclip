@@ -1,6 +1,7 @@
 import type { Agent } from "@paperclipai/shared";
 import type { CompanyUserProfile } from "./company-members";
 import { formatReviewPolicyValue } from "./review-policy";
+import { t } from "@/i18n";
 
 type ActivityDetails = Record<string, unknown> | null | undefined;
 
@@ -142,6 +143,15 @@ const ACTIVITY_ROW_VERBS: Record<string, string> = {
   "tool_connection.grant_delegation_revoked": "revoked credential delegation for",
 };
 
+// Row verbs resolve through i18n at call time; the English table above stays as
+// the canonical inventory and `defaultValue` fallback, with keys mirroring the
+// action id (dots → underscores).
+function activityRowVerb(action: string): string {
+  const fallback = ACTIVITY_ROW_VERBS[action];
+  if (fallback === undefined) return action.replace(/[._]/g, " ");
+  return t(`libui.activity.rowVerb.${action.replace(/\./g, "_")}`, { defaultValue: fallback });
+}
+
 const ISSUE_ACTIVITY_LABELS: Record<string, string> = {
   "issue.created": "created the issue",
   "issue.updated": "updated the issue",
@@ -208,16 +218,35 @@ const ISSUE_ACTIVITY_LABELS: Record<string, string> = {
   "issue.stalled_review_decided": "recorded a review verdict",
 };
 
+function issueActivityLabel(action: string): string | null {
+  const fallback = ISSUE_ACTIVITY_LABELS[action];
+  if (fallback === undefined) return null;
+  return t(`libui.activity.issueAction.${action.replace(/\./g, "_")}`, { defaultValue: fallback });
+}
+
 /**
  * `issue.stalled_review_decided` carries the verb the actor chose, so the line
  * names the verdict ("approved the review") rather than the generic action.
  * Mirrors `StalledReviewDecisionAction` in shared.
  */
+const STALLED_REVIEW_DECISION_KEYS: Record<string, string> = {
+  approve: "approve",
+  request_changes: "requestChanges",
+  send_back: "sendBack",
+};
+
 const STALLED_REVIEW_DECISION_LABELS: Record<string, string> = {
   approve: "approved the review",
   request_changes: "requested changes on the review",
   send_back: "sent the review back to work",
 };
+
+function stalledReviewDecisionLabel(decision: string): string | null {
+  const fallback = STALLED_REVIEW_DECISION_LABELS[decision];
+  const key = STALLED_REVIEW_DECISION_KEYS[decision];
+  if (!key || fallback === undefined) return null;
+  return t(`libui.activity.stalledReview.${key}`, { defaultValue: fallback });
+}
 
 /**
  * `issue.thread_interaction_accepted` / `_rejected` fire for *every* interaction
@@ -226,11 +255,25 @@ const STALLED_REVIEW_DECISION_LABELS: Record<string, string> = {
  * keep the neutral "accepted the request" wording from the tables above, which
  * is also the fallback for an event that carries no kind.
  */
+const INTERACTION_ACCEPTED_KEYS: Record<string, string> = {
+  request_confirmation: "confirmation",
+  request_checkbox_confirmation: "checkboxConfirmation",
+  suggest_tasks: "suggestTasks",
+  ask_user_questions: "askQuestions",
+};
+
 const INTERACTION_ACCEPTED_LABELS: Record<string, string> = {
   request_confirmation: "approved the request",
   request_checkbox_confirmation: "approved the request",
   suggest_tasks: "accepted the task suggestions",
   ask_user_questions: "accepted the answers",
+};
+
+const INTERACTION_REJECTED_KEYS: Record<string, string> = {
+  request_confirmation: "confirmation",
+  request_checkbox_confirmation: "checkboxConfirmation",
+  suggest_tasks: "suggestTasks",
+  ask_user_questions: "askQuestions",
 };
 
 const INTERACTION_REJECTED_LABELS: Record<string, string> = {
@@ -246,13 +289,17 @@ const INTERACTION_REJECTED_LABELS: Record<string, string> = {
  */
 function formatInteractionOutcomeLabel(action: string, details: ActivityDetails): string | null {
   const table = action === "issue.thread_interaction_accepted"
-    ? INTERACTION_ACCEPTED_LABELS
+    ? { keys: INTERACTION_ACCEPTED_KEYS, labels: INTERACTION_ACCEPTED_LABELS, prefix: "accepted" }
     : action === "issue.thread_interaction_rejected"
-      ? INTERACTION_REJECTED_LABELS
+      ? { keys: INTERACTION_REJECTED_KEYS, labels: INTERACTION_REJECTED_LABELS, prefix: "rejected" }
       : null;
   if (!table) return null;
   const kind = typeof details?.interactionKind === "string" ? details.interactionKind : null;
-  return kind ? table[kind] ?? null : null;
+  if (!kind) return null;
+  const key = table.keys[kind];
+  const fallback = table.labels[kind];
+  if (!key || fallback === undefined) return null;
+  return t(`libui.activity.interaction${table.prefix === "accepted" ? "Accepted" : "Rejected"}.${key}`, { defaultValue: fallback });
 }
 
 function asRecord(value: unknown): Record<string, unknown> | null {
@@ -288,17 +335,17 @@ function readIssueReferences(details: ActivityDetails, key: string): ActivityIss
 }
 
 function formatUserLabel(userId: string | null | undefined, options: ActivityFormatOptions = {}): string {
-  if (!userId || userId === "local-board") return "Board";
-  if (options.currentUserId && userId === options.currentUserId) return "You";
+  if (!userId || userId === "local-board") return t("libui.activity.actor.board");
+  if (options.currentUserId && userId === options.currentUserId) return t("libui.activity.actor.you");
   const profile = options.userProfileMap?.get(userId);
   if (profile) return profile.label;
-  return `user ${userId.slice(0, 5)}`;
+  return t("libui.activity.actor.user", { id: userId.slice(0, 5) });
 }
 
 function formatParticipantLabel(participant: ActivityParticipant, options: ActivityFormatOptions): string {
   if (participant.type === "agent") {
     const agentId = participant.agentId ?? "";
-    return options.agentMap?.get(agentId)?.name ?? "agent";
+    return options.agentMap?.get(agentId)?.name ?? t("libui.activity.actor.agent");
   }
   return formatUserLabel(participant.userId, options);
 }
@@ -307,17 +354,17 @@ function formatIssueReferenceLabel(reference: ActivityIssueReference): string {
   if (reference.identifier) return reference.identifier;
   if (reference.title) return reference.title;
   if (reference.id) return reference.id.slice(0, 8);
-  return "task";
+  return t("libui.activity.actor.task");
 }
 
+// Entity-count labels: "blocker ABC-123" / "2 blockers" style. Keys carry the
+// singular/plural pair per entity kind under `libui.activity.entity.*`.
+// Callers only invoke this with a non-empty label list.
 function formatChangedEntityLabel(
-  singular: string,
-  plural: string,
+  entity: "blocker" | "reviewer" | "approver",
   labels: string[],
 ): string {
-  if (labels.length <= 0) return plural;
-  if (labels.length === 1) return `${singular} ${labels[0]}`;
-  return `${labels.length} ${plural}`;
+  return t(`libui.activity.entity.${entity}`, { count: labels.length, label: labels[0] ?? "" });
 }
 
 function readNumber(value: unknown): number | null {
@@ -338,13 +385,13 @@ function formatAcceptedPlanDecompositionDetail(details: ActivityDetails): string
   const newlyCreated = readStringArrayLength(details.newlyCreatedChildIssueIds);
   const reused = Math.max(0, totalChildren - newlyCreated);
   const parts: string[] = [];
-  if (newlyCreated > 0) parts.push(`created ${newlyCreated} new`);
-  if (reused > 0) parts.push(`reused ${reused} existing`);
-  if (parts.length === 0 && requested !== null) parts.push(`${requested} requested`);
+  if (newlyCreated > 0) parts.push(t("libui.activity.decomposition.createdNew", { count: newlyCreated }));
+  if (reused > 0) parts.push(t("libui.activity.decomposition.reusedExisting", { count: reused }));
+  if (parts.length === 0 && requested !== null) parts.push(t("libui.activity.decomposition.requested", { count: requested }));
   const summary = parts.length > 0 ? parts.join(", ") : null;
-  if (status === "completed" && summary) return `decomposition completed (${summary})`;
-  if (status === "completed") return "decomposition completed";
-  if (status === "in_flight" && summary) return `decomposition in flight (${summary})`;
+  if (status === "completed" && summary) return t("libui.activity.decomposition.completedWithSummary", { summary });
+  if (status === "completed") return t("libui.activity.decomposition.completed");
+  if (status === "in_flight" && summary) return t("libui.activity.decomposition.inFlightWithSummary", { summary });
   return summary;
 }
 
@@ -355,14 +402,14 @@ function formatIssueUpdatedVerb(details: ActivityDetails): string | null {
     const from = previous.status;
     const to = humanizeValue(details.status === "in_review" && details.externalConversationState === "waiting" ? "idle" : details.status);
     return from
-      ? `changed status from ${humanizeValue(from)} to ${to} on`
-      : `changed status to ${to} on`;
+      ? t("libui.activity.issueUpdatedVerb.statusFromTo", { from: humanizeValue(from), to })
+      : t("libui.activity.issueUpdatedVerb.statusTo", { to });
   }
   if (details.priority !== undefined) {
     const from = previous.priority;
     return from
-      ? `changed priority from ${humanizeValue(from)} to ${humanizeValue(details.priority)} on`
-      : `changed priority to ${humanizeValue(details.priority)} on`;
+      ? t("libui.activity.issueUpdatedVerb.priorityFromTo", { from: humanizeValue(from), to: humanizeValue(details.priority) })
+      : t("libui.activity.issueUpdatedVerb.priorityTo", { to: humanizeValue(details.priority) });
   }
   return null;
 }
@@ -390,29 +437,29 @@ function formatIssueUpdatedAction(details: ActivityDetails, options: ActivityFor
     const to = humanizeValue(details.status === "in_review" && details.externalConversationState === "waiting" ? "idle" : details.status);
     parts.push(
       from
-        ? `changed the status from ${humanizeValue(from)} to ${to}`
-        : `changed the status to ${to}`,
+        ? t("libui.activity.issueUpdatedAction.statusFromTo", { from: humanizeValue(from), to })
+        : t("libui.activity.issueUpdatedAction.statusTo", { to }),
     );
   }
   if (details.priority !== undefined) {
     const from = previous.priority;
     parts.push(
       from
-        ? `changed the priority from ${humanizeValue(from)} to ${humanizeValue(details.priority)}`
-        : `changed the priority to ${humanizeValue(details.priority)}`,
+        ? t("libui.activity.issueUpdatedAction.priorityFromTo", { from: humanizeValue(from), to: humanizeValue(details.priority) })
+        : t("libui.activity.issueUpdatedAction.priorityTo", { to: humanizeValue(details.priority) }),
     );
   }
   if (details.assigneeAgentId !== undefined || details.assigneeUserId !== undefined) {
     const assigneeName = formatAssigneeName(details, options);
-    parts.push(assigneeName ? `made ${assigneeName} responsible for the task` : "cleared the responsible");
+    parts.push(assigneeName ? t("libui.activity.issueUpdatedAction.madeResponsible", { name: assigneeName }) : t("libui.activity.issueUpdatedAction.clearedResponsible"));
   }
   if (details.reviewPolicy !== undefined) {
     // `null` is the default ("anyone can approve"), so it must not read as
     // "changed the review policy to none" (PAP-16506).
-    parts.push(`changed who can approve to ${formatReviewPolicyValue(details.reviewPolicy)}`);
+    parts.push(t("libui.activity.issueUpdatedAction.changedApprover", { value: formatReviewPolicyValue(details.reviewPolicy) }));
   }
-  if (details.title !== undefined) parts.push("updated the title");
-  if (details.description !== undefined) parts.push("updated the description");
+  if (details.title !== undefined) parts.push(t("libui.activity.issueUpdatedAction.updatedTitle"));
+  if (details.description !== undefined) parts.push(t("libui.activity.issueUpdatedAction.updatedDescription"));
 
   return parts.length > 0 ? parts.join(", ") : null;
 }
@@ -430,30 +477,31 @@ function formatStructuredIssueChange(input: {
     const added = readIssueReferences(details, "addedBlockedByIssues").map(formatIssueReferenceLabel);
     const removed = readIssueReferences(details, "removedBlockedByIssues").map(formatIssueReferenceLabel);
     if (added.length > 0 && removed.length === 0) {
-      const changed = formatChangedEntityLabel("blocker", "blockers", added);
-      return input.forIssueDetail ? `added ${changed}` : `added ${changed} to`;
+      const changed = formatChangedEntityLabel("blocker", added);
+      return input.forIssueDetail ? t("libui.activity.blockers.added", { changed }) : t("libui.activity.blockers.addedTo", { changed });
     }
     if (removed.length > 0 && added.length === 0) {
-      const changed = formatChangedEntityLabel("blocker", "blockers", removed);
-      return input.forIssueDetail ? `removed ${changed}` : `removed ${changed} from`;
+      const changed = formatChangedEntityLabel("blocker", removed);
+      return input.forIssueDetail ? t("libui.activity.blockers.removed", { changed }) : t("libui.activity.blockers.removedTo", { changed });
     }
-    return input.forIssueDetail ? "updated blockers" : "updated blockers on";
+    return input.forIssueDetail ? t("libui.activity.blockers.updated") : t("libui.activity.blockers.updatedOn");
   }
 
   if (input.action === "issue.reviewers_updated" || input.action === "issue.approvers_updated") {
     const added = readParticipants(details, "addedParticipants").map((participant) => formatParticipantLabel(participant, input.options));
     const removed = readParticipants(details, "removedParticipants").map((participant) => formatParticipantLabel(participant, input.options));
-    const singular = input.action === "issue.reviewers_updated" ? "reviewer" : "approver";
-    const plural = input.action === "issue.reviewers_updated" ? "reviewers" : "approvers";
+    const entity = input.action === "issue.reviewers_updated" ? "reviewer" : "approver";
     if (added.length > 0 && removed.length === 0) {
-      const changed = formatChangedEntityLabel(singular, plural, added);
-      return input.forIssueDetail ? `added ${changed}` : `added ${changed} to`;
+      const changed = formatChangedEntityLabel(entity, added);
+      return input.forIssueDetail ? t(`libui.activity.${entity}s.added`, { changed }) : t(`libui.activity.${entity}s.addedTo`, { changed });
     }
     if (removed.length > 0 && added.length === 0) {
-      const changed = formatChangedEntityLabel(singular, plural, removed);
-      return input.forIssueDetail ? `removed ${changed}` : `removed ${changed} from`;
+      const changed = formatChangedEntityLabel(entity, removed);
+      return input.forIssueDetail ? t(`libui.activity.${entity}s.removed`, { changed }) : t(`libui.activity.${entity}s.removedTo`, { changed });
     }
-    return input.forIssueDetail ? `updated ${plural}` : `updated ${plural} on`;
+    return input.forIssueDetail
+      ? t(`libui.activity.${entity}s.updated`)
+      : t(`libui.activity.${entity}s.updatedOn`);
   }
 
   return null;
@@ -469,16 +517,16 @@ export function formatActivityVerb(
       ? details.tool
       : typeof details?.upstreamToolName === "string"
         ? details.upstreamToolName
-        : "an app action";
-    const tool = rawTool.replace(/[._-]+/g, " ");
+        : null;
+    const tool = rawTool !== null ? rawTool.replace(/[._-]+/g, " ") : t("libui.activity.toolGateway.appAction");
     const isTest = details?.source === "test";
-    if (action === "tool_gateway.call_completed") return `${isTest ? "tested" : "used"} ${tool} on`;
-    if (action === "tool_gateway.call_allowed") return `${isTest ? "started a test of" : "was allowed to use"} ${tool} on`;
-    if (action === "tool_gateway.call_denied") return `was blocked from using ${tool} on`;
-    if (action === "tool_gateway.approval_requested") return `asked to use ${tool} on`;
-    if (action === "tool_gateway.session_created") return "opened an app session for";
-    if (action === "tool_gateway.session_rejected") return "was blocked from opening an app session for";
-    if (action === "tool_gateway.discovery") return "discovered app actions for";
+    if (action === "tool_gateway.call_completed") return t(isTest ? "libui.activity.toolGateway.callCompletedTest" : "libui.activity.toolGateway.callCompletedUse", { tool });
+    if (action === "tool_gateway.call_allowed") return t(isTest ? "libui.activity.toolGateway.callAllowedTest" : "libui.activity.toolGateway.callAllowed", { tool });
+    if (action === "tool_gateway.call_denied") return t("libui.activity.toolGateway.callDenied", { tool });
+    if (action === "tool_gateway.approval_requested") return t("libui.activity.toolGateway.approvalRequested", { tool });
+    if (action === "tool_gateway.session_created") return t("libui.activity.toolGateway.sessionCreated");
+    if (action === "tool_gateway.session_rejected") return t("libui.activity.toolGateway.sessionRejected");
+    if (action === "tool_gateway.discovery") return t("libui.activity.toolGateway.discovery");
   }
 
   if (action === "issue.updated") {
@@ -488,7 +536,7 @@ export function formatActivityVerb(
 
   if (action === "issue.stalled_review_decided") {
     const decision = typeof details?.action === "string" ? details.action : null;
-    const label = decision ? STALLED_REVIEW_DECISION_LABELS[decision] : null;
+    const label = decision ? stalledReviewDecisionLabel(decision) : null;
     if (label) return `${label} on`;
   }
 
@@ -503,7 +551,7 @@ export function formatActivityVerb(
   });
   if (structuredChange) return structuredChange;
 
-  return ACTIVITY_ROW_VERBS[action] ?? action.replace(/[._]/g, " ");
+  return activityRowVerb(action);
 }
 
 export function formatIssueActivityAction(
@@ -531,7 +579,7 @@ export function formatIssueActivityAction(
 
   if (action === "issue.stalled_review_decided") {
     const decision = typeof details?.action === "string" ? details.action : null;
-    const label = decision ? STALLED_REVIEW_DECISION_LABELS[decision] : null;
+    const label = decision ? stalledReviewDecisionLabel(decision) : null;
     if (label) return label;
   }
 
@@ -542,8 +590,8 @@ export function formatIssueActivityAction(
     const serviceName = typeof details.serviceName === "string" && details.serviceName.trim()
       ? details.serviceName.trim()
       : null;
-    const base = ISSUE_ACTIVITY_LABELS[action] ?? action.replace(/[._]/g, " ");
-    return serviceName ? `${base} for ${serviceName}` : base;
+    const base = issueActivityLabel(action) ?? action.replace(/[._]/g, " ");
+    return serviceName ? t("libui.activity.forService", { action: base, service: serviceName }) : base;
   }
 
   if (
@@ -558,8 +606,8 @@ export function formatIssueActivityAction(
   ) {
     const key = typeof details.key === "string" ? details.key : "document";
     const title = typeof details.title === "string" && details.title ? ` (${details.title})` : "";
-    return `${ISSUE_ACTIVITY_LABELS[action] ?? action} ${key}${title}`;
+    return t("libui.activity.documentAction", { action: issueActivityLabel(action) ?? action, key }) + title;
   }
 
-  return ISSUE_ACTIVITY_LABELS[action] ?? action.replace(/[._]/g, " ");
+  return issueActivityLabel(action) ?? action.replace(/[._]/g, " ");
 }

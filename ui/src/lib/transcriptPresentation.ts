@@ -1,3 +1,5 @@
+import { t } from "@/i18n";
+
 type TranscriptDensity = "comfortable" | "compact";
 
 type TranscriptActivity = {
@@ -118,7 +120,7 @@ export function isCommandTool(name: string, input: unknown): boolean {
 }
 
 export function displayToolName(name: string, input: unknown): string {
-  if (isCommandTool(name, input)) return "Executing command";
+  if (isCommandTool(name, input)) return t("libui.transcript.executingCommand");
   return humanizeLabel(name);
 }
 
@@ -135,7 +137,7 @@ export function summarizeToolInput(
   const record = asRecord(input);
   if (!record) {
     const serialized = compactWhitespace(formatUnknown(input));
-    return serialized ? truncate(serialized, compactMax) : `Inspect ${name} input`;
+    return serialized ? truncate(serialized, compactMax) : t("libui.transcript.inspectInput", { name });
   }
 
   const command = typeof record.command === "string"
@@ -162,14 +164,14 @@ export function summarizeToolInput(
   if (Array.isArray(record.paths) && record.paths.length > 0) {
     const first = record.paths.find((value): value is string => typeof value === "string" && value.trim().length > 0);
     if (first) {
-      return truncate(`${record.paths.length} paths, starting with ${first}`, compactMax);
+      return truncate(t("libui.transcript.pathsSummary", { count: record.paths.length, first }), compactMax);
     }
   }
 
   const keys = Object.keys(record);
-  if (keys.length === 0) return `No ${name} input`;
-  if (keys.length === 1) return truncate(`${keys[0]} payload`, compactMax);
-  return truncate(`${keys.length} fields: ${keys.slice(0, 3).join(", ")}`, compactMax);
+  if (keys.length === 0) return t("libui.transcript.noInput", { name });
+  if (keys.length === 1) return truncate(t("libui.transcript.singleField", { field: keys[0] }), compactMax);
+  return truncate(t("libui.transcript.fieldsSummary", { count: keys.length, fields: keys.slice(0, 3).join(", ") }), compactMax);
 }
 
 function readToolDetailValue(value: unknown, max = 200): string | null {
@@ -186,7 +188,7 @@ function readToolDetailValue(value: unknown, max = 200): string | null {
 export function describeToolInput(name: string, input: unknown): ToolInputDetail[] {
   if (typeof input === "string") {
     const summary = compactWhitespace(isCommandTool(name, input) ? stripWrappedShell(input) : input);
-    return summary ? [{ label: isCommandTool(name, input) ? "Command" : "Input", value: truncate(summary, 200), tone: "code" }] : [];
+    return summary ? [{ label: isCommandTool(name, input) ? t("libui.transcript.labels.command") : t("libui.transcript.labels.input"), value: truncate(summary, 200), tone: "code" }] : [];
   }
 
   const record = asRecord(input);
@@ -203,16 +205,16 @@ export function describeToolInput(name: string, input: unknown): ToolInputDetail
   };
 
   pushDetail(
-    "Intent",
+    t("libui.transcript.labels.intent"),
     summarizeRecord(record, ["description", "summary", "reason", "goal", "intent", "action", "task"]) ?? null,
   );
-  pushDetail("Path", readToolDetailValue(record.path) ?? readToolDetailValue(record.filePath) ?? readToolDetailValue(record.file_path));
-  pushDetail("Directory", readToolDetailValue(record.cwd));
-  pushDetail("Query", readToolDetailValue(record.query));
-  pushDetail("Target", readToolDetailValue(record.url) ?? readToolDetailValue(record.target));
-  pushDetail("Prompt", readToolDetailValue(record.prompt) ?? readToolDetailValue(record.message));
-  pushDetail("Pattern", readToolDetailValue(record.pattern));
-  pushDetail("Name", readToolDetailValue(record.name) ?? readToolDetailValue(record.title));
+  pushDetail(t("libui.transcript.labels.path"), readToolDetailValue(record.path) ?? readToolDetailValue(record.filePath) ?? readToolDetailValue(record.file_path));
+  pushDetail(t("libui.transcript.labels.directory"), readToolDetailValue(record.cwd));
+  pushDetail(t("libui.transcript.labels.query"), readToolDetailValue(record.query));
+  pushDetail(t("libui.transcript.labels.target"), readToolDetailValue(record.url) ?? readToolDetailValue(record.target));
+  pushDetail(t("libui.transcript.labels.prompt"), readToolDetailValue(record.prompt) ?? readToolDetailValue(record.message));
+  pushDetail(t("libui.transcript.labels.pattern"), readToolDetailValue(record.pattern));
+  pushDetail(t("libui.transcript.labels.name"), readToolDetailValue(record.name) ?? readToolDetailValue(record.title));
 
   if (Array.isArray(record.paths) && record.paths.length > 0) {
     const paths = record.paths
@@ -220,8 +222,8 @@ export function describeToolInput(name: string, input: unknown): ToolInputDetail
       .slice(0, 3)
       .join(", ");
     if (paths) {
-      const suffix = record.paths.length > 3 ? `, +${record.paths.length - 3} more` : "";
-      pushDetail("Paths", `${paths}${suffix}`);
+      const suffix = record.paths.length > 3 ? t("libui.transcript.pathsMore", { count: record.paths.length - 3 }) : "";
+      pushDetail(t("libui.transcript.labels.paths"), `${paths}${suffix}`);
     }
   }
 
@@ -230,8 +232,9 @@ export function describeToolInput(name: string, input: unknown): ToolInputDetail
     : typeof record.cmd === "string"
       ? record.cmd
       : null;
-  if (command && isCommandTool(name, record) && !details.some((detail) => detail.label === "Intent")) {
-    pushDetail("Command", truncate(stripWrappedShell(command), 200), "code");
+  const intentLabel = t("libui.transcript.labels.intent");
+  if (command && isCommandTool(name, record) && !details.some((detail) => detail.label === intentLabel)) {
+    pushDetail(t("libui.transcript.labels.command"), truncate(stripWrappedShell(command), 200), "code");
   }
 
   return details;
@@ -242,15 +245,15 @@ export function summarizeToolResult(
   isError: boolean | undefined,
   density: TranscriptDensity = "comfortable",
 ): string {
-  if (!result) return isError ? "Tool failed" : "Waiting for result";
+  if (!result) return isError ? t("libui.transcript.toolFailed") : t("libui.transcript.waitingForResult");
   const structured = parseStructuredToolResult(result);
   if (structured) {
     if (structured.body) {
       return truncate(structured.body.split("\n")[0] ?? structured.body, density === "compact" ? 84 : 140);
     }
-    if (structured.status === "completed") return "Completed";
+    if (structured.status === "completed") return t("libui.transcript.completed");
     if (structured.status === "failed" || structured.status === "error") {
-      return structured.exitCode ? `Failed with exit code ${structured.exitCode}` : "Failed";
+      return structured.exitCode ? t("libui.transcript.failedWithExitCode", { code: structured.exitCode }) : t("libui.transcript.failed");
     }
   }
   const lines = result

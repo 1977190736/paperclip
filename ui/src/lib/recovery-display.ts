@@ -1,5 +1,6 @@
 import type { IssueRecoveryAction, IssueRecoveryActionKind } from "@paperclipai/shared";
 import { Eye, OctagonAlert, RefreshCw, TriangleAlert } from "lucide-react";
+import { t } from "@/i18n";
 import {
   readRecoveryRetryLineage,
   type RecoveryLivenessContext,
@@ -15,7 +16,14 @@ export type RecoveryDisplayState =
 
 export type ActiveRecoveryDisplayState = Exclude<RecoveryDisplayState, "resolved">;
 
-export const RECOVERY_CHIP_DEFAULT_TONE: Record<
+const STATE_KEY: Record<ActiveRecoveryDisplayState, string> = {
+  needed: "needed",
+  in_progress: "inProgress",
+  observe_only: "observeOnly",
+  escalated: "escalated",
+};
+
+const RECOVERY_CHIP_DEFAULT_TONE_BASE: Record<
   ActiveRecoveryDisplayState,
   { className: string; icon: typeof TriangleAlert; label: string }
 > = {
@@ -42,6 +50,21 @@ export const RECOVERY_CHIP_DEFAULT_TONE: Record<
     label: "Recovery escalated",
   },
 };
+
+// Consumers read `.label` directly, so the record is wrapped in a proxy that
+// translates the label on read while className/icon pass through untouched.
+export const RECOVERY_CHIP_DEFAULT_TONE: Record<
+  ActiveRecoveryDisplayState,
+  { className: string; icon: typeof TriangleAlert; label: string }
+> = new Proxy(RECOVERY_CHIP_DEFAULT_TONE_BASE, {
+  get(target, prop, receiver) {
+    if (typeof prop === "string" && Object.hasOwn(target, prop)) {
+      const base = target[prop as ActiveRecoveryDisplayState];
+      return { ...base, label: t(`libui.recovery.chip.${STATE_KEY[prop as ActiveRecoveryDisplayState]}`) };
+    }
+    return Reflect.get(target, prop, receiver);
+  },
+});
 
 /**
  * Every surface derives its recovery tone from this one function, so a source issue and
@@ -122,7 +145,7 @@ export function recoveryChipLabel(
   lineage?: RecoveryRetryLineage | null,
 ): string {
   if (kind === "workspace_validation" && state === "needed") {
-    return "Workspace recovery needed";
+    return t("libui.recovery.workspaceRecoveryNeeded");
   }
   if (
     state === "in_progress" &&
@@ -130,7 +153,10 @@ export function recoveryChipLabel(
     lineage.maxAttempts !== null &&
     lineage.attempt > 0
   ) {
-    return `Recovery in progress · ${Math.min(lineage.attempt, lineage.maxAttempts)}/${lineage.maxAttempts}`;
+    return t("libui.recovery.chipProgress", {
+      attempt: Math.min(lineage.attempt, lineage.maxAttempts),
+      max: lineage.maxAttempts,
+    });
   }
   return RECOVERY_CHIP_DEFAULT_TONE[state].label;
 }

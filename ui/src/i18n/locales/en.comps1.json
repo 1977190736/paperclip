@@ -1339,6 +1339,7 @@
       "emptyHistorical": "Historical runs without liveness metadata will appear here once linked to this task."
     },
     "props": {
+      "checkingMomentarilyHint": "checking momentarily…",
       "unarchiveFailed": "Failed to unarchive this issue. Please try again.",
       "none": "None",
       "default": "Default",

@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState, useSyncExternalStore } from "react";
 import { useConnectivity, type ConnectivityStatus } from "@/lib/connectivity";
+import { t } from "@/i18n";
 
 /** Trouble must last this long before the banner appears, so one blip never flickers. */
 export const BANNER_SHOW_DELAY_MS = 2_000;
@@ -33,8 +34,8 @@ export function connectionBannerView(input: {
 export function pendingWritesCopy(count: number): string | null {
   if (count <= 0) return null;
   return count === 1
-    ? "1 change will send when you’re back online."
-    : `${count} changes will send when you’re back online.`;
+    ? t("comps3.connStatus.pendingOne")
+    : t("comps3.connStatus.pendingMany", { number: count });
 }
 
 // Full-page reconnect screens (CloudAccessGate before the board opens) already
@@ -112,10 +113,10 @@ export function ConnectionStatusMessage({
 }) {
   const pending = view === "back_online" ? null : pendingWritesCopy(pendingWrites);
   const message = view === "back_online"
-    ? "Back online."
+    ? t("comps3.connStatus.backOnline")
     : view === "offline"
-      ? "You’re offline. Reconnecting when your network is back…"
-      : "Connection interrupted. Reconnecting automatically…";
+      ? t("comps3.connStatus.offline")
+      : t("comps3.connStatus.reconnecting");
 
   // Fixed, not in flow: the desktop shell is exactly `h-dvh` with clipped
   // overflow, so an in-flow banner would push the board's bottom off screen.

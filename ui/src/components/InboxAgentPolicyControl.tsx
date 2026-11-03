@@ -9,24 +9,27 @@ import { isAgentTaskTarget } from "@/lib/company-members";
 import { AgentMultiSelect } from "@/components/AgentMultiSelect";
 import { Button } from "@/components/ui/button";
 import { RadioCardGroup, type RadioCardOption } from "@/components/ui/radio-card";
+import { useTranslation } from "@/i18n";
 
-const MODE_OPTIONS: RadioCardOption[] = [
-  {
-    value: "open",
-    title: "Any of my agents",
-    description: "Let any agent you manage archive tasks out of your inbox.",
-  },
-  {
-    value: "allowlist",
-    title: "Only chosen agents",
-    description: "Restrict inbox tidying to the agents you pick below.",
-  },
-  {
-    value: "disabled",
-    title: "Off",
-    description: "Agents can never archive tasks from your inbox.",
-  },
-];
+function modeOptions(t: (key: string) => string): RadioCardOption[] {
+  return [
+    {
+      value: "open",
+      title: t("comps3.inboxPolicy.anyAgents"),
+      description: t("comps3.inboxPolicy.anyAgentsDesc"),
+    },
+    {
+      value: "allowlist",
+      title: t("comps3.inboxPolicy.chosenAgents"),
+      description: t("comps3.inboxPolicy.chosenAgentsDesc"),
+    },
+    {
+      value: "disabled",
+      title: t("comps3.inboxPolicy.off"),
+      description: t("comps3.inboxPolicy.offDesc"),
+    },
+  ];
+}
 
 function policyKey(mode: InboxAgentPolicyMode, allowedAgentIds: string[]): string {
   return `${mode}:${[...allowedAgentIds].sort().join(",")}`;
@@ -45,6 +48,7 @@ interface Draft {
  * "Archived by …" attribution live elsewhere (inbox rows / properties pane).
  */
 export function InboxAgentPolicyControl({ companyId }: { companyId: string | null | undefined }) {
+  const { t } = useTranslation();
   const queryClient = useQueryClient();
   const [draft, setDraft] = useState<Draft | null>(null);
   const lastServerKeyRef = useRef<string | null>(null);
@@ -112,39 +116,38 @@ export function InboxAgentPolicyControl({ companyId }: { companyId: string | nul
   if (policyQuery.error) {
     return (
       <div className="text-sm text-destructive">
-        {policyQuery.error instanceof Error ? policyQuery.error.message : "Failed to load inbox agent policy."}
+        {policyQuery.error instanceof Error ? policyQuery.error.message : t("comps3.inboxPolicy.loadFailed")}
       </div>
     );
   }
 
   if (policyQuery.isLoading || !draft) {
-    return <div className="text-sm text-muted-foreground">Loading inbox agent policy…</div>;
+    return <div className="text-sm text-muted-foreground">{t("comps3.inboxPolicy.loading")}</div>;
   }
 
   return (
-    <section className="space-y-4" aria-label="Let agents tidy my inbox">
+    <section className="space-y-4" aria-label={t("comps3.inboxPolicy.title")}>
       <div className="space-y-1">
         <div className="flex items-center gap-2">
           <Inbox className="h-5 w-5 text-muted-foreground" />
-          <h2 className="text-base font-semibold">Let agents tidy my inbox</h2>
+          <h2 className="text-base font-semibold">{t("comps3.inboxPolicy.title")}</h2>
         </div>
         <p className="max-w-2xl text-sm text-muted-foreground">
-          Choose whether the agents you manage may archive tasks out of your inbox on your behalf. You can
-          undo any archive, and every agent archive is attributed in the task&apos;s properties.
+          {t("comps3.inboxPolicy.intro")}
         </p>
       </div>
 
       <RadioCardGroup
-        ariaLabel="Inbox agent archiving policy"
+        ariaLabel={t("comps3.inboxPolicy.radioAria")}
         value={draft.mode}
         onValueChange={(value) => setDraft((current) => (current ? { ...current, mode: value as InboxAgentPolicyMode } : current))}
-        options={MODE_OPTIONS}
+        options={modeOptions(t)}
         className="max-w-2xl"
       />
 
       {draft.mode === "allowlist" ? (
         <div className="max-w-2xl space-y-2">
-          <div className="text-sm font-medium">Agents allowed to tidy my inbox</div>
+          <div className="text-sm font-medium">{t("comps3.inboxPolicy.allowedAgents")}</div>
           <AgentMultiSelect
             agents={agentOptions}
             selectedAgentIds={selectedAgentIds}
@@ -155,25 +158,27 @@ export function InboxAgentPolicyControl({ companyId }: { companyId: string | nul
             }
             triggerLabel={
               selectedAgentIds.size === 0
-                ? "Select agents"
-                : `${selectedAgentIds.size} ${selectedAgentIds.size === 1 ? "agent" : "agents"} selected`
+                ? t("comps2.chatPicker.selectAgents")
+                : selectedAgentIds.size === 1
+                  ? t("comps2.chatPicker.selectedOne", { number: selectedAgentIds.size })
+                  : t("comps2.chatPicker.selectedMany", { number: selectedAgentIds.size })
             }
             triggerFullWidth={false}
             showSelectionPreview={false}
-            emptyMessage="You don’t manage any agents yet."
+            emptyMessage={t("comps3.inboxPolicy.noAgentsYet")}
           />
         </div>
       ) : null}
 
       {updateMutation.error ? (
         <div className="max-w-2xl rounded-md border border-destructive/40 bg-destructive/5 px-3 py-2 text-sm text-destructive">
-          {updateMutation.error instanceof Error ? updateMutation.error.message : "Failed to save inbox agent policy."}
+          {updateMutation.error instanceof Error ? updateMutation.error.message : t("comps3.inboxPolicy.saveFailed")}
         </div>
       ) : null}
 
       <div className="flex max-w-2xl items-center justify-end gap-3">
         {updateMutation.isSuccess && !isDirty ? (
-          <span className="text-xs text-muted-foreground" role="status">Saved</span>
+          <span className="text-xs text-muted-foreground" role="status">{t("comps3.inboxPolicy.saved")}</span>
         ) : null}
         <Button
           type="button"
@@ -181,7 +186,7 @@ export function InboxAgentPolicyControl({ companyId }: { companyId: string | nul
           onClick={() => draft && updateMutation.mutate(draft)}
         >
           {updateMutation.isPending ? <LoaderCircle className="size-4 animate-spin" /> : <Save className="size-4" />}
-          {updateMutation.isPending ? "Saving…" : "Save"}
+          {updateMutation.isPending ? t("comps1.decisionSettings.saving") : t("agentConfig.common.save")}
         </Button>
       </div>
     </section>
