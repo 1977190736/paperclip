@@ -1,0 +1,330 @@
+{
+  "inbox": {
+    "surfaceLabel": "Inbox",
+    "emptyState": {
+      "selectOrg": "Select an organization to view {{surface}}."
+    },
+    "selectCompanyLegacy": "Select a company to view inbox.",
+    "searchPlaceholder": "Search {{surface}}…",
+    "legacySearchPlaceholder": "Search inbox…",
+    "toolbar": {
+      "controlsAria": "{{surface}} controls",
+      "group": "Group",
+      "sort": "Sort",
+      "chooseColumns": "Choose which columns stay visible",
+      "chooseLegacyColumns": "Choose which inbox columns stay visible",
+      "nestingEnable": "Enable parent-child nesting",
+      "nestingDisable": "Disable parent-child nesting",
+      "markAllRead": "Mark all as read",
+      "marking": "Marking…"
+    },
+    "groupBy": {
+      "none": "None",
+      "type": "Type",
+      "assignee": "Responsible",
+      "project": "Project",
+      "workspace": "Workspace"
+    },
+    "tabs": {
+      "mine": "Mine",
+      "recent": "Recent",
+      "unread": "Unread",
+      "blocked": "Blocked",
+      "all": "All"
+    },
+    "filterFeedback": {
+      "liveOnly": "Live runs only — tasks currently connected to an agent run.",
+      "activeStatuses": "Active statuses — open tasks, whether or not an agent is running."
+    },
+    "notice": {
+      "partialLoad": "Some inbox items couldn’t load. Showing available items.",
+      "retryMissing": "Retry missing items"
+    },
+    "errors": {
+      "loadFailed": "Unable to load the inbox: {{message}}",
+      "retry": "Retry",
+      "approveJoinRequest": "Failed to approve join request",
+      "rejectJoinRequest": "Failed to reject join request",
+      "archiveTask": "Failed to archive task",
+      "undoArchive": "Failed to undo inbox archive"
+    },
+    "toast": {
+      "retryFailedTitle": "Run retry failed",
+      "retryFailedBody": "Unable to retry run"
+    },
+    "markAllReadDialog": {
+      "title": "Mark all as read?",
+      "descriptionOne": "This will mark {{n}} unread item as read.",
+      "descriptionOther": "This will mark {{n}} unread items as read.",
+      "cancel": "Cancel",
+      "confirm": "Mark all as read"
+    },
+    "empty": {
+      "noSearchMatches": "No inbox items match your search.",
+      "inboxZero": "Inbox zero.",
+      "noNew": "No new inbox items.",
+      "noRecent": "No recent inbox items.",
+      "noFilterMatches": "No inbox items match these filters."
+    },
+    "sections": {
+      "alerts": "Alerts",
+      "archived": "Archived",
+      "otherResults": "Other results",
+      "earlier": "Earlier"
+    },
+    "rows": {
+      "markAsRead": "Mark as read",
+      "dismiss": "Dismiss",
+      "approve": "Approve",
+      "reject": "Reject",
+      "requestedBy": "requested by {{name}}",
+      "updatedAgo": "updated {{time}}",
+      "requestedFromIp": "requested {{time}} from IP {{ip}}",
+      "adapterLabel": "adapter: {{adapter}}",
+      "retry": "Retry",
+      "retryPending": "Thinking",
+      "legacyRetryPending": "Retrying…",
+      "failedRun": "Failed run{{agent}}",
+      "collapseSubTasks": "Collapse sub-tasks",
+      "expandSubTasks": "Expand sub-tasks"
+    },
+    "failureStates": {
+      "thinking": "Thinking",
+      "retryIn": "Trying again in {{seconds}}s…",
+      "interrupted": "Couldn’t finish this attempt. Your message is saved.",
+      "approvalRequired": "Approval required",
+      "reconnectAccount": "Reconnect account",
+      "assignAgent": "Assign an agent",
+      "chooseModel": "Choose a supported model",
+      "workPaused": "Work is paused",
+      "budgetLimit": "Budget limit reached",
+      "needsProjectAccess": "Agent needs project access",
+      "runExitedWithError": "Run exited with an error."
+    },
+    "joinRequest": {
+      "agentLabel": "Agent join request",
+      "agentLabelWithName": "Agent join request: {{name}}",
+      "humanLabel": "Human join request"
+    },
+    "alerts": {
+      "agentsErrorSuffixOne": " agent has errors",
+      "agentsErrorSuffixOther": " agents have errors",
+      "budgetPrefix": "Budget at ",
+      "budgetSuffix": " utilization this month"
+    },
+    "newTaskInGroup": "New task in {{group}}",
+    "subTasksSuffixOne": "({{n}} sub-task)",
+    "subTasksSuffixOther": "({{n}} sub-tasks)",
+    "creator": {
+      "board": "Board",
+      "me": "Me"
+    },
+    "category": {
+      "placeholder": "Category",
+      "allCategories": "All categories",
+      "myRecentTasks": "My recent tasks",
+      "joinRequests": "Join requests",
+      "approvals": "Approvals",
+      "failedRuns": "Failed runs",
+      "alerts": "Alerts"
+    },
+    "approvalStatusFilter": {
+      "placeholder": "Approval status",
+      "all": "All approval statuses",
+      "needsAction": "Needs action",
+      "resolved": "Resolved"
+    }
+  },
+  "issues": {
+    "surfaceLabel": "Tasks",
+    "emptyState": {
+      "selectOrg": "Select an organization to view tasks.",
+      "selectCompany": "Select a company to view tasks.",
+      "noMatches": "No tasks match the current filters or search."
+    },
+    "statusLabels": {
+      "backlog": "Backlog",
+      "todo": "Todo",
+      "inProgress": "In progress",
+      "monitoring": "Monitoring",
+      "inReview": "In review",
+      "done": "Done",
+      "blocked": "Blocked",
+      "cancelled": "Cancelled"
+    },
+    "statusNames": {
+      "backlog": "Backlog",
+      "todo": "Todo",
+      "inProgress": "In Progress"
+    },
+    "statusTitle": "{{status}}: {{n}}",
+    "progressSummary": {
+      "doneCount": "{{done}}/{{total}} done",
+      "inProgressCount": "{{n}} in progress",
+      "blockedCount": "{{n}} blocked",
+      "runLabelOne": "{{n}} run",
+      "runLabelOther": "{{n}} runs",
+      "across": "across",
+      "subTaskLabelOne": "{{n}} sub-task",
+      "subTaskLabelOther": "{{n}} sub-tasks",
+      "tokens": "{{tokens}} tokens",
+      "runtime": "{{duration}} runtime",
+      "progressAria": "Sub-tasks completion progress",
+      "nextUp": "Next up",
+      "waitingOnBlockers": "Waiting on blockers",
+      "noActiveSubTasks": "No active sub-tasks",
+      "allSubTasksDone": "All sub-tasks done",
+      "noActionableSubTasks": "No actionable sub-tasks"
+    },
+    "ageSeparator": {
+      "olderThanDay": "Older than a day",
+      "olderThanWeek": "Older than a week"
+    },
+    "search": {
+      "placeholder": "Search tasks...",
+      "ariaLabel": "Search tasks"
+    },
+    "toolbar": {
+      "taskControls": "Task controls",
+      "viewModeAria": "View mode",
+      "listView": "List view",
+      "boardView": "Board view",
+      "nestingEnable": "Enable parent-child nesting",
+      "nestingDisable": "Disable parent-child nesting",
+      "useComfortableCards": "Use comfortable cards",
+      "useCompactCards": "Use compact cards",
+      "expandColdLanes": "Expand cold lanes",
+      "collapseColdLanes": "Collapse cold lanes",
+      "cardsPerColumn": "Cards per column",
+      "perColumn": "{{n}} per column",
+      "resetBoardDensity": "Reset board density",
+      "chooseColumns": "Choose which task columns stay visible",
+      "group": "Group",
+      "sort": "Sort"
+    },
+    "sortOptions": {
+      "workflow": "Workflow",
+      "status": "Status",
+      "priority": "Priority",
+      "title": "Title",
+      "created": "Created",
+      "updated": "Updated"
+    },
+    "groupOptions": {
+      "status": "Status",
+      "priority": "Priority",
+      "assignee": "Responsible",
+      "project": "Project",
+      "workspace": "Workspace",
+      "parent": "Parent Task",
+      "none": "None"
+    },
+    "errors": {
+      "externalStatusFilter": "Unable to filter tasks by external status: {{message}}",
+      "retryExternalStatuses": "Retry external statuses",
+      "hierarchyLoad": "Failed to load task hierarchy: {{message}}"
+    },
+    "limits": {
+      "searchLimit": "Showing up to {{n}} matches. Refine the search to narrow further.",
+      "boardColumnLimit": "Some board columns are showing up to {{n}} tasks. Refine filters or search to reveal the rest."
+    },
+    "create": {
+      "createTask": "Create Task",
+      "createLabeled": "Create {{label}}",
+      "newTask": "New Task",
+      "newLabeled": "New {{label}}"
+    },
+    "groupHeader": {
+      "newTaskInGroup": "New task in {{group}}"
+    },
+    "subTasks": {
+      "suffixGeneric": "(sub-tasks)",
+      "suffixOne": "({{n}} sub-task)",
+      "suffixOther": "({{n}} sub-tasks)"
+    },
+    "badges": {
+      "paused": "Paused",
+      "needsNextStep": "Needs next step",
+      "needsNextStepTitle": "This task needs a next step"
+    },
+    "rows": {
+      "collapseSubTasks": "Collapse sub-tasks",
+      "expandSubTasks": "Expand sub-tasks",
+      "assignee": "Assignee",
+      "searchResponsible": "Search responsible...",
+      "noResponsible": "No responsible",
+      "me": "Me",
+      "user": "User",
+      "blockedByChip": "blocked by {{issue}}",
+      "blockedByStep": " · step {{step}}",
+      "moreBlockers": " ... and {{n}} more",
+      "blockerTitle": "{{first}}: {{rest}}"
+    },
+    "groups": {
+      "noWorkspace": "No Workspace",
+      "noProject": "No Project",
+      "noParent": "No Parent",
+      "unassigned": "Unassigned"
+    },
+    "loading": {
+      "more": "Loading more tasks...",
+      "rendering": "Rendering {{shown}} of {{total}} tasks",
+      "scrollForMore": "Scroll to load more tasks"
+    },
+    "new": {
+      "title": "New task",
+      "subtaskTitle": "New sub-task",
+      "placeholder": "Describe a task…",
+      "submitLabel": "Create task",
+      "subtaskSubmitLabel": "Create sub-task",
+      "cancelSavedRequest": "Cancel saved request",
+      "taskTitleAria": "Task title",
+      "subtaskOf": "Sub-task of",
+      "parentAccessChecking": "Checking parent access…",
+      "parentAccessFailed": "Couldn't check parent access.",
+      "retry": "Retry",
+      "worktreeCheckFailed": "Couldn't check the selected worktree. Retry in Worktrees or choose New worktree.",
+      "worktreeUnavailable": "The selected worktree is no longer available. Choose another worktree or start a new one.",
+      "documents": "Documents",
+      "attachments": "Attachments",
+      "removeDocument": "Remove document",
+      "removeAttachment": "Remove attachment",
+      "backlogNoteBefore": "Assigning implies executable intent - leave status as ",
+      "backlogNoteAfterBacklog": " only to deliberately park this. The assignee will not be woken until status moves to ",
+      "backlogNoteOr": " or ",
+      "pausedNoteBody": " is paused and will not start work on this task until it is resumed",
+      "pausedNoteImportReason": " — it arrived paused from an organization import",
+      "pausedNoteTail": ". You can resume it from the task page after creating the task.",
+      "lowTrustNote": "Low-trust review agent. It can only act inside its assigned review boundary; task, project, or run policy defines the concrete scope.",
+      "parentWorkspaceWarning": "This sub-task will no longer use the parent task workspace{{label}}.",
+      "privacy": {
+        "subtaskOfPrivate": "Subtask of private task {{title}}",
+        "inPrivateProject": "In private project {{name}}"
+      },
+      "projectSelector": {
+        "placeholder": "Project",
+        "mobileTitle": "Select project",
+        "noneLabel": "No project",
+        "searchPlaceholder": "Search projects...",
+        "emptyMessage": "No projects found.",
+        "privateProject": "Private project",
+        "triggerLabel": "Project"
+      },
+      "toasts": {
+        "created": "Created {{ref}}",
+        "createdWithWarnings": "Created {{ref}} with upload warnings",
+        "uploadWarningsBodyOne": "{{n}} staged file could not be added.",
+        "uploadWarningsBodyOther": "{{n}} staged files could not be added.",
+        "openAction": "Open {{ref}}"
+      },
+      "recovery": {
+        "savedRequestTitle": "Saved request needs attention",
+        "savedRequestUnavailable": "The saved request is unavailable. Cancel it before creating another task.",
+        "attachOriginalFiles": "Attach the original files again: {{names}}.",
+        "restoreOriginalFields": "Restore the saved task's original fields before retrying, or cancel the saved request to start another task."
+      },
+      "stagedFilesMissingOne": "This page no longer has the file staged for this task ({{names}}). Attach it again, then create the task.",
+      "stagedFilesMissingOther": "This page no longer has the {{n}} files staged for this task ({{names}}). Attach them again, then create the task."
+    }
+  }
+}

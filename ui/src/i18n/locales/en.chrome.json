@@ -1,0 +1,181 @@
+{
+  "nav": {
+    "sidebar": {
+      "newTask": "New Task",
+      "search": "Search",
+      "dashboard": "Dashboard",
+      "inbox": "Inbox",
+      "chat": "Chat",
+      "decisions": "Decisions",
+      "status": "Status",
+      "conferenceRoom": "Conference Room",
+      "tasks": "Tasks",
+      "projects": "Projects",
+      "routines": "Routines",
+      "artifacts": "Artifacts",
+      "cases": "Cases",
+      "goals": "Goals",
+      "workspaces": "Workspaces",
+      "agents": "Agents",
+      "skills": "Skills",
+      "connectors": "Connectors",
+      "audit": "Audit",
+      "org": "Org",
+      "organization": "Organization",
+      "timeline": "Timeline",
+      "costs": "Costs",
+      "activity": "Activity",
+      "commentary": "Commentary",
+      "settings": "Settings",
+      "section": {
+        "work": "Work",
+        "org": "Org",
+        "organization": "Organization",
+        "company": "Company"
+      },
+      "sectionAria": {
+        "actions": "{{label}} actions",
+        "collapse": "Collapse {{label}}",
+        "expand": "Expand {{label}}"
+      },
+      "badge": {
+        "unread": "unread",
+        "unreadChats": "unread chats",
+        "decisions": "decisions"
+      },
+      "navItem": {
+        "liveCount": "{{n}} live",
+        "attentionNeeded": "attention needed"
+      },
+      "shell": {
+        "resizeSidebar": "Resize sidebar"
+      },
+      "removeFromStarred": "Remove from starred",
+      "leaving": "Leaving...",
+      "leaveProject": "Leave project",
+      "privateProject": "Private project",
+      "pausedByBudgetProject": "Project paused by budget",
+      "openActions": "Open actions for {{name}}",
+      "agentsMenu": {
+        "sort": {
+          "top": "Top",
+          "alphabetical": "Alphabetical",
+          "recent": "Recent"
+        },
+        "sortLabel": "Agent sort",
+        "resume": "Resume agent",
+        "pause": "Pause agent",
+        "updating": "Updating...",
+        "budgetPaused": "Budget paused",
+        "invalidOrgChain": "Invalid org chain",
+        "builtInStatus": "Built-in agent {{status}}",
+        "invalidReportingChain": "Invalid reporting chain",
+        "pausedByBudget": "Agent paused by budget",
+        "pausedByBudgetLimits": "Agent was paused by budget limits",
+        "star": "Star agent",
+        "edit": "Edit agent",
+        "leave": "Leave agent",
+        "newAgent": "New agent",
+        "sectionActions": "Agents section actions",
+        "browse": "Browse agents",
+        "seeAll": "See all agents",
+        "toastPaused": "Agent paused",
+        "toastResumed": "Agent resumed",
+        "toastPauseFailed": "Could not pause agent",
+        "toastResumeFailed": "Could not resume agent"
+      },
+      "projectsMenu": {
+        "sort": {
+          "top": "Top",
+          "alphabetical": "Alphabetical",
+          "recent": "Recent"
+        },
+        "sortLabel": "Project sort",
+        "newProject": "New project",
+        "sectionActions": "Projects section actions",
+        "browse": "Browse projects"
+      },
+      "starred": {
+        "ariaLabel": "Starred projects"
+      },
+      "recentTasks": {
+        "label": "Recent Tasks",
+        "idle": "Idle",
+        "moreActions": "More actions for {{name}}",
+        "rename": "Rename",
+        "archive": "Archive",
+        "pauseRestart": "Pause/Restart",
+        "renameTask": "Rename task",
+        "renameDescription": "Choose a short, clear name for this task.",
+        "taskName": "Task name",
+        "cancel": "Cancel",
+        "saving": "Saving...",
+        "save": "Save",
+        "toastRenamed": "Task renamed",
+        "toastRenameFailed": "Task rename failed",
+        "renameError": "Unable to rename this task.",
+        "toastArchived": "Task archived from inbox",
+        "toastArchiveFailed": "Task archive failed",
+        "archiveError": "Unable to archive this task from the inbox.",
+        "toastRestarted": "Task restarted",
+        "toastPaused": "Task paused",
+        "toastPauseFailed": "Task pause update failed",
+        "pauseError": "Unable to pause or restart this task.",
+        "wakeSkipped": "The assignee wake was skipped.",
+        "pausedByParent": "This task is paused by a parent task. Restart it from the pause root."
+      },
+      "serverInfo": {
+        "server": "Server",
+        "lastRestarted": "Last restarted",
+        "runningCommit": "Running commit",
+        "checkoutState": "Checkout state",
+        "unavailable": "Unavailable",
+        "commitUnavailable": "Commit unavailable",
+        "cleanCheckout": "Clean checkout",
+        "changeStatusUnavailable": "Change status unavailable",
+        "localChangesPresent": "Local changes present",
+        "localChangesPresentWith": "Local changes present ({{parts}})",
+        "staged": "staged",
+        "unstaged": "unstaged",
+        "untracked": "untracked",
+        "healthUnavailable": "Health unavailable",
+        "loading": "Loading..."
+      }
+    },
+    "companyMenu": {
+      "openOrgSwitcherNamed": "Open {{name}} organization switcher",
+      "openOrgSwitcher": "Open organization switcher",
+      "openCompanySwitcherNamed": "Open {{name}} company switcher",
+      "openCompanySwitcher": "Open company switcher",
+      "selectOrganization": "Select organization",
+      "selectCompany": "Select company",
+      "organizations": "Organizations",
+      "done": "Done",
+      "edit": "Edit",
+      "loadFailedOrganizations": "Couldn't load organizations",
+      "loadFailedCompanies": "Couldn't load companies",
+      "tryAgain": "Try again",
+      "noOrganizations": "No organizations",
+      "noCompanies": "No companies",
+      "createOrganization": "Create organization",
+      "invitePeopleTo": "Invite people to {{name}}",
+      "invitePeople": "Invite people",
+      "reorder": "Reorder {{name}}"
+    },
+    "companySwitcher": {
+      "manageOrganizations": "Manage Organizations"
+    },
+    "mobile": {
+      "needsYou": "Needs You",
+      "home": "Home",
+      "newTaskCoordinator": "New task",
+      "ariaLabel": "Mobile navigation"
+    },
+    "layout": {
+      "skipToMainContent": "Skip to Main Content",
+      "closeSidebar": "Close sidebar",
+      "companyArchived": "{{name}} is archived",
+      "switchedTo": "Switched to {{name}}."
+    }
+  }
+}

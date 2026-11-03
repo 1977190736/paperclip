@@ -4,8 +4,9 @@ import { flushSync } from "react-dom";
 import { createRoot } from "react-dom/client";
 import { MemoryRouter } from "react-router-dom";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
+import { afterEach, beforeAll, beforeEach, describe, expect, it, vi } from "vitest";
 import { TooltipProvider } from "@/components/ui/tooltip";
+import { i18n } from "@/i18n";
 import { queryKeys } from "@/lib/queryKeys";
 import { CompanySettings } from "./CompanySettings";
 
@@ -84,6 +85,11 @@ const RENAME_HINT =
   "Renaming can change this company's task ID prefix. Existing task IDs are renumbered and old task links stop resolving.";
 
 describe("CompanySettings rename hint", () => {
+  // UI text now follows the host/browser locale; pin English for assertions.
+  beforeAll(async () => {
+    await i18n.changeLanguage("en");
+  });
+
   let container: HTMLDivElement;
 
   beforeEach(() => {

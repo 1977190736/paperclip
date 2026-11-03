@@ -1,3 +1,10 @@
+import { i18n } from "./src/i18n";
+
+// UI tests assert against the English copy, but language detection now follows
+// the host/browser locale. Pin English for every test run so assertions stay
+// deterministic regardless of the machine running them.
+await i18n.changeLanguage("en");
+
 const storageEntries = new Map<string, string>();
 
 function installStorageMock(target: Record<string, unknown>) {

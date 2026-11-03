@@ -1,7 +1,13 @@
-import { describe, expect, it } from "vitest";
+import { beforeAll, describe, expect, it } from "vitest";
+import { i18n } from "@/i18n";
 import { formatProjectBudget } from "./utils";
 
 describe("formatProjectBudget", () => {
+  // Formatting follows the active UI language; pin English for assertions.
+  beforeAll(async () => {
+    await i18n.changeLanguage("en");
+  });
+
   it("renders a /mo suffix for monthly budgets", () => {
     expect(formatProjectBudget({ amountCents: 120_000, windowKind: "calendar_month_utc" })).toBe("$1,200.00/mo");
   });

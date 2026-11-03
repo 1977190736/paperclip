@@ -1,7 +1,13 @@
-import { describe, expect, it } from "vitest";
+import { beforeAll, describe, expect, it } from "vitest";
+import { i18n } from "@/i18n";
 import { formatDateTime } from "./utils";
 
 describe("formatDateTime", () => {
+  // Formatting follows the active UI language; pin English for assertions.
+  beforeAll(async () => {
+    await i18n.changeLanguage("en");
+  });
+
   // Local construction avoids assuming the test runner's timezone.
   const timestamp = new Date(2026, 8, 7, 13, 2, 54);
 

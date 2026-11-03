@@ -1,0 +1,241 @@
+{
+  "dashboard": {
+    "breadcrumb": "Dashboard",
+    "emptyState": {
+      "welcome": "Welcome to Paperclip. Set up your first organization and agent to get started.",
+      "getStarted": "Get Started",
+      "createOrSelect": "Create or select an organization to view the dashboard."
+    },
+    "pausedImported": {
+      "title_one": "{{count}} imported agent is paused and will not run.",
+      "title_other": "{{count}} imported agents are paused and will not run.",
+      "resuming": "Resuming…",
+      "resumeAll": "Resume all",
+      "body": "Agents from an organization import arrive paused as a safety default. Resume them so assigned tasks can start."
+    },
+    "pausedAll": {
+      "title": "All agents in this organization are paused — nothing will run.",
+      "reviewAgents": "Review agents",
+      "body": "Resume at least one agent to let assigned tasks start."
+    },
+    "noAgents": {
+      "message": "You have no agents.",
+      "createHere": "Create one here"
+    },
+    "budgetIncidents": {
+      "title_one": "{{count}} active budget incident",
+      "title_other": "{{count}} active budget incidents",
+      "summary": "{{agents}} agents paused · {{projects}} projects paused · {{approvals}} pending budget approvals",
+      "openBudgets": "Open budgets"
+    },
+    "metrics": {
+      "agentsEnabled": "Agents Enabled",
+      "agentsDescription": "{{running}} running, {{paused}} paused, {{errors}} errors",
+      "tasksInProgress": "Tasks In Progress",
+      "tasksDescription": "{{open}} open, {{blocked}} blocked",
+      "monthSpend": "Month Spend",
+      "monthSpendBudget": "{{percent}}% of {{budget}} budget",
+      "unlimitedBudget": "Unlimited budget",
+      "pendingApprovals": "Pending Approvals",
+      "pendingApprovalsBudget": "{{overrides}} budget overrides awaiting board review",
+      "awaitingReview": "Awaiting board review"
+    },
+    "charts": {
+      "runActivity": "Run Activity",
+      "tasksByPriority": "Tasks by Priority",
+      "tasksByStatus": "Tasks by Status",
+      "successRate": "Success Rate",
+      "last14Days": "Last 14 days"
+    },
+    "recentActivity": "Recent Activity",
+    "recentTasks": "Recent Tasks",
+    "noTasks": "No tasks yet.",
+    "live": {
+      "breadcrumb": "Live runs",
+      "title": "Live agent runs",
+      "subtitle": "Active runs first, followed by the most recent completed runs.",
+      "showingUpTo": "Showing up to {{limit}}",
+      "createOrg": "Create an organization to view live runs.",
+      "selectOrg": "Select an organization to view live runs.",
+      "activeRecent": "Active / recent",
+      "emptyMessage": "No active or recent agent runs."
+    }
+  },
+  "companies": {
+    "breadcrumb": "Organizations",
+    "newOrganization": "New Organization",
+    "loading": "Loading organizations...",
+    "rename": "Rename",
+    "unarchive": "Unarchive",
+    "deleteOrganization": "Delete Organization",
+    "stats": {
+      "agents_one": "{{count}} agent",
+      "agents_other": "{{count}} agents",
+      "tasks_one": "{{count}} task",
+      "tasks_other": "{{count}} tasks",
+      "budgetPart": "/ {{budget}} ({{percent}}%)",
+      "unlimitedBudget": "Unlimited budget"
+    },
+    "created": "Created {{time}}",
+    "deleteConfirm": {
+      "message": "Delete this organization and all its data? This cannot be undone.",
+      "cancel": "Cancel",
+      "delete": "Delete",
+      "deleting": "Deleting…"
+    }
+  },
+  "whatNeedsMe": {
+    "breadcrumb": "Decisions",
+    "title": "Decisions",
+    "selectOrgFirst": "Select an organization first.",
+    "toast": {
+      "dismissed": "Dismissed",
+      "undo": "Undo"
+    },
+    "curtains": {
+      "snoozed": "Snoozed",
+      "dismissed": "Dismissed",
+      "aging": "Aging",
+      "decided": "Decided",
+      "expired": "Expired"
+    },
+    "aging": {
+      "description": "Idle past {{days}} days — kept off the desk. Keep any you still want surfaced."
+    },
+    "decided": {
+      "loading": "Loading decided decisions…",
+      "empty": "No decided decisions."
+    },
+    "expired": {
+      "loading": "Loading expired decisions…",
+      "empty": "No expired decisions."
+    },
+    "bundle": {
+      "anAgent": "An agent",
+      "proposed_one": "{{agent}} proposed {{count}} decision",
+      "proposed_other": "{{agent}} proposed {{count}} decisions",
+      "from": "· from ",
+      "title": "· {{title}}",
+      "pending": "· {{count}} pending"
+    },
+    "caughtUp": {
+      "allCaughtUp": "You're all caught up.",
+      "filtered": "No decisions match your search or filters.",
+      "hint": "Adjust or clear your search and filters to see the rest."
+    },
+    "zeroState": {
+      "title": "You're all caught up",
+      "body": "Nothing needs a decision from you right now."
+    }
+  },
+  "statusCards": {
+    "breadcrumb": "Status",
+    "title": "Status",
+    "experimental": "Experimental",
+    "newCard": "New card",
+    "todayUsage": "Today: {{tokens}} · ~{{cost}}",
+    "headsUp": "Heads up",
+    "loadingCards": "Loading cards…",
+    "loadErrorTitle": "Could not load status cards",
+    "tryAgain": "Try again.",
+    "empty": {
+      "title": "No status cards yet",
+      "message": "Create a card to keep a living summary of the issues you care about."
+    },
+    "hideArchived": "Hide archived",
+    "showArchived": "Show archived ({{total}})",
+    "errors": {
+      "refresh": "Could not refresh the card.",
+      "recompile": "Could not run the card.",
+      "archive": "Could not archive the card.",
+      "restore": "Could not restore the card."
+    }
+  },
+  "timeline": {
+    "breadcrumb": "Timeline",
+    "projectTimeline": "Project Timeline",
+    "workTimeline": "Work Timeline",
+    "selectOrg": "Select an organization to view its work timeline.",
+    "loadError": "Couldn't load the timeline. The aggregation endpoint may be unavailable.",
+    "noActivity": "No activity in this window.",
+    "noProjectActivity": "No project activity in this window.",
+    "error": {
+      "chooseDates": "Choose a start and end date.",
+      "startBeforeEnd": "Start date must be before end date."
+    },
+    "range": "Range",
+    "rangeToday": "Today",
+    "range7d": "7 days",
+    "range30d": "30 days",
+    "startDate": "Timeline start date",
+    "endDate": "Timeline end date",
+    "to": "to",
+    "zoomControls": "Timeline zoom controls",
+    "zoomOut": "Zoom out",
+    "zoomIn": "Zoom in",
+    "resetZoom": "Reset zoom",
+    "legend": {
+      "delegated": "Delegated",
+      "automation": "Automation",
+      "cancelled": "Cancelled",
+      "now": "Now"
+    },
+    "stats": {
+      "runs": "Runs",
+      "agents": "Agents",
+      "runTime": "Run time",
+      "tokensUsed": "Tokens used",
+      "notTracked": "Not tracked"
+    },
+    "summary": {
+      "line_one": "{{count}} run · {{from}} to {{to}}",
+      "line_other": "{{count}} runs · {{from}} to {{to}}",
+      "windowCapped": " · window capped"
+    }
+  },
+  "boardChat": {
+    "breadcrumb": "Conference Room",
+    "conferenceRoom": "Conference Room",
+    "yourOrganization": "Your organization",
+    "noOrg": {
+      "title": "No organization selected",
+      "body": "Select an organization to start chatting with your board concierge."
+    },
+    "typing": "typing",
+    "status": {
+      "connecting": "Connecting...",
+      "thinking": "Thinking..."
+    },
+    "error": {
+      "noResponse": "The board assistant couldn't respond. Please try again.",
+      "unavailable": "The board assistant is unavailable right now. Please try again in a moment."
+    },
+    "assistant": "Assistant",
+    "chatHistory": "chat history",
+    "newChat": "new chat",
+    "jumpToLatest": "Jump to latest messages",
+    "resizeHandle": "Resize board chat and agent feed",
+    "openFeed": "Open agent feed",
+    "composerPlaceholder": "Ask anything about your organization...",
+    "send": "Send message",
+    "welcome": {
+      "intro": "Welcome to **{{company}}**! I'm {{agent}}, your team lead. I've read through what you shared in the wizard{{missionTail}}\n\n",
+      "mission": " — your mission is \"{{mission}}\".",
+      "body": "Here are a few things I can help you put on paper right now. Pick one below and I'll draft it for you using everything you told us."
+    },
+    "chips": {
+      "orgBrief": {
+        "label": "Draft an Organization Brief"
+      },
+      "hiringPlan": {
+        "label": "Create a hiring plan"
+      },
+      "first30": {
+        "label": "Outline our first 30 days"
+      },
+      "introPitch": {
+        "label": "Write an intro pitch"
+      }
+    }
+  }
+}

@@ -1,0 +1,241 @@
+{
+  "dashboard": {
+    "breadcrumb": "仪表板",
+    "emptyState": {
+      "welcome": "欢迎使用 Paperclip。设置你的第一个组织和智能体即可开始。",
+      "getStarted": "开始使用",
+      "createOrSelect": "创建或选择一个组织以查看仪表板。"
+    },
+    "pausedImported": {
+      "title_one": "{{count}} 个导入的智能体已暂停，将不会运行。",
+      "title_other": "{{count}} 个导入的智能体已暂停，将不会运行。",
+      "resuming": "恢复中…",
+      "resumeAll": "全部恢复",
+      "body": "从组织导入的智能体出于安全考虑默认暂停。请恢复它们，让已分配的任务可以开始。"
+    },
+    "pausedAll": {
+      "title": "此组织中的所有智能体均已暂停——不会运行任何任务。",
+      "reviewAgents": "查看智能体",
+      "body": "恢复至少一个智能体，让已分配的任务开始运行。"
+    },
+    "noAgents": {
+      "message": "你还没有智能体。",
+      "createHere": "在此创建"
+    },
+    "budgetIncidents": {
+      "title_one": "{{count}} 个进行中的预算事件",
+      "title_other": "{{count}} 个进行中的预算事件",
+      "summary": "{{agents}} 个智能体已暂停 · {{projects}} 个项目已暂停 · {{approvals}} 个预算审批待处理",
+      "openBudgets": "打开预算"
+    },
+    "metrics": {
+      "agentsEnabled": "已启用的智能体",
+      "agentsDescription": "{{running}} 个运行中，{{paused}} 个已暂停，{{errors}} 个错误",
+      "tasksInProgress": "进行中的任务",
+      "tasksDescription": "{{open}} 个待处理，{{blocked}} 个被阻塞",
+      "monthSpend": "本月支出",
+      "monthSpendBudget": "已用 {{budget}} 预算的 {{percent}}%",
+      "unlimitedBudget": "预算无限制",
+      "pendingApprovals": "待审批",
+      "pendingApprovalsBudget": "{{overrides}} 个预算覆盖等待看板审核",
+      "awaitingReview": "等待看板审核"
+    },
+    "charts": {
+      "runActivity": "运行活动",
+      "tasksByPriority": "按优先级的任务",
+      "tasksByStatus": "按状态的任务",
+      "successRate": "成功率",
+      "last14Days": "最近 14 天"
+    },
+    "recentActivity": "最近活动",
+    "recentTasks": "最近任务",
+    "noTasks": "暂无任务。",
+    "live": {
+      "breadcrumb": "实时运行",
+      "title": "智能体实时运行",
+      "subtitle": "先显示进行中的运行，随后是最近完成的运行。",
+      "showingUpTo": "最多显示 {{limit}} 条",
+      "createOrg": "创建组织以查看实时运行。",
+      "selectOrg": "选择组织以查看实时运行。",
+      "activeRecent": "活跃 / 最近",
+      "emptyMessage": "暂无活跃或最近的智能体运行。"
+    }
+  },
+  "companies": {
+    "breadcrumb": "组织",
+    "newOrganization": "新建组织",
+    "loading": "正在加载组织...",
+    "rename": "重命名",
+    "unarchive": "取消归档",
+    "deleteOrganization": "删除组织",
+    "stats": {
+      "agents_one": "{{count}} 个智能体",
+      "agents_other": "{{count}} 个智能体",
+      "tasks_one": "{{count}} 个任务",
+      "tasks_other": "{{count}} 个任务",
+      "budgetPart": "/ {{budget}}（{{percent}}%）",
+      "unlimitedBudget": "预算无限制"
+    },
+    "created": "创建于 {{time}}",
+    "deleteConfirm": {
+      "message": "删除此组织及其所有数据？此操作无法撤销。",
+      "cancel": "取消",
+      "delete": "删除",
+      "deleting": "删除中…"
+    }
+  },
+  "whatNeedsMe": {
+    "breadcrumb": "决策",
+    "title": "决策",
+    "selectOrgFirst": "请先选择一个组织。",
+    "toast": {
+      "dismissed": "已忽略",
+      "undo": "撤销"
+    },
+    "curtains": {
+      "snoozed": "已延后",
+      "dismissed": "已忽略",
+      "aging": "搁置中",
+      "decided": "已决定",
+      "expired": "已过期"
+    },
+    "aging": {
+      "description": "闲置超过 {{days}} 天——已移出决策台。如仍需关注，请保留。"
+    },
+    "decided": {
+      "loading": "正在加载已决定的决策…",
+      "empty": "暂无已决定的决策。"
+    },
+    "expired": {
+      "loading": "正在加载已过期的决策…",
+      "empty": "暂无已过期的决策。"
+    },
+    "bundle": {
+      "anAgent": "某个智能体",
+      "proposed_one": "{{agent}} 提出了 {{count}} 个决策",
+      "proposed_other": "{{agent}} 提出了 {{count}} 个决策",
+      "from": "· 来自 ",
+      "title": "· {{title}}",
+      "pending": "· {{count}} 个待处理"
+    },
+    "caughtUp": {
+      "allCaughtUp": "你已全部处理完毕。",
+      "filtered": "没有符合你的搜索或筛选条件的决策。",
+      "hint": "调整或清除搜索和筛选条件，以查看其余决策。"
+    },
+    "zeroState": {
+      "title": "你已全部处理完毕",
+      "body": "现在没有需要你决策的事项。"
+    }
+  },
+  "statusCards": {
+    "breadcrumb": "状态",
+    "title": "状态",
+    "experimental": "实验性",
+    "newCard": "新建卡片",
+    "todayUsage": "今日：{{tokens}} · ~{{cost}}",
+    "headsUp": "请注意",
+    "loadingCards": "正在加载卡片…",
+    "loadErrorTitle": "无法加载状态卡片",
+    "tryAgain": "请重试。",
+    "empty": {
+      "title": "暂无状态卡片",
+      "message": "创建一个卡片，为你关注的议题保留实时摘要。"
+    },
+    "hideArchived": "隐藏已归档",
+    "showArchived": "显示已归档（{{total}}）",
+    "errors": {
+      "refresh": "无法刷新卡片。",
+      "recompile": "无法运行卡片。",
+      "archive": "无法归档卡片。",
+      "restore": "无法恢复卡片。"
+    }
+  },
+  "timeline": {
+    "breadcrumb": "时间线",
+    "projectTimeline": "项目时间线",
+    "workTimeline": "工作时间线",
+    "selectOrg": "选择一个组织以查看其工作时间线。",
+    "loadError": "无法加载时间线。聚合接口可能不可用。",
+    "noActivity": "此时间范围内没有活动。",
+    "noProjectActivity": "此时间范围内没有项目活动。",
+    "error": {
+      "chooseDates": "请选择开始和结束日期。",
+      "startBeforeEnd": "开始日期必须早于结束日期。"
+    },
+    "range": "时间范围",
+    "rangeToday": "今天",
+    "range7d": "7 天",
+    "range30d": "30 天",
+    "startDate": "时间线开始日期",
+    "endDate": "时间线结束日期",
+    "to": "至",
+    "zoomControls": "时间线缩放控件",
+    "zoomOut": "缩小",
+    "zoomIn": "放大",
+    "resetZoom": "重置缩放",
+    "legend": {
+      "delegated": "委派",
+      "automation": "自动",
+      "cancelled": "已取消",
+      "now": "当前"
+    },
+    "stats": {
+      "runs": "运行",
+      "agents": "智能体",
+      "runTime": "运行时长",
+      "tokensUsed": "已用 Token",
+      "notTracked": "未跟踪"
+    },
+    "summary": {
+      "line_one": "{{count}} 次运行 · {{from}} 至 {{to}}",
+      "line_other": "{{count}} 次运行 · {{from}} 至 {{to}}",
+      "windowCapped": " · 窗口已达上限"
+    }
+  },
+  "boardChat": {
+    "breadcrumb": "会议室",
+    "conferenceRoom": "会议室",
+    "yourOrganization": "你的组织",
+    "noOrg": {
+      "title": "未选择组织",
+      "body": "选择一个组织，开始与你的看板礼宾交流。"
+    },
+    "typing": "正在输入",
+    "status": {
+      "connecting": "连接中...",
+      "thinking": "思考中..."
+    },
+    "error": {
+      "noResponse": "看板助手无法回应，请重试。",
+      "unavailable": "看板助手暂时不可用，请稍后重试。"
+    },
+    "assistant": "助手",
+    "chatHistory": "聊天记录",
+    "newChat": "新对话",
+    "jumpToLatest": "跳转到最新消息",
+    "resizeHandle": "调整看板聊天与智能体动态的宽度",
+    "openFeed": "打开智能体动态",
+    "composerPlaceholder": "询问任何关于你组织的问题...",
+    "send": "发送消息",
+    "welcome": {
+      "intro": "欢迎来到 **{{company}}**！我是 {{agent}}，你的团队负责人。我已阅读你在向导中分享的内容{{missionTail}}\n\n",
+      "mission": "——你的目标是“{{mission}}”。",
+      "body": "我可以马上帮你把几件事写下来。选一个，我会根据你提供的一切为你起草。"
+    },
+    "chips": {
+      "orgBrief": {
+        "label": "起草组织简介"
+      },
+      "hiringPlan": {
+        "label": "制定招聘计划"
+      },
+      "first30": {
+        "label": "规划我们的前 30 天"
+      },
+      "introPitch": {
+        "label": "写一段介绍性推介"
+      }
+    }
+  }
+}

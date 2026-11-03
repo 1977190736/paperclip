@@ -1,0 +1,330 @@
+{
+  "inbox": {
+    "surfaceLabel": "收件箱",
+    "emptyState": {
+      "selectOrg": "选择一个组织以查看{{surface}}。"
+    },
+    "selectCompanyLegacy": "选择一个组织以查看收件箱。",
+    "searchPlaceholder": "搜索{{surface}}…",
+    "legacySearchPlaceholder": "搜索收件箱…",
+    "toolbar": {
+      "controlsAria": "{{surface}}工具栏",
+      "group": "分组",
+      "sort": "排序",
+      "chooseColumns": "选择要显示的列",
+      "chooseLegacyColumns": "选择要显示的收件箱列",
+      "nestingEnable": "启用父子嵌套",
+      "nestingDisable": "禁用父子嵌套",
+      "markAllRead": "全部标为已读",
+      "marking": "标记中…"
+    },
+    "groupBy": {
+      "none": "无",
+      "type": "类型",
+      "assignee": "负责人",
+      "project": "项目",
+      "workspace": "工作区"
+    },
+    "tabs": {
+      "mine": "我的",
+      "recent": "最近",
+      "unread": "未读",
+      "blocked": "已阻塞",
+      "all": "全部"
+    },
+    "filterFeedback": {
+      "liveOnly": "仅限进行中的运行——当前连接着智能体运行的任务。",
+      "activeStatuses": "活跃状态——进行中的任务，无论智能体是否正在运行。"
+    },
+    "notice": {
+      "partialLoad": "部分收件箱项目无法加载，已显示可用项目。",
+      "retryMissing": "重试加载缺失项目"
+    },
+    "errors": {
+      "loadFailed": "无法加载收件箱：{{message}}",
+      "retry": "重试",
+      "approveJoinRequest": "批准加入请求失败",
+      "rejectJoinRequest": "拒绝加入请求失败",
+      "archiveTask": "归档任务失败",
+      "undoArchive": "撤销收件箱归档失败"
+    },
+    "toast": {
+      "retryFailedTitle": "运行重试失败",
+      "retryFailedBody": "无法重试运行"
+    },
+    "markAllReadDialog": {
+      "title": "全部标为已读？",
+      "descriptionOne": "这将把 {{n}} 条未读项目标为已读。",
+      "descriptionOther": "这将把 {{n}} 条未读项目标为已读。",
+      "cancel": "取消",
+      "confirm": "全部标为已读"
+    },
+    "empty": {
+      "noSearchMatches": "没有符合搜索条件的收件箱项目。",
+      "inboxZero": "收件箱已清零。",
+      "noNew": "暂无新的收件箱项目。",
+      "noRecent": "暂无最近的收件箱项目。",
+      "noFilterMatches": "没有符合这些筛选条件的收件箱项目。"
+    },
+    "sections": {
+      "alerts": "提醒",
+      "archived": "已归档",
+      "otherResults": "其他结果",
+      "earlier": "更早"
+    },
+    "rows": {
+      "markAsRead": "标为已读",
+      "dismiss": "忽略",
+      "approve": "批准",
+      "reject": "拒绝",
+      "requestedBy": "由 {{name}} 发起",
+      "updatedAgo": "更新于 {{time}}",
+      "requestedFromIp": "于 {{time}} 发起请求，来自 IP {{ip}}",
+      "adapterLabel": "适配器：{{adapter}}",
+      "retry": "重试",
+      "retryPending": "思考中",
+      "legacyRetryPending": "重试中…",
+      "failedRun": "运行失败{{agent}}",
+      "collapseSubTasks": "折叠子任务",
+      "expandSubTasks": "展开子任务"
+    },
+    "failureStates": {
+      "thinking": "思考中",
+      "retryIn": "{{seconds}} 秒后重试…",
+      "interrupted": "本次尝试未能完成。你的消息已保存。",
+      "approvalRequired": "需要审批",
+      "reconnectAccount": "重新连接账户",
+      "assignAgent": "指派智能体",
+      "chooseModel": "选择受支持的模型",
+      "workPaused": "工作已暂停",
+      "budgetLimit": "已达预算上限",
+      "needsProjectAccess": "智能体需要项目访问权限",
+      "runExitedWithError": "运行以错误退出。"
+    },
+    "joinRequest": {
+      "agentLabel": "智能体加入请求",
+      "agentLabelWithName": "智能体加入请求：{{name}}",
+      "humanLabel": "人类加入请求"
+    },
+    "alerts": {
+      "agentsErrorSuffixOne": " 个智能体出现错误",
+      "agentsErrorSuffixOther": " 个智能体出现错误",
+      "budgetPrefix": "本月预算已使用 ",
+      "budgetSuffix": ""
+    },
+    "newTaskInGroup": "在{{group}}中新建任务",
+    "subTasksSuffixOne": "({{n}} 个子任务)",
+    "subTasksSuffixOther": "({{n}} 个子任务)",
+    "creator": {
+      "board": "看板",
+      "me": "我"
+    },
+    "category": {
+      "placeholder": "类别",
+      "allCategories": "所有类别",
+      "myRecentTasks": "我最近的任务",
+      "joinRequests": "加入请求",
+      "approvals": "审批",
+      "failedRuns": "失败的运行",
+      "alerts": "提醒"
+    },
+    "approvalStatusFilter": {
+      "placeholder": "审批状态",
+      "all": "所有审批状态",
+      "needsAction": "待处理",
+      "resolved": "已解决"
+    }
+  },
+  "issues": {
+    "surfaceLabel": "任务",
+    "emptyState": {
+      "selectOrg": "选择一个组织以查看任务。",
+      "selectCompany": "选择一个组织以查看任务。",
+      "noMatches": "没有符合当前筛选或搜索条件的任务。"
+    },
+    "statusLabels": {
+      "backlog": "待办池",
+      "todo": "待办",
+      "inProgress": "进行中",
+      "monitoring": "观察中",
+      "inReview": "审查中",
+      "done": "已完成",
+      "blocked": "已阻塞",
+      "cancelled": "已取消"
+    },
+    "statusNames": {
+      "backlog": "待办池",
+      "todo": "待办",
+      "inProgress": "进行中"
+    },
+    "statusTitle": "{{status}}：{{n}}",
+    "progressSummary": {
+      "doneCount": "{{done}}/{{total}} 已完成",
+      "inProgressCount": "{{n}} 进行中",
+      "blockedCount": "{{n}} 已阻塞",
+      "runLabelOne": "{{n}} 次运行",
+      "runLabelOther": "{{n}} 次运行",
+      "across": "，涉及",
+      "subTaskLabelOne": "{{n}} 个子任务",
+      "subTaskLabelOther": "{{n}} 个子任务",
+      "tokens": "{{tokens}} 个 token",
+      "runtime": "{{duration}} 运行时长",
+      "progressAria": "子任务完成进度",
+      "nextUp": "接下来",
+      "waitingOnBlockers": "等待阻塞项解除",
+      "noActiveSubTasks": "没有进行中的子任务",
+      "allSubTasksDone": "所有子任务已完成",
+      "noActionableSubTasks": "没有可执行的子任务"
+    },
+    "ageSeparator": {
+      "olderThanDay": "超过一天",
+      "olderThanWeek": "超过一周"
+    },
+    "search": {
+      "placeholder": "搜索任务...",
+      "ariaLabel": "搜索任务"
+    },
+    "toolbar": {
+      "taskControls": "任务操作栏",
+      "viewModeAria": "视图模式",
+      "listView": "列表视图",
+      "boardView": "看板视图",
+      "nestingEnable": "启用父子嵌套",
+      "nestingDisable": "禁用父子嵌套",
+      "useComfortableCards": "使用宽松卡片",
+      "useCompactCards": "使用紧凑卡片",
+      "expandColdLanes": "展开冷泳道",
+      "collapseColdLanes": "折叠冷泳道",
+      "cardsPerColumn": "每列卡片数",
+      "perColumn": "每列 {{n}} 个",
+      "resetBoardDensity": "重置看板密度",
+      "chooseColumns": "选择要显示的任务列",
+      "group": "分组",
+      "sort": "排序"
+    },
+    "sortOptions": {
+      "workflow": "工作流",
+      "status": "状态",
+      "priority": "优先级",
+      "title": "标题",
+      "created": "创建时间",
+      "updated": "更新时间"
+    },
+    "groupOptions": {
+      "status": "状态",
+      "priority": "优先级",
+      "assignee": "负责人",
+      "project": "项目",
+      "workspace": "工作区",
+      "parent": "父任务",
+      "none": "无"
+    },
+    "errors": {
+      "externalStatusFilter": "无法按外部状态筛选任务：{{message}}",
+      "retryExternalStatuses": "重试外部状态",
+      "hierarchyLoad": "加载任务层级失败：{{message}}"
+    },
+    "limits": {
+      "searchLimit": "最多显示 {{n}} 条匹配结果。请细化搜索以缩小范围。",
+      "boardColumnLimit": "部分看板列最多显示 {{n}} 个任务。请调整筛选或搜索以查看其余任务。"
+    },
+    "create": {
+      "createTask": "创建任务",
+      "createLabeled": "创建{{label}}",
+      "newTask": "新建任务",
+      "newLabeled": "新建{{label}}"
+    },
+    "groupHeader": {
+      "newTaskInGroup": "在{{group}}中新建任务"
+    },
+    "subTasks": {
+      "suffixGeneric": "(子任务)",
+      "suffixOne": "({{n}} 个子任务)",
+      "suffixOther": "({{n}} 个子任务)"
+    },
+    "badges": {
+      "paused": "已暂停",
+      "needsNextStep": "需要下一步",
+      "needsNextStepTitle": "此任务需要下一步"
+    },
+    "rows": {
+      "collapseSubTasks": "折叠子任务",
+      "expandSubTasks": "展开子任务",
+      "assignee": "负责人",
+      "searchResponsible": "搜索负责人...",
+      "noResponsible": "无负责人",
+      "me": "我",
+      "user": "用户",
+      "blockedByChip": "被 {{issue}} 阻塞",
+      "blockedByStep": " · 步骤 {{step}}",
+      "moreBlockers": " ... 及另外 {{n}} 个",
+      "blockerTitle": "{{first}}：{{rest}}"
+    },
+    "groups": {
+      "noWorkspace": "无工作区",
+      "noProject": "无项目",
+      "noParent": "无父任务",
+      "unassigned": "未指派"
+    },
+    "loading": {
+      "more": "正在加载更多任务...",
+      "rendering": "正在渲染 {{shown}}/{{total}} 个任务",
+      "scrollForMore": "滚动以加载更多任务"
+    },
+    "new": {
+      "title": "新建任务",
+      "subtaskTitle": "新建子任务",
+      "placeholder": "描述一个任务…",
+      "submitLabel": "创建任务",
+      "subtaskSubmitLabel": "创建子任务",
+      "cancelSavedRequest": "取消已保存的请求",
+      "taskTitleAria": "任务标题",
+      "subtaskOf": "子任务，属于",
+      "parentAccessChecking": "正在检查父任务访问权限…",
+      "parentAccessFailed": "无法检查父任务访问权限。",
+      "retry": "重试",
+      "worktreeCheckFailed": "无法检查所选工作树。请在 Worktrees 中重试，或选择新建工作树。",
+      "worktreeUnavailable": "所选工作树已不可用。请选择其他工作树或新建一个。",
+      "documents": "文档",
+      "attachments": "附件",
+      "removeDocument": "移除文档",
+      "removeAttachment": "移除附件",
+      "backlogNoteBefore": "指派即代表可执行意图 —— 仅在有意搁置时才保留 ",
+      "backlogNoteAfterBacklog": " 状态。在被唤醒之前，任务状态需要先变为 ",
+      "backlogNoteOr": " 或 ",
+      "pausedNoteBody": " 已暂停，在恢复之前不会开始处理此任务",
+      "pausedNoteImportReason": " —— 它在组织导入时即为暂停状态",
+      "pausedNoteTail": "。你可以在创建任务后从任务页面将其恢复。",
+      "lowTrustNote": "低信任审查智能体。它只能在分配的审查边界内行动；具体范围由任务、项目或运行策略决定。",
+      "parentWorkspaceWarning": "此子任务将不再使用父任务的工作区{{label}}。",
+      "privacy": {
+        "subtaskOfPrivate": "私有任务 {{title}} 的子任务",
+        "inPrivateProject": "位于私有项目 {{name}} 中"
+      },
+      "projectSelector": {
+        "placeholder": "项目",
+        "mobileTitle": "选择项目",
+        "noneLabel": "无项目",
+        "searchPlaceholder": "搜索项目...",
+        "emptyMessage": "未找到项目。",
+        "privateProject": "私有项目",
+        "triggerLabel": "项目"
+      },
+      "toasts": {
+        "created": "已创建 {{ref}}",
+        "createdWithWarnings": "已创建 {{ref}}，但存在上传警告",
+        "uploadWarningsBodyOne": "{{n}} 个暂存文件未能添加。",
+        "uploadWarningsBodyOther": "{{n}} 个暂存文件未能添加。",
+        "openAction": "打开 {{ref}}"
+      },
+      "recovery": {
+        "savedRequestTitle": "已保存的请求需要注意",
+        "savedRequestUnavailable": "已保存的请求不可用。请先取消它，再创建其他任务。",
+        "attachOriginalFiles": "请重新附上原始文件：{{names}}。",
+        "restoreOriginalFields": "请先恢复已保存任务的原始字段再重试，或取消已保存的请求以开始新任务。"
+      },
+      "stagedFilesMissingOne": "此页面已不再暂存该任务的文件（{{names}}）。请重新附加该文件，然后创建任务。",
+      "stagedFilesMissingOther": "此页面已不再暂存该任务的 {{n}} 个文件（{{names}}）。请重新附加这些文件，然后创建任务。"
+    }
+  }
+}

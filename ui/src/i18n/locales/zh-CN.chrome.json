@@ -1,0 +1,181 @@
+{
+  "nav": {
+    "sidebar": {
+      "newTask": "新建任务",
+      "search": "搜索",
+      "dashboard": "仪表板",
+      "inbox": "收件箱",
+      "chat": "聊天",
+      "decisions": "决策",
+      "status": "状态",
+      "conferenceRoom": "会议室",
+      "tasks": "任务",
+      "projects": "项目",
+      "routines": "例行任务",
+      "artifacts": "工件",
+      "cases": "案例",
+      "goals": "目标",
+      "workspaces": "工作区",
+      "agents": "智能体",
+      "skills": "技能",
+      "connectors": "连接",
+      "audit": "审计",
+      "org": "组织",
+      "organization": "组织",
+      "timeline": "时间线",
+      "costs": "费用",
+      "activity": "活动",
+      "commentary": "评论",
+      "settings": "设置",
+      "section": {
+        "work": "工作",
+        "org": "组织",
+        "organization": "组织",
+        "company": "组织"
+      },
+      "sectionAria": {
+        "actions": "{{label}}操作",
+        "collapse": "折叠{{label}}",
+        "expand": "展开{{label}}"
+      },
+      "badge": {
+        "unread": "未读",
+        "unreadChats": "未读聊天",
+        "decisions": "决策"
+      },
+      "navItem": {
+        "liveCount": "{{n}} 个进行中",
+        "attentionNeeded": "需要注意"
+      },
+      "shell": {
+        "resizeSidebar": "调整侧边栏大小"
+      },
+      "removeFromStarred": "取消收藏",
+      "leaving": "退出中…",
+      "leaveProject": "退出项目",
+      "privateProject": "私有项目",
+      "pausedByBudgetProject": "因预算暂停",
+      "openActions": "打开{{name}}的操作菜单",
+      "agentsMenu": {
+        "sort": {
+          "top": "置顶",
+          "alphabetical": "按字母",
+          "recent": "最近"
+        },
+        "sortLabel": "智能体排序",
+        "resume": "恢复智能体",
+        "pause": "暂停智能体",
+        "updating": "更新中…",
+        "budgetPaused": "预算已暂停",
+        "invalidOrgChain": "组织链无效",
+        "builtInStatus": "内置智能体 {{status}}",
+        "invalidReportingChain": "汇报链无效",
+        "pausedByBudget": "因预算暂停",
+        "pausedByBudgetLimits": "智能体已因预算限制暂停",
+        "star": "收藏智能体",
+        "edit": "编辑智能体",
+        "leave": "退出智能体",
+        "newAgent": "新建智能体",
+        "sectionActions": "智能体分区操作",
+        "browse": "浏览智能体",
+        "seeAll": "查看全部智能体",
+        "toastPaused": "智能体已暂停",
+        "toastResumed": "智能体已恢复",
+        "toastPauseFailed": "无法暂停智能体",
+        "toastResumeFailed": "无法恢复智能体"
+      },
+      "projectsMenu": {
+        "sort": {
+          "top": "置顶",
+          "alphabetical": "按字母",
+          "recent": "最近"
+        },
+        "sortLabel": "项目排序",
+        "newProject": "新建项目",
+        "sectionActions": "项目分区操作",
+        "browse": "浏览项目"
+      },
+      "starred": {
+        "ariaLabel": "已收藏项目"
+      },
+      "recentTasks": {
+        "label": "最近任务",
+        "idle": "空闲",
+        "moreActions": "{{name}}的更多操作",
+        "rename": "重命名",
+        "archive": "归档",
+        "pauseRestart": "暂停/重启",
+        "renameTask": "重命名任务",
+        "renameDescription": "为这个任务取一个简短清晰的名称。",
+        "taskName": "任务名称",
+        "cancel": "取消",
+        "saving": "保存中…",
+        "save": "保存",
+        "toastRenamed": "任务已重命名",
+        "toastRenameFailed": "任务重命名失败",
+        "renameError": "无法重命名这个任务。",
+        "toastArchived": "任务已从收件箱归档",
+        "toastArchiveFailed": "任务归档失败",
+        "archiveError": "无法将这个任务从收件箱归档。",
+        "toastRestarted": "任务已重启",
+        "toastPaused": "任务已暂停",
+        "toastPauseFailed": "任务暂停状态更新失败",
+        "pauseError": "无法暂停或重启这个任务。",
+        "wakeSkipped": "指派智能体的唤醒已被跳过。",
+        "pausedByParent": "这个任务被父任务暂停，请从暂停的根任务重启。"
+      },
+      "serverInfo": {
+        "server": "服务器",
+        "lastRestarted": "上次重启",
+        "runningCommit": "运行中的提交",
+        "checkoutState": "检出状态",
+        "unavailable": "不可用",
+        "commitUnavailable": "提交不可用",
+        "cleanCheckout": "检出干净",
+        "changeStatusUnavailable": "更改状态不可用",
+        "localChangesPresent": "存在本地更改",
+        "localChangesPresentWith": "存在本地更改（{{parts}}）",
+        "staged": "已暂存",
+        "unstaged": "未暂存",
+        "untracked": "未跟踪",
+        "healthUnavailable": "健康状态不可用",
+        "loading": "加载中…"
+      }
+    },
+    "companyMenu": {
+      "openOrgSwitcherNamed": "打开{{name}}组织切换器",
+      "openOrgSwitcher": "打开组织切换器",
+      "openCompanySwitcherNamed": "打开{{name}}组织切换器",
+      "openCompanySwitcher": "打开组织切换器",
+      "selectOrganization": "选择组织",
+      "selectCompany": "选择组织",
+      "organizations": "组织",
+      "done": "完成",
+      "edit": "编辑",
+      "loadFailedOrganizations": "无法加载组织",
+      "loadFailedCompanies": "无法加载组织",
+      "tryAgain": "重试",
+      "noOrganizations": "暂无组织",
+      "noCompanies": "暂无组织",
+      "createOrganization": "创建组织",
+      "invitePeopleTo": "邀请成员加入{{name}}",
+      "invitePeople": "邀请成员",
+      "reorder": "调整{{name}}的顺序"
+    },
+    "companySwitcher": {
+      "manageOrganizations": "管理组织"
+    },
+    "mobile": {
+      "needsYou": "需要你",
+      "home": "主页",
+      "newTaskCoordinator": "新建任务",
+      "ariaLabel": "移动端导航"
+    },
+    "layout": {
+      "skipToMainContent": "跳到主要内容",
+      "closeSidebar": "关闭侧边栏",
+      "companyArchived": "{{name}}已归档",
+      "switchedTo": "已切换到{{name}}。"
+    }
+  }
+}

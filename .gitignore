@@ -63,6 +63,14 @@ diagnostics/
 # Personal agent instructions
 /AGENTS.local.md
 
+# Local dev helper scripts (double-click launchers)
+/start-paperclip.cmd
+/stop-paperclip.cmd
+
+# Root test-run logs and UI vitest cache
+/ui-*.log
+/ui/.vitest/
+
 # Doc maintenance cursor
 .doc-review-cursor
 
