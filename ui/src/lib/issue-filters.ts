@@ -1,4 +1,5 @@
 import { isAgentCreatedIssue, type ExternalObjectSummary, type Issue } from "@paperclipai/shared";
+import { t } from "@/i18n";
 
 export type IssueFilterWorkspaceLookup = {
   mode?: string | null;
@@ -65,30 +66,36 @@ export const externalObjectFilterOrder = [
   "none",
 ];
 
-const EXTERNAL_OBJECT_FILTER_LABELS: Record<string, string> = {
-  failed: "Any failed",
-  waiting: "Any waiting",
-  running: "Any running",
-  auth_required: "Auth required",
-  rate_limited: "Rate limited",
-  unreachable: "Unreachable",
-  stale: "Stale",
-  none: "No external objects",
-};
+const EXTERNAL_OBJECT_FILTER_KEYS: ReadonlySet<string> = new Set(externalObjectFilterOrder);
 
 export function externalObjectFilterLabel(value: string): string {
-  return EXTERNAL_OBJECT_FILTER_LABELS[value] ?? issueFilterLabel(value);
+  if (EXTERNAL_OBJECT_FILTER_KEYS.has(value)) {
+    return t(`misc.filters.externalObject.${value}`);
+  }
+  return issueFilterLabel(value);
 }
 
 export const issueStatusOrder = ["in_progress", "monitoring", "todo", "backlog", "in_review", "blocked", "done", "cancelled"];
 export const issuePriorityOrder = ["critical", "high", "medium", "low"];
 
-export const issueQuickFilterPresets = [
+const ISSUE_QUICK_FILTER_PRESETS = [
   { label: "All", statuses: [] as string[] },
   { label: "Active", statuses: ["todo", "in_progress", "monitoring", "in_review", "blocked"] },
   { label: "Backlog", statuses: ["backlog"] },
   { label: "Done", statuses: ["done", "cancelled"] },
 ];
+
+// Quick-filter labels resolve through i18n at access time so consumers that
+// map over these presets pick up the active locale live.
+export const issueQuickFilterPresets = new Proxy(ISSUE_QUICK_FILTER_PRESETS, {
+  get(target, prop) {
+    if (typeof prop === "string" && /^\d+$/.test(prop)) {
+      const base = target[Number(prop)];
+      return { ...base, label: t(`misc.filters.quick.${base.label.toLowerCase()}`) };
+    }
+    return Reflect.get(target, prop);
+  },
+}) as typeof ISSUE_QUICK_FILTER_PRESETS;
 
 export function issueFilterLabel(value: string): string {
   return value.replace(/_/g, " ").replace(/\b\w/g, (char) => char.toUpperCase());

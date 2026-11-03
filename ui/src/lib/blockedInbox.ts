@@ -4,6 +4,7 @@ import type {
   IssueBlockedInboxReason,
   IssueBlockedInboxSeverity,
 } from "@paperclipai/shared";
+import { t } from "@/i18n";
 
 export type BlockedReasonVariant =
   | "needs_decision"
@@ -37,29 +38,30 @@ export const BLOCKED_REASON_VARIANT_ORDER: BlockedReasonVariant[] = [
   "owner_paused",
 ];
 
-export const BLOCKED_VARIANT_LABELS: Record<BlockedReasonVariant, string> = {
-  needs_decision: "Needs decision",
-  stalled: "Blocked chain stalled",
-  needs_attention: "Needs attention",
-  recovery_required: "Recovery required",
-  external_wait: "External wait",
-  owner_paused: "Owner paused",
-};
+// Variant/reason labels resolve through i18n lazily at read time (render
+// time) so a language switch applies live without remounting consumers.
+export const BLOCKED_VARIANT_LABELS: Record<BlockedReasonVariant, string> = new Proxy(
+  {} as Record<BlockedReasonVariant, string>,
+  {
+    get: (_target, key) =>
+      typeof key === "string" ? t(`misc.blockedInbox.variants.${key}`) : undefined,
+  },
+);
 
-const REASON_LABELS: Record<IssueBlockedInboxReason, string> = {
-  pending_board_decision: "Pending board decision",
-  pending_user_decision: "Pending user decision",
-  missing_successful_run_disposition: "Pick disposition",
-  blocked_chain_stalled: "Blocked chain stalled",
-  blocked_by_unassigned_issue: "Unassigned blocker",
-  blocked_by_assigned_backlog_issue: "Parked blocker",
-  blocked_by_cancelled_issue: "Cancelled blocker",
-  in_review_without_action_path: "Review without action path",
-  invalid_review_participant: "Invalid review participant",
-  open_recovery_issue: "Recovery in progress",
-  external_owner_action: "External owner action",
-  blocked_by_uninvokable_assignee: "Owner paused",
-};
+const KNOWN_REASONS: ReadonlySet<string> = new Set<string>([
+  "pending_board_decision",
+  "pending_user_decision",
+  "missing_successful_run_disposition",
+  "blocked_chain_stalled",
+  "blocked_by_unassigned_issue",
+  "blocked_by_assigned_backlog_issue",
+  "blocked_by_cancelled_issue",
+  "in_review_without_action_path",
+  "invalid_review_participant",
+  "open_recovery_issue",
+  "external_owner_action",
+  "blocked_by_uninvokable_assignee",
+]);
 
 const SEVERITY_RANK: Record<IssueBlockedInboxSeverity, number> = {
   critical: 0,
@@ -75,7 +77,8 @@ export function blockedReasonVariant(reason: IssueBlockedInboxReason): BlockedRe
 }
 
 export function blockedReasonLabel(reason: IssueBlockedInboxReason): string {
-  return REASON_LABELS[reason] ?? "Stopped";
+  if (!KNOWN_REASONS.has(reason)) return t("misc.blockedInbox.stopped");
+  return t(`misc.blockedInbox.reasons.${reason}`);
 }
 
 export function blockedVariantLabel(variant: BlockedReasonVariant): string {
@@ -109,16 +112,40 @@ export interface BlockedInboxIssueRow {
 export type BlockedInboxGroupBy = "blocker_type" | "none";
 export type BlockedInboxSort = "urgency" | "most_recent" | "longest_stopped";
 
-export const BLOCKED_GROUP_OPTIONS: readonly [BlockedInboxGroupBy, string][] = [
-  ["blocker_type", "Blocker type"],
-  ["none", "None"],
-];
+// Group/sort option labels resolve through i18n at access time so consumers
+// that map over these options pick up the active locale live.
+export const BLOCKED_GROUP_OPTIONS: readonly [BlockedInboxGroupBy, string][] = new Proxy(
+  [
+    ["blocker_type", ""],
+    ["none", ""],
+  ] as [BlockedInboxGroupBy, string][],
+  {
+    get(target, prop) {
+      if (typeof prop === "string" && /^\d+$/.test(prop)) {
+        const [value] = target[Number(prop)];
+        return [value, t(`misc.blockedInbox.group.${value}`)];
+      }
+      return Reflect.get(target, prop);
+    },
+  },
+) as readonly [BlockedInboxGroupBy, string][];
 
-export const BLOCKED_SORT_OPTIONS: readonly [BlockedInboxSort, string][] = [
-  ["urgency", "Most urgent"],
-  ["most_recent", "Most recent"],
-  ["longest_stopped", "Longest stopped"],
-];
+export const BLOCKED_SORT_OPTIONS: readonly [BlockedInboxSort, string][] = new Proxy(
+  [
+    ["urgency", ""],
+    ["most_recent", ""],
+    ["longest_stopped", ""],
+  ] as [BlockedInboxSort, string][],
+  {
+    get(target, prop) {
+      if (typeof prop === "string" && /^\d+$/.test(prop)) {
+        const [value] = target[Number(prop)];
+        return [value, t(`misc.blockedInbox.sort.${value}`)];
+      }
+      return Reflect.get(target, prop);
+    },
+  },
+) as readonly [BlockedInboxSort, string][];
 
 export interface BlockedInboxGroup {
   variant: BlockedReasonVariant;
@@ -249,27 +276,22 @@ export function blockedBadgeTone(rows: readonly BlockedInboxIssueRow[]): Blocked
 }
 
 export function formatStoppedAge(stoppedSinceAt: string | null, now: number = Date.now()): string {
-  if (!stoppedSinceAt) return "stopped";
+  if (!stoppedSinceAt) return t("misc.blockedInbox.stopped");
   const then = new Date(stoppedSinceAt).getTime();
-  if (!Number.isFinite(then)) return "stopped";
+  if (!Number.isFinite(then)) return t("misc.blockedInbox.stopped");
   const seconds = Math.max(0, Math.round((now - then) / 1000));
-  if (seconds < 60) return "stopped just now";
+  if (seconds < 60) return t("misc.blockedInbox.stoppedJustNow");
   if (seconds < 3600) {
-    const m = Math.floor(seconds / 60);
-    return `stopped ${m}m`;
+    return t("misc.blockedInbox.stoppedMinutes", { n: Math.floor(seconds / 60) });
   }
   if (seconds < 86_400) {
-    const h = Math.floor(seconds / 3600);
-    return `stopped ${h}h`;
+    return t("misc.blockedInbox.stoppedHours", { n: Math.floor(seconds / 3600) });
   }
   if (seconds < 86_400 * 7) {
-    const d = Math.floor(seconds / 86_400);
-    return `stopped ${d}d`;
+    return t("misc.blockedInbox.stoppedDays", { n: Math.floor(seconds / 86_400) });
   }
   if (seconds < 86_400 * 30) {
-    const w = Math.floor(seconds / (86_400 * 7));
-    return `stopped ${w}w`;
+    return t("misc.blockedInbox.stoppedWeeks", { n: Math.floor(seconds / (86_400 * 7)) });
   }
-  const mo = Math.floor(seconds / (86_400 * 30));
-  return `stopped ${mo}mo`;
+  return t("misc.blockedInbox.stoppedMonths", { n: Math.floor(seconds / (86_400 * 30)) });
 }

@@ -1,15 +1,17 @@
 import { useEffect, useMemo, useRef, useState } from "react";
+import { t } from "@/i18n";
 
 export type DatePreset = "mtd" | "7d" | "30d" | "ytd" | "all" | "custom";
 
-export const PRESET_LABELS: Record<DatePreset, string> = {
-  mtd: "Month to Date",
-  "7d": "7 Days",
-  "30d": "30 Days",
-  ytd: "Year to Date",
-  all: "All Time",
-  custom: "Custom",
-};
+// Labels resolve through i18n lazily at read time (render time) so a language
+// switch applies live without remounting consumers.
+export const PRESET_LABELS: Record<DatePreset, string> = new Proxy(
+  {} as Record<DatePreset, string>,
+  {
+    get: (_target, key) =>
+      typeof key === "string" ? t(`misc.dateRange.presets.${key}`) : undefined,
+  },
+);
 
 export const PRESET_KEYS: DatePreset[] = ["mtd", "7d", "30d", "ytd", "all", "custom"];
 
