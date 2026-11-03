@@ -12,6 +12,7 @@ import { isImageLikeOutput, isVideoLikeOutput } from "@/lib/issue-output";
 import type { FileRowSource } from "./adapters";
 import { ArtifactRow } from "./ArtifactRow";
 import type { ArtifactSubject } from "./kinds";
+import { useTranslation } from "@/i18n";
 
 /** A small control beside a row, as the shipped rows draw theirs. */
 export const ROW_ACTION_CLASS = "shrink-0 rounded-md px-1.5 py-1.5 text-muted-foreground outline-none hover:text-foreground focus-visible:ring-2 focus-visible:ring-ring";
@@ -20,8 +21,8 @@ export const ROW_ACTION_CLASS = "shrink-0 rounded-md px-1.5 py-1.5 text-muted-fo
  * A file (an attachment or an attachment-backed work product) as a V1 row
  * that opens the way the shipped card does: pictures and video in the task's
  * gallery (or a gallery of their own), text in a text tab when the panel
- * offers one â€” through an anchor that keeps its address for modifier clicks
- * and copying â€” and anything else in a new tab. Open raw and download stay
+ * offers one â€?through an anchor that keeps its address for modifier clicks
+ * and copying â€?and anything else in a new tab. Open raw and download stay
  * beside the name, and an eligible CSV keeps its "Preview data" table.
  */
 export function ArtifactFileRow({
@@ -40,6 +41,7 @@ export function ArtifactFileRow({
   now?: Date;
   testId?: string;
 }) {
+  const { t } = useTranslation();
   const { id, attachmentId, filename, contentType, contentPath, openPath, downloadPath, byteSize } = source;
   const openGallery = useContext(IssueGalleryContext);
   const openTextAttachment = useContext(TextAttachmentContext);
@@ -63,16 +65,16 @@ export function ArtifactFileRow({
       {statusBadge}
       {localCsv && !tooLarge && !data.data && !data.isError ? (
         <Button variant="ghost" size="sm" className="h-7 px-2 text-xs" disabled={data.isFetching} onClick={() => setCsvRequested(true)}>
-          {data.isFetching ? "Loading previewâ€¦" : "Preview data"}
+          {data.isFetching ? t("comps2.artifacts.loadingPreview") : t("comps2.artifacts.previewData")}
         </Button>
       ) : null}
       {openPath ? (
-        <a href={openPath} target="_blank" rel="noreferrer" aria-label={`Open raw ${filename}`} title="Open raw" className={ROW_ACTION_CLASS}>
+        <a href={openPath} target="_blank" rel="noreferrer" aria-label={t("comps1.artifacts.openRawFileAria", { filename })} title={t("comps1.artifacts.openRaw")} className={ROW_ACTION_CLASS}>
           <ExternalLink className="h-3 w-3" aria-hidden />
         </a>
       ) : null}
       {downloadPath ? (
-        <a href={downloadPath} download={filename} aria-label={`Download ${filename}`} title="Download" className={ROW_ACTION_CLASS}>
+        <a href={downloadPath} download={filename} aria-label={t("comps1.artifacts.downloadFileAria", { filename })} title={t("comps1.artifacts.download")} className={ROW_ACTION_CLASS}>
           <Download className="h-3 w-3" aria-hidden />
         </a>
       ) : null}
@@ -98,10 +100,10 @@ export function ArtifactFileRow({
       ) : null}
       {csv && (tooLarge || data.isError) ? (
         <div className="px-2 text-xs text-muted-foreground" role="status">
-          {tooLarge ? "CSV is too large to preview. Download the file to view it." : data.error?.message}
+          {tooLarge ? t("comps2.artifacts.csvTooLarge") : data.error?.message}
           {data.isError ? (
             <Button variant="ghost" size="sm" onClick={() => void data.refetch()}>
-              Retry preview
+              {t("comps2.artifacts.retryPreview")}
             </Button>
           ) : null}
         </div>

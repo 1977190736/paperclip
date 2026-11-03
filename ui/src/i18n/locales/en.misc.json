@@ -3,6 +3,7 @@
     "projects": {
       "breadcrumb": "Projects",
       "projectFallback": "Project",
+      "saveLabel": "Save",
       "noOrgSelected": "No organization selected",
       "loadingWorkspaces": "Loading workspaces...",
       "cancel": "Cancel",

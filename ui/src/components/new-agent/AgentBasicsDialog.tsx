@@ -25,6 +25,7 @@ import {
   DialogDescription,
   DialogTitle,
 } from "../ui/dialog";
+import { useTranslation } from "@/i18n";
 
 export type AgentBasics = {
   name: string;
@@ -59,6 +60,7 @@ export function AgentBasicsDialog({
   onInvite?: () => void;
 }) {
   const id = useId();
+  const { t } = useTranslation();
   const { selectedCompanyId: companyId } = useCompany();
   const cache = useQueryClient();
   const appearanceDraft = useAgentAppearanceDraft(`${companyId}:new-agent`);
@@ -120,7 +122,7 @@ export function AgentBasicsDialog({
     setSaving(true);
     setSaveError(null);
     try {
-      if (!companyId) throw new Error("Select an organization to create an agent.");
+      if (!companyId) throw new Error(t("comps2.newAgent.selectOrgCreateAgent"));
       let agent = saved.current;
       if (!agent && setupAgentId) agent = await agentsApi.get(setupId.current, companyId);
       const creatingRecord = !agent;
@@ -129,7 +131,7 @@ export function AgentBasicsDialog({
         const leader = existing.find(item => item.role === "ceo" && item.status !== "terminated");
         const provisionalAdapter = adapters?.some(item => item.type === "process" && item.disabled)
           ? choices[0]?.type : "process";
-        if (!provisionalAdapter) throw new Error("No agent adapters are available on this instance.");
+        if (!provisionalAdapter) throw new Error(t("onboarding.errors.noAdapters"));
         // This adapter is provisional; the setup hold prevents execution.
         agent = await agentsApi.create(companyId, {
           setupId: setupId.current, name: name.trim(), appearance: appearanceDraft.appearance,
@@ -173,7 +175,7 @@ export function AgentBasicsDialog({
       else onContinue({ name: agent.name, adapterType: nextAdapter, runnerProvider: nextProvider,
         runner: "auto", setupAgentId: agent.id });
     } catch (cause) {
-      if (active.current) setSaveError(cause instanceof Error ? cause.message : "Could not save agent setup.");
+      if (active.current) setSaveError(cause instanceof Error ? cause.message : t("comps2.newAgent.err.couldNotSaveAgentSetup"));
     } finally {
       busy.current = false;
       if (active.current) setSaving(false);
@@ -194,18 +196,18 @@ export function AgentBasicsDialog({
       >
         <div
           className="flex items-center gap-2 px-6 py-5 text-xs text-muted-foreground"
-          aria-label="New agent progress"
+          aria-label={t("comps2.newAgent.progressAria")}
         >
           <span
             className={cn(step === "name" && "font-medium text-foreground")}
           >
-            1. Name
+            {t("comps2.newAgent.progressName")}
           </span>
           <ChevronRight className="size-3" />
           <span
             className={cn(step === "adapter" && "font-medium text-foreground")}
           >
-            2. Adapter
+            {t("comps2.newAgent.progressAdapter")}
           </span>
         </div>
         <form
@@ -221,20 +223,20 @@ export function AgentBasicsDialog({
               <div className="space-y-2">
                 <DialogTitle className="text-3xl font-semibold tracking-tight">
                   {step === "name"
-                    ? "Meet your next agent"
-                    : "Choose an adapter"}
+                    ? t("comps2.newAgent.meetYourNextAgent")
+                    : t("comps2.newAgent.chooseAdapterTitle")}
                 </DialogTitle>
                 <DialogDescription className="text-base">
                   {step === "name"
-                    ? "Start with a name. Make them your own."
-                    : `How should ${name.trim()} work?`}
+                    ? t("comps2.newAgent.startWithName")
+                    : t("comps2.newAgent.howShouldWork", { name: name.trim() })}
                 </DialogDescription>
               </div>
             </div>
             {step === "name" ? (
               <div className="space-y-2">
                 <label htmlFor={id} className="text-sm font-medium">
-                  Agent name
+                  {t("agentConfig.identity.namePlaceholder")}
                 </label>
                 <Input
                   id={id}
@@ -253,16 +255,16 @@ export function AgentBasicsDialog({
                     className="px-0 text-muted-foreground"
                     onClick={onInvite}
                   >
-                    Invite an external agent
+                    {t("comps2.newAgent.title.inviteExternal")}
                   </Button>
                 )}
               </div>
             ) : (
               <fieldset className="space-y-4">
-                <legend className="sr-only">Adapter</legend>
+                <legend className="sr-only">{t("agentConfig.sections.adapter")}</legend>
                 {isPending && (
                   <p role="status" className="text-sm text-muted-foreground">
-                    Loading adapters…
+                    {t("comps2.newAgent.loadingAdapters")}
                   </p>
                 )}
                 {error && (
@@ -300,7 +302,7 @@ export function AgentBasicsDialog({
                             {display.label}
                           </span>
                           {adapter.type === "antigravity_runtime" && !antigravityQualified && (
-                            <span className="text-xs text-muted-foreground">{antigravityCandidate ? "Candidate" : "Not available yet"}</span>
+                            <span className="text-xs text-muted-foreground">{antigravityCandidate ? t("comps2.newAgent.candidate") : t("comps2.newAgent.notAvailableYet")}</span>
                           )}
                           {adapterType === adapter.type && (
                             <Check className="absolute right-2 top-2 size-3.5" />
@@ -311,12 +313,12 @@ export function AgentBasicsDialog({
                   })}
                 </div>
                 {experimentalRunnerAvailable && <details className="space-y-3">
-                  <summary className="cursor-pointer text-sm text-muted-foreground">Advanced</summary>
+                  <summary className="cursor-pointer text-sm text-muted-foreground">{t("agentConfig.sections.advanced")}</summary>
                   <div className="space-y-2">
-                    <label className="text-sm text-muted-foreground">Experimental harness</label>
-                    <SelectPopover aria-label="Experimental harness"
+                    <label className="text-sm text-muted-foreground">{t("comps2.newAgent.experimentalHarness")}</label>
+                    <SelectPopover aria-label={t("comps2.newAgent.experimentalHarness")}
                       value={adapterType === "paperclip_runner" ? runnerProvider : ""}
-                      placeholder="Choose a native harness…"
+                      placeholder={t("comps2.newAgent.chooseNativeHarness")}
                       onValueChange={provider => { setRunnerProvider(provider); setAdapterType("paperclip_runner"); }}
                       options={[
                         { value: "grok", label: "Grok Build (Paperclip Runner)" },
@@ -336,11 +338,11 @@ export function AgentBasicsDialog({
               onClick={() => (step === "name" ? onClose() : setStep("name"))}
             >
               {step === "name" ? (
-                "Cancel"
+                t("agentConfig.common.cancel")
               ) : (
                 <>
                   <ArrowLeft className="size-4" />
-                  Back
+                  {t("comps2.newAgent.back")}
                 </>
               )}
             </Button>
@@ -348,7 +350,7 @@ export function AgentBasicsDialog({
               type="submit"
               disabled={saving || !name.trim() || (step === "adapter" && !validAdapter)}
             >
-              {saving ? "Saving…" : step === "name" ? "Choose adapter" : "Configure agent"}
+              {saving ? t("agentDetail.configBar.saving") : step === "name" ? t("comps2.newAgent.chooseAdapter") : t("comps2.newAgent.configureAgent")}
               <ArrowRight className="size-4" />
             </Button>
           </div>

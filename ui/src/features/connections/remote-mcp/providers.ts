@@ -1,59 +1,78 @@
-/** Presentation metadata only. Each provider will have its own catalog entry and connection. */
+/** Presentation metadata only. Each provider will have its own catalog entry and connection.
+ * User-facing copy lives in the `connections.remoteMcp.providers` i18n namespace, keyed by
+ * provider id; `name` stays a brand string. */
+import { t } from "@/i18n";
+
 export type RemoteMcpProviderId = "zapier" | "arcade" | "composio" | "executor";
 
 export interface RemoteMcpProvider {
   id: RemoteMcpProviderId;
   name: string;
-  description: string;
-  instructions: string[];
+  instructionsCount: number;
   setupUrl: string;
   dashboardUrl: string;
   defaultUrl: string;
-  placeholder: string;
-  urlHelp: string;
-  authHelp: string;
   supportsBrowserAuth: boolean;
 }
 
-export const remoteMcpProviders: Record<RemoteMcpProviderId, RemoteMcpProvider> = {
+const providerMeta: Record<RemoteMcpProviderId, Omit<RemoteMcpProvider, "id">> = {
   zapier: {
-    id: "zapier", name: "Zapier", supportsBrowserAuth: false,
-    description: "Use the apps and actions on your Zapier MCP server.",
-    instructions: ["Create an MCP server in Zapier and choose Other as the client.", "Connect your apps and select the actions to expose.", "Open Connect, generate a token, and copy the full server URL."],
+    name: "Zapier", supportsBrowserAuth: false,
+    instructionsCount: 3,
     setupUrl: "https://docs.zapier.com/mcp/get-started/connect/other",
     dashboardUrl: "https://mcp.zapier.com",
-    defaultUrl: "", placeholder: "Paste the full URL from Zapier",
-    urlHelp: "The full server URL can contain a secret token. Paste it exactly as Zapier provides it.",
-    authHelp: "For a separate token, use https://mcp.zapier.com/api/v1/connect and choose Bearer token.",
+    defaultUrl: "",
   },
   arcade: {
-    id: "arcade", name: "Arcade", supportsBrowserAuth: true,
-    description: "Use the tools exposed by your Arcade gateway.",
-    instructions: ["Create a gateway in Arcade and select its tools.", "Choose its User Source and copy the gateway URL.", "Paste the URL here, then sign in when prompted."],
+    name: "Arcade", supportsBrowserAuth: true,
+    instructionsCount: 3,
     setupUrl: "https://docs.arcade.dev/en/operate/governance/mcp-gateways",
     dashboardUrl: "https://app.arcade.dev",
-    defaultUrl: "", placeholder: "https://api.arcade.dev/mcp/your-gateway",
-    urlHelp: "Copy the MCP gateway URL from Arcade. App authorization may be required the first time you use a tool.",
-    authHelp: "For Arcade Headers, use an API key as the bearer token and add the Arcade-User-ID header for the acting user.",
+    defaultUrl: "",
   },
   composio: {
-    id: "composio", name: "Composio", supportsBrowserAuth: true,
-    description: "Discover and use your apps through Composio Connect.",
-    instructions: ["Connect to Composio and sign in with your account.", "Connect underlying apps in Composio when prompted."],
+    name: "Composio", supportsBrowserAuth: true,
+    instructionsCount: 2,
     setupUrl: "https://docs.composio.dev/docs/composio-connect",
     dashboardUrl: "https://dashboard.composio.dev",
-    defaultUrl: "https://connect.composio.dev/mcp", placeholder: "https://connect.composio.dev/mcp",
-    urlHelp: "Paste the MCP URL from your existing Composio session. If it requires headers, add them under Change.",
-    authHelp: "Session URLs and headers come from your external Composio setup. Direct-tools sessions expose individual actions.",
+    defaultUrl: "https://connect.composio.dev/mcp",
   },
   executor: {
-    id: "executor", name: "Executor", supportsBrowserAuth: true,
-    description: "Run tools through your Executor workspace.",
-    instructions: ["Connect your apps and configure action policies in Executor.", "Open Integrations and copy the URL under “Connect an agent”.", "Paste it here and sign in when prompted."],
+    name: "Executor", supportsBrowserAuth: true,
+    instructionsCount: 3,
     setupUrl: "https://executor.sh/docs/mcp-proxy",
     dashboardUrl: "https://executor.sh",
-    defaultUrl: "", placeholder: "Paste your Executor workspace MCP URL",
-    urlHelp: "Use the hosted workspace URL or a self-hosted HTTP endpoint reachable from Paperclip. The server’s endpoint policy also applies.",
-    authHelp: "Keep any options in the copied URL. If using an API key, use a user key; workspace and organization keys cannot open an MCP session.",
+    defaultUrl: "",
   },
 };
+
+export const remoteMcpProviders: Record<RemoteMcpProviderId, RemoteMcpProvider> = Object.fromEntries(
+  (Object.entries(providerMeta) as Array<[RemoteMcpProviderId, Omit<RemoteMcpProvider, "id">]>)
+    .map(([id, meta]) => [id, { id, ...meta }]),
+) as Record<RemoteMcpProviderId, RemoteMcpProvider>;
+
+function providerKey(id: RemoteMcpProviderId, field: string): string {
+  return `connections.remoteMcp.providers.${id}.${field}`;
+}
+
+/** Translated copy is resolved at render time so language switches apply live. */
+export function remoteMcpProviderDescription(id: RemoteMcpProviderId): string {
+  return t(providerKey(id, "description"));
+}
+
+export function remoteMcpProviderInstructions(id: RemoteMcpProviderId): string[] {
+  return Array.from({ length: providerMeta[id].instructionsCount }, (_, index) =>
+    t(providerKey(id, `instructions.${index + 1}`)));
+}
+
+export function remoteMcpProviderPlaceholder(id: RemoteMcpProviderId): string {
+  return t(providerKey(id, "placeholder"));
+}
+
+export function remoteMcpProviderUrlHelp(id: RemoteMcpProviderId): string {
+  return t(providerKey(id, "urlHelp"));
+}
+
+export function remoteMcpProviderAuthHelp(id: RemoteMcpProviderId): string {
+  return t(providerKey(id, "authHelp"));
+}

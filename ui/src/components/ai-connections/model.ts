@@ -1,5 +1,6 @@
 /** Redacted presentation contracts shared with the production API. */
 import type { AiProvider, AiAuthMethod, AiManagedConnectionSummary, AiConnectionBinding } from "@paperclipai/shared";
+import { t } from "@/i18n";
 export type { AiProvider, AiAuthMethod, AiConnectionBinding } from "@paperclipai/shared";
 export type AiConnectionStatus = AiManagedConnectionSummary["status"];
 
@@ -53,8 +54,8 @@ export function defaultAiConnectionName(ownerName: string | undefined, provider:
 
 export function aiMethodLabel(provider: AiProvider, method: AiAuthMethod) {
   return method === "subscription"
-    ? (AI_PROVIDERS[provider].subscriptionName ?? "Subscription unavailable")
-    : provider === "github" ? "Personal access token" : "API key";
+    ? (AI_PROVIDERS[provider].subscriptionName ? t(`connections.model.subscriptions.${provider}`) : t("connections.model.subscriptionUnavailable"))
+    : provider === "github" ? t("connections.model.personalAccessToken") : t("connections.model.apiKey");
 }
 
 export function aiConnectionDisplayLabel(connection: AiConnectionSummary) {

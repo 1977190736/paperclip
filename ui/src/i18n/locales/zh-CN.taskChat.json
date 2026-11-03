@@ -1,0 +1,968 @@
+{
+  "taskChat": {
+    "common": {
+      "cancel": "取消",
+      "retry": "重试",
+      "back": "返回",
+      "skip": "跳过",
+      "open": "打开",
+      "details": "详情",
+      "you": "你",
+      "noMatches": "没有匹配项。",
+      "defaultLabel": "默认",
+      "oneFile": "1 个文件",
+      "nFiles": "{{n}} 个文件",
+      "pageOf": "{{n}} / {{total}}",
+      "noAnswer": "未回答",
+      "viewRun": "查看运行",
+      "tryAgain": "重试",
+      "tryingAgain": "正在重试……"
+    },
+    "tools": {
+      "unnamed": "未命名工具",
+      "runningPrefix": "正在运行",
+      "runningNamed": "正在运行 {{name}}",
+      "ranNamed": "已运行 {{name}}",
+      "runningUnnamedTool": "正在运行未命名工具",
+      "ranUnnamedTool": "已运行未命名工具",
+      "failedSuffix": "已失败",
+      "interruptedSuffix": "已中断",
+      "diffEditName": "编辑",
+      "interruptedDetail": "在提供方报告完成之前已被中断。",
+      "action": {
+        "read": {
+          "running": "正在读取数据",
+          "runningObject": "正在读取 {{object}}",
+          "completed": "已读取数据",
+          "completedObject": "已读取 {{object}}"
+        },
+        "list": {
+          "running": "正在列出条目",
+          "runningObject": "正在列出 {{object}}",
+          "completed": "已列出条目",
+          "completedObject": "已列出 {{object}}"
+        },
+        "search": {
+          "running": "正在搜索",
+          "runningObject": "正在搜索 {{object}}",
+          "completed": "已搜索",
+          "completedObject": "已搜索 {{object}}"
+        },
+        "fetch": {
+          "running": "正在获取数据",
+          "runningObject": "正在获取 {{object}}",
+          "completed": "已获取数据",
+          "completedObject": "已获取 {{object}}"
+        },
+        "open": {
+          "running": "正在打开条目",
+          "runningObject": "正在打开 {{object}}",
+          "completed": "已打开条目",
+          "completedObject": "已打开 {{object}}"
+        },
+        "update": {
+          "running": "正在更新数据",
+          "runningObject": "正在更新 {{object}}",
+          "completed": "已更新数据",
+          "completedObject": "已更新 {{object}}"
+        },
+        "create": {
+          "running": "正在创建条目",
+          "runningObject": "正在创建 {{object}}",
+          "completed": "已创建条目",
+          "completedObject": "已创建 {{object}}"
+        },
+        "delete": {
+          "running": "正在删除条目",
+          "runningObject": "正在删除 {{object}}",
+          "completed": "已删除条目",
+          "completedObject": "已删除 {{object}}"
+        },
+        "move": {
+          "running": "正在移动条目",
+          "runningObject": "正在移动 {{object}}",
+          "completed": "已移动条目",
+          "completedObject": "已移动 {{object}}"
+        },
+        "run": {
+          "running": "正在运行命令",
+          "runningObject": "正在运行命令",
+          "completed": "已运行命令",
+          "completedObject": "已运行命令"
+        },
+        "request": {
+          "running": "正在请求输入",
+          "runningObject": "正在请求 {{object}}",
+          "completed": "已请求输入",
+          "completedObject": "已请求 {{object}}"
+        },
+        "post": {
+          "running": "正在发布更新",
+          "runningObject": "正在发布 {{object}}",
+          "completed": "已发布更新",
+          "completedObject": "已发布 {{object}}"
+        },
+        "start": {
+          "running": "正在启动操作",
+          "runningObject": "正在启动 {{object}}",
+          "completed": "已启动操作",
+          "completedObject": "已启动 {{object}}"
+        },
+        "stop": {
+          "running": "正在停止操作",
+          "runningObject": "正在停止 {{object}}",
+          "completed": "已停止操作",
+          "completedObject": "已停止 {{object}}"
+        },
+        "wait": {
+          "running": "正在等待",
+          "runningObject": "正在等待",
+          "completed": "等待结束",
+          "completedObject": "等待结束"
+        },
+        "finish": {
+          "running": "正在报告完成",
+          "runningObject": "正在报告完成",
+          "completed": "已报告完成",
+          "completedObject": "已报告完成"
+        },
+        "block": {
+          "running": "正在报告阻塞",
+          "runningObject": "正在报告阻塞",
+          "completed": "已报告阻塞",
+          "completedObject": "已报告阻塞"
+        },
+        "think": {
+          "running": "正在思考",
+          "runningObject": "正在思考",
+          "completed": "思考结束",
+          "completedObject": "思考结束"
+        },
+        "switch": {
+          "running": "正在切换模式",
+          "runningObject": "正在切换 {{object}}",
+          "completed": "已切换模式",
+          "completedObject": "已切换 {{object}}"
+        },
+        "other": {
+          "running": "正在运行",
+          "runningObject": "正在运行",
+          "completed": "已运行",
+          "completedObject": "已运行"
+        }
+      },
+      "exact": {
+        "applyPatch": { "running": "正在应用补丁", "completed": "已应用补丁" },
+        "read": { "running": "正在读取文件", "completed": "已读取文件" },
+        "write": { "running": "正在写入文件", "completed": "已写入文件" },
+        "edit": { "running": "正在编辑文件", "completed": "已编辑文件" },
+        "notebookRead": { "running": "正在读取笔记本", "completed": "已读取笔记本" },
+        "notebookEdit": { "running": "正在编辑笔记本", "completed": "已编辑笔记本" },
+        "glob": { "running": "正在搜索文件", "completed": "已搜索文件" },
+        "grep": { "running": "正在搜索文件内容", "completed": "已搜索文件内容" },
+        "toolSearch": { "running": "正在搜索可用工具", "completed": "已搜索可用工具" },
+        "webSearch": { "running": "正在搜索网页", "completed": "已搜索网页" },
+        "webFetch": { "running": "正在获取网页", "completed": "已获取网页" },
+        "todoWrite": { "running": "正在更新任务列表", "completed": "已更新任务列表" },
+        "taskCreate": { "running": "正在创建任务", "completed": "已创建任务" },
+        "taskUpdate": { "running": "正在更新任务", "completed": "已更新任务" },
+        "taskList": { "running": "正在列出任务", "completed": "已列出任务" },
+        "taskGet": { "running": "正在读取任务", "completed": "已读取任务" },
+        "enterPlanMode": { "running": "正在进入计划模式", "completed": "已进入计划模式" },
+        "exitPlanMode": { "running": "正在退出计划模式", "completed": "已退出计划模式" },
+        "skill": { "running": "正在加载技能", "completed": "已加载技能" },
+        "requestInput": { "running": "正在请求输入", "completed": "已请求输入" },
+        "startSubagent": { "running": "正在启动子智能体", "completed": "已启动子智能体" },
+        "checkSubagentProgress": { "running": "正在检查子智能体进度", "completed": "已检查子智能体进度" },
+        "stopSubagent": { "running": "正在停止子智能体", "completed": "已停止子智能体" },
+        "messageSubagent": { "running": "正在向子智能体发消息", "completed": "已向子智能体发消息" },
+        "checkTaskProgress": { "running": "正在检查任务进度", "completed": "已检查任务进度" },
+        "interruptSubagent": { "running": "正在中断子智能体", "completed": "已中断子智能体" },
+        "reportFindings": { "running": "正在报告发现", "completed": "已报告发现" },
+        "reviewSafety": { "running": "正在审查安全性", "completed": "已审查安全性" },
+        "inspectCodeIntelligence": { "running": "正在检查代码智能", "completed": "已检查代码智能" },
+        "compactContext": { "running": "正在压缩上下文", "completed": "已压缩上下文" },
+        "generateImage": { "running": "正在生成图片", "completed": "已生成图片" },
+        "viewImage": { "running": "正在查看图片", "completed": "已查看图片" },
+        "runToolsParallel": { "running": "正在并行运行工具", "completed": "已并行运行工具" },
+        "readTaskContext": { "running": "正在读取任务上下文", "completed": "已读取任务上下文" },
+        "readTaskHistory": { "running": "正在读取任务历史", "completed": "已读取任务历史" },
+        "listDocuments": { "running": "正在列出文档", "completed": "已列出文档" },
+        "readDocument": { "running": "正在读取文档", "completed": "已读取文档" },
+        "listDocumentRevisions": { "running": "正在列出文档修订版本", "completed": "已列出文档修订版本" },
+        "reportProgress": { "running": "正在报告进度", "completed": "已报告进度" },
+        "answerStatusQuestion": { "running": "正在回答状态询问", "completed": "已回答状态询问" },
+        "writeDocument": { "running": "正在写入文档", "completed": "已写入文档" },
+        "registerDeliverable": { "running": "正在登记交付物", "completed": "已登记交付物" },
+        "reportCompletion": { "running": "正在报告完成", "completed": "已报告完成" },
+        "reportBlocker": { "running": "正在报告阻塞", "completed": "已报告阻塞" },
+        "requestReview": { "running": "正在请求评审", "completed": "已请求评审" },
+        "listAgents": { "running": "正在列出智能体", "completed": "已列出智能体" },
+        "readAgentDetails": { "running": "正在读取智能体详情", "completed": "已读取智能体详情" },
+        "searchTasks": { "running": "正在搜索任务", "completed": "已搜索任务" },
+        "listApprovals": { "running": "正在列出审批", "completed": "已列出审批" },
+        "readApproval": { "running": "正在读取审批", "completed": "已读取审批" },
+        "readApprovalContext": { "running": "正在读取审批上下文", "completed": "已读取审批上下文" },
+        "readWorkspaceStatus": { "running": "正在读取工作区状态", "completed": "已读取工作区状态" },
+        "controlWorkspaceService": { "running": "正在控制工作区服务", "completed": "已控制工作区服务" },
+        "updateTaskDependencies": { "running": "正在更新任务依赖", "completed": "已更新任务依赖" },
+        "nameTask": { "running": "正在命名任务", "completed": "已命名任务" },
+        "requestApproval": { "running": "正在请求审批", "completed": "已请求审批" },
+        "decideApproval": { "running": "正在决定审批", "completed": "已决定审批" },
+        "commentOnApproval": { "running": "正在评论审批", "completed": "已评论审批" },
+        "scheduleWake": { "running": "正在安排唤醒", "completed": "已安排唤醒" },
+        "callPaperclipApi": { "running": "正在调用 Paperclip API", "completed": "已调用 Paperclip API" }
+      }
+    },
+    "phase": {
+      "thoughtForSeconds": "思考了 {{n}} 秒",
+      "thoughtForMinutes": "思考了 {{n}} 分 {{s}} 秒",
+      "tokensLabel": "{{n}} 个 token",
+      "planStepFallback": "计划步骤",
+      "subagentFallback": "子智能体",
+      "interruptedBeforeCompletion": "在完成之前已被中断。",
+      "readFile": "读取了一个文件",
+      "readFiles": "读取了 {{n}} 个文件",
+      "editedFile": "编辑了一个文件",
+      "editedFiles": "编辑了 {{n}} 个文件",
+      "ranCommand": "运行了一条命令",
+      "ranCommands": "运行了 {{n}} 条命令",
+      "searchedOnce": "搜索了一次",
+      "searchedTimes": "搜索了 {{n}} 次",
+      "usedTool": "使用了一个工具",
+      "usedTools": "使用了 {{n}} 个工具",
+      "updatedPlan": "更新了计划",
+      "updatedPlans": "更新了 {{n}} 个计划",
+      "usedSubagent": "使用了一个子智能体",
+      "usedSubagents": "使用了 {{n}} 个子智能体",
+      "updatedModel": "更新了模型",
+      "updatedModelTimes": "更新了 {{n}} 次模型",
+      "compactedContext": "压缩了上下文",
+      "compactedContextTimes": "压缩了 {{n}} 次上下文",
+      "handledArtifact": "处理了一个工件",
+      "handledArtifacts": "处理了 {{n}} 个工件",
+      "changedReviewMode": "切换了评审模式",
+      "changedReviewModeTimes": "切换了 {{n}} 次评审模式",
+      "ranHook": "运行了一个钩子",
+      "ranHooks": "运行了 {{n}} 个钩子",
+      "referencedMemory": "引用了记忆",
+      "referencedMemoryTimes": "引用了 {{n}} 次记忆",
+      "ranSafetyReview": "进行了一次安全审查",
+      "ranSafetyReviews": "进行了 {{n}} 次安全审查",
+      "sentTerminalInput": "发送了终端输入",
+      "sentTerminalInputTimes": "发送了 {{n}} 次终端输入",
+      "waited": "进行了等待",
+      "waitedTimes": "等待了 {{n}} 次",
+      "receivedProviderNotice": "收到一条提供方通知",
+      "receivedProviderNotices": "收到 {{n}} 条提供方通知",
+      "searchedAvailableToolsTimes": "搜索了 {{n}} 次可用工具",
+      "readFromPaperclip": "从 Paperclip 读取了数据",
+      "readFromPaperclipTimes": "从 Paperclip 读取了 {{n}} 次",
+      "usedPaperclip": "使用了 Paperclip",
+      "usedPaperclipTimes": "使用了 {{n}} 次 Paperclip",
+      "changedFile": "更改了一个文件",
+      "changedFiles": "更改了 {{n}} 个文件",
+      "runnerActivity": "运行器活动",
+      "runnerUpdates": "{{n}} 条运行器更新",
+      "reasoning": "推理中",
+      "noToolActivity": "没有工具活动",
+      "andMore": "，另加 {{n}} 项"
+    },
+    "usage": {
+      "sessionTotalLabel": "提供方会话合计",
+      "sessionTotalDetail": "此累计用量可能包含恢复的提供方会话中更早的运行。"
+    },
+    "status": {
+      "responding": "正在回复",
+      "thinking": "思考中",
+      "running": "运行中"
+    },
+    "activity": {
+      "research": {
+        "openPage": {
+          "running": "正在打开网页",
+          "completed": "已打开网页",
+          "failed": "无法打开网页",
+          "interrupted": "已停止打开网页"
+        },
+        "findInPage": {
+          "running": "正在搜索页面",
+          "completed": "已搜索页面",
+          "failed": "页面搜索失败",
+          "interrupted": "页面搜索已停止"
+        },
+        "default": {
+          "running": "正在搜索网页",
+          "completed": "已搜索网页",
+          "failed": "网页搜索失败",
+          "interrupted": "网页搜索已停止"
+        }
+      },
+      "plan": {
+        "running": "正在更新计划",
+        "completed": "已更新计划",
+        "failed": "计划更新失败",
+        "interrupted": "计划更新已停止"
+      },
+      "delegation": {
+        "message": {
+          "running": "正在向子智能体发消息",
+          "completed": "已向子智能体发消息",
+          "failed": "子智能体消息发送失败",
+          "interrupted": "子智能体消息已停止"
+        },
+        "resume": {
+          "running": "正在恢复子智能体",
+          "completed": "已恢复子智能体",
+          "failed": "无法恢复子智能体",
+          "interrupted": "子智能体恢复已停止"
+        },
+        "close": {
+          "running": "正在关闭子智能体",
+          "completed": "已关闭子智能体",
+          "failed": "无法关闭子智能体",
+          "interrupted": "子智能体关闭已停止"
+        },
+        "wait": {
+          "running": "正在等待子智能体",
+          "completed": "等待子智能体结束",
+          "failed": "等待子智能体失败",
+          "interrupted": "已停止等待子智能体"
+        },
+        "default": {
+          "running": "正在启动子智能体",
+          "completed": "已启动子智能体",
+          "failed": "子智能体启动失败",
+          "interrupted": "子智能体启动已停止"
+        }
+      },
+      "modelIdentity": {
+        "switch": {
+          "running": "正在切换模型",
+          "completed": "已切换模型",
+          "failed": "模型切换失败",
+          "interrupted": "模型切换已停止"
+        },
+        "verify": {
+          "running": "正在校验模型",
+          "completed": "已校验模型",
+          "failed": "模型校验失败",
+          "interrupted": "模型校验已停止"
+        }
+      },
+      "context": {
+        "running": "正在压缩上下文",
+        "completed": "已压缩上下文",
+        "failed": "上下文压缩失败",
+        "interrupted": "上下文压缩已停止"
+      },
+      "artifact": {
+        "view": {
+          "running": "正在查看工件",
+          "completed": "已查看工件",
+          "failed": "无法查看工件",
+          "interrupted": "工件查看已停止"
+        },
+        "generate": {
+          "running": "正在生成工件",
+          "completed": "已生成工件",
+          "failed": "工件生成失败",
+          "interrupted": "工件生成已停止"
+        }
+      },
+      "review": {
+        "exit": {
+          "running": "正在退出评审模式",
+          "completed": "已退出评审模式",
+          "failed": "无法退出评审模式",
+          "interrupted": "评审模式变更已停止"
+        },
+        "enter": {
+          "running": "正在进入评审模式",
+          "completed": "已进入评审模式",
+          "failed": "无法进入评审模式",
+          "interrupted": "评审模式变更已停止"
+        }
+      },
+      "hook": {
+        "running": "正在运行钩子",
+        "completed": "已运行钩子",
+        "failed": "钩子运行失败",
+        "interrupted": "钩子已停止"
+      },
+      "memory": {
+        "running": "正在查询记忆",
+        "completed": "已引用记忆",
+        "failed": "记忆查询失败",
+        "interrupted": "记忆查询已停止"
+      },
+      "safety": {
+        "running": "正在审查安全性",
+        "completed": "已完成安全审查",
+        "failed": "安全审查失败",
+        "interrupted": "安全审查已停止"
+      },
+      "terminal": {
+        "running": "正在发送终端输入",
+        "completed": "已发送终端输入",
+        "failed": "终端输入发送失败",
+        "interrupted": "终端输入已停止"
+      },
+      "wait": {
+        "running": "正在等待",
+        "completed": "等待结束",
+        "failed": "等待失败",
+        "interrupted": "等待已停止"
+      },
+      "providerNotice": {
+        "running": "提供方通知",
+        "completed": "提供方通知",
+        "failed": "提供方错误",
+        "interrupted": "提供方通知"
+      },
+      "workspaceChange": {
+        "running": "正在编辑文件",
+        "completed": "已编辑文件"
+      },
+      "workspaceFile": {
+        "running": "正在引用文件",
+        "completed": "已引用文件"
+      },
+      "resource": {
+        "running": "正在保存资源",
+        "completedDocument": "已添加文档",
+        "completedDeliverable": "已添加交付物"
+      }
+    },
+    "completed": {
+      "terminal": "运行了命令",
+      "searchedFiles": "搜索了文件",
+      "readFiles": "读取了文件",
+      "editedFiles": "编辑了文件",
+      "searchedWeb": "搜索了网页",
+      "workedOnPlan": "处理了计划",
+      "requestedInput": "请求了输入",
+      "workedWithAgents": "与智能体协作",
+      "reviewedSafety": "审查了安全性",
+      "workedWithImages": "处理了图片",
+      "waited": "进行了等待",
+      "usedConnectedTools": "使用了已连接的工具",
+      "usedTools": "使用了工具",
+      "workedWithArtifacts": "处理了工件",
+      "managedContext": "管理了上下文",
+      "checkedMemory": "查询了记忆",
+      "checkedModelSettings": "检查了模型设置",
+      "workedInReviewMode": "在评审模式下工作",
+      "ranHooks": "运行了钩子",
+      "workedOnFiles": "处理了文件",
+      "referencedFiles": "引用了文件",
+      "addedResources": "添加了资源",
+      "receivedProviderUpdate": "收到一条提供方更新",
+      "providerErrorReported": "报告了提供方错误",
+      "providerWarningReported": "报告了提供方警告",
+      "receivedProviderUpdates": "收到多条提供方更新",
+      "checkedFiles": "查看了文件",
+      "thoughtThroughTask": "深入思考了任务",
+      "activityStopped": "活动已停止",
+      "recordedUsage": "记录了用量",
+      "andMore": "，等等"
+    },
+    "composer": {
+      "unassigned": "未分配",
+      "theAgent": "智能体",
+      "editQueuedPlaceholder": "编辑排队中的消息……",
+      "goalCommandName": "目标",
+      "goalVerifyDescription": "支持情况将在会话开始时验证。",
+      "goalPursueDescription": "跨多轮持续推进工作。",
+      "goalUnsupported": "该智能体不支持会话目标。",
+      "placeholder": {
+        "mobilePlanning": "和 {{agent}} 一起制定计划……",
+        "mobileAsk": "向 {{agent}} 提问……",
+        "mobileMessage": "给 {{agent}} 发消息……",
+        "planning": "和 {{agent}} 一起制定计划——打磨计划文档，不改代码……",
+        "ask": "向 {{agent}} 提问——只读模式，不会执行任何操作……",
+        "message": "给 {{agent}} 发消息——描述你想完成的工作……"
+      },
+      "goalExtraArgsError": "/goal {{command}} 不接受额外参数。",
+      "uploadNoUrlError": "上传未返回文件 URL",
+      "attachmentRemovedError": "附件已被移除",
+      "cannotAttachType": "此文件类型无法附加到这里",
+      "goalInConversationError": "需要持续执行目标的工作请创建单独的任务。",
+      "goalAttachmentsError": "请先移除附件，再使用 /goal。",
+      "goalNeedsAgentError": "请先选择一个智能体，再启动会话目标。",
+      "goalActionFailed": "无法执行该目标操作。",
+      "skipFailed": "无法跳过此请求。",
+      "pendingCount": "{{n}} 项待处理输入",
+      "pendingInput": "待处理输入",
+      "dismissAria": "关闭{{label}}",
+      "contextBarAria": "任务项目与工作树",
+      "sendNewHint": "发送 /new 即可开启全新会话并恢复此对话。",
+      "disabled": "输入框已禁用",
+      "newSessionName": "新会话",
+      "newSessionDescription": "在这里开启全新上下文，并保留对话历史。",
+      "uploading": "上传中……",
+      "uploadFailed": "上传失败",
+      "retryAria": "重试 {{name}}",
+      "removeAria": "移除 {{name}}",
+      "queuedChanged": "排队中的消息已变化",
+      "editingQueued": "正在编辑排队中的消息",
+      "assigneePlaceholder": "负责人",
+      "selectAssignee": "选择负责人",
+      "noAssignee": "无负责人",
+      "searchAssignees": "搜索负责人……",
+      "stopping": "正在停止……",
+      "stopResponseTitle": "停止回复",
+      "queueAsNewTitle": "作为新消息排队",
+      "saveQueuedTitle": "保存排队中的消息",
+      "waitingUploadTitle": "正在等待上传完成",
+      "removeFailedTitle": "请先移除上传失败的附件再发送",
+      "submitWithShortcut": "{{label}}（⌘+Enter）",
+      "sendShortcut": "发送（⌘+Enter）",
+      "stopAria": "停止",
+      "send": "发送"
+    },
+    "worktree": {
+      "new": {
+        "label": "新建工作树",
+        "description": "在独立的检出中开始。"
+      },
+      "shared": {
+        "label": "项目工作区",
+        "description": "使用项目的共享检出。"
+      },
+      "branch": {
+        "label": "新建分支",
+        "description": "在项目工作区中创建分支。"
+      },
+      "agentDefault": {
+        "label": "智能体默认",
+        "description": "由智能体自行选择工作区。"
+      },
+      "inherit": {
+        "label": "项目默认",
+        "description": "使用项目的工作树设置。"
+      },
+      "reuseGroup": "复用工作树",
+      "otherGroup": "其他选项",
+      "existingWorkspace": "现有工作区",
+      "title": "工作树",
+      "searchPlaceholder": "搜索工作树……",
+      "emptyMessage": "没有匹配的工作树。",
+      "prefix": "工作树 ·",
+      "selectWorktree": "选择工作树",
+      "loading": "正在加载现有工作树……",
+      "loadFailed": "无法加载工作树。",
+      "emptyFooter": "还没有现有工作树。选择“新建工作树”即可创建一个。"
+    },
+    "runSettings": {
+      "chooseAgent": "选择一个智能体",
+      "unavailable": {
+        "chooseAgent": "请先选择智能体，才能选择其模型和投入度。",
+        "muse": "Muse 会自行选择模型和投入度，Paperclip 无法按任务覆盖。",
+        "process": "该智能体运行一条命令，其 harness 未提供模型或投入度设置。",
+        "http": "该智能体调用 HTTP 端点，由目标服务选择模型。",
+        "gateway": "该网关在远端选择模型，Paperclip 无法为其设置按任务的模型。"
+      },
+      "closePickerAria": "关闭选择器",
+      "selectModelAria": "选择模型和投入度",
+      "selectModel": "选择模型",
+      "defaultLabel": "默认",
+      "selectAssigneeAria": "选择负责人",
+      "chooseAssignee": "选择负责人",
+      "resetToAgentDefault": "重置为智能体默认值",
+      "modelNoun": "模型",
+      "chooseExactModelAria": "选择确切的模型",
+      "fastMode": "快速模式",
+      "thinkingSlider": "思考",
+      "effortSlider": "投入度",
+      "searchAssignees": "搜索负责人",
+      "assigneesAria": "负责人",
+      "backToSelectionAria": "返回选择",
+      "chooseModel": "选择模型",
+      "searchModelId": "搜索或粘贴模型 ID",
+      "modelsAria": "模型",
+      "useAgentDefault": "使用智能体默认值",
+      "agentDefault": "智能体默认",
+      "loadingModels": "正在加载模型……",
+      "noCatalogMatch": "目录中没有匹配项。",
+      "useExactIdPrefix": "使用确切的 ID",
+      "openrouterFormatError": "请使用 openrouter/provider/model 格式，且不含空格。",
+      "modelIdSpacesError": "模型 ID 不能包含空格。",
+      "customIdsOpenrouter": "自定义 ID 格式：openrouter/provider/model。将在运行开始时检查提供方访问权限。",
+      "customIdsGeneric": "可在此处粘贴自定义模型 ID。将在运行开始时检查提供方访问权限。",
+      "agentRunSettings": "智能体运行设置"
+    },
+    "addMenu": {
+      "filesAndImages": "文件和图片",
+      "privateTask": "私有任务",
+      "goal": "目标",
+      "keepPursuing": "持续推进",
+      "planMode": "计划模式",
+      "planBeforeActing": "先计划再行动",
+      "askMode": "提问模式",
+      "answerWithoutChanges": "只回答，不做更改",
+      "addToComposerAria": "添加到输入框",
+      "add": "添加",
+      "closeAddMenuAria": "关闭“添加”菜单",
+      "removeChipAria": "移除{{label}}",
+      "privacyExplanation": "只有你和你共享的人可以阅读此任务",
+      "removePrivateTaskAria": "移除私有任务",
+      "private": "私有"
+    },
+    "goal": {
+      "pending": {
+        "starting": "正在启动",
+        "editing": "正在保存",
+        "replacing": "正在替换",
+        "pausing": "将在当前轮结束后暂停",
+        "resuming": "正在恢复",
+        "clearing": "正在清除",
+        "continuing": "将在新的运行中继续"
+      },
+      "selectAgentForGoal": "请选择一个智能体以使用 /goal。",
+      "noGoalToEdit": "当前没有可编辑的会话目标。",
+      "addObjectiveAfterGoal": "请在 /goal 后输入目标，才能开始一个目标。",
+      "sessionGoalAria": "智能体会话目标",
+      "sessionGoal": "会话目标",
+      "workingNow": "正在执行",
+      "typeSlashGoalHint": "输入 /goal 加目标内容，即可跨多轮持续推进工作。",
+      "tokensLabel": "{{n}} 个 token",
+      "iterationsLabel": "{{n}} 次迭代",
+      "editGoalAria": "编辑目标",
+      "pauseGoalAria": "暂停目标",
+      "resumeGoalAria": "恢复目标",
+      "clearGoalAria": "清除目标",
+      "replaceGoalTitle": "替换会话目标？",
+      "editGoalTitle": "编辑会话目标",
+      "replaceGoalDescription": "此操作将清除未完成的目标，并以下方目标内容开始一个新目标。",
+      "editGoalDescription": "更新目标内容，同时保留目标的已有进度。",
+      "goalObjective": "目标内容",
+      "saving": "保存中……",
+      "replaceGoal": "替换目标",
+      "saveGoal": "保存目标"
+    },
+    "workProduct": {
+      "changesRequested": "要求修改",
+      "review": "评审",
+      "failed": "失败",
+      "opening": "正在打开",
+      "pending": "等待中",
+      "open": "打开",
+      "draft": "草稿",
+      "merged": "已合并",
+      "closed": "已关闭",
+      "running": "运行中",
+      "stopped": "已停止",
+      "openPreview": "打开预览",
+      "openOnGithub": "在 GitHub 上打开",
+      "branch": "分支",
+      "branchNoRemote": "分支 · 无远程链接",
+      "image": "图片",
+      "video": "视频",
+      "file": "文件",
+      "openGallery": "打开图库",
+      "download": "下载",
+      "document": "文档",
+      "rev": "修订 {{n}}",
+      "openDocument": "打开文档",
+      "openService": "打开服务",
+      "port": "端口 {{n}}",
+      "down": "已宕机",
+      "unhealthy": "不健康",
+      "noLink": "此工作产物未提供链接。",
+      "updated": "更新于 {{time}}",
+      "savedDescription": "已保存的描述",
+      "openInTab": "在新标签页打开",
+      "openInTabAria": "在新标签页打开：{{title}}",
+      "actionAria": "{{action}}：{{title}}",
+      "hideDetailsAria": "收起详情：{{title}}",
+      "showDetailsAria": "展开详情：{{title}}",
+      "hideDetails": "收起详情",
+      "showDetails": "展开详情"
+    },
+    "questions": {
+      "requiredError": "此问题为必答项。",
+      "customAnswerError": "请输入自定义答案。",
+      "minLengthError": "请至少输入 {{n}} 个字符。",
+      "maxLengthError": "请最多输入 {{n}} 个字符。",
+      "unsupportedPatternError": "此问题使用了不受支持的校验模式。",
+      "formatError": "请使用要求的格式。",
+      "validTypeError": "请输入有效的{{type}}。",
+      "minValueError": "请输入不小于 {{n}} 的值。",
+      "maxValueError": "请输入不大于 {{n}} 的值。",
+      "recommended": "推荐",
+      "noQuestions": "没有提供可回答的问题。",
+      "questionNeedsAnswer": "第 {{n}} 题需要回答后才能发送。",
+      "submitFailed": "答案未能提交。",
+      "cancelFailed": "问题未能取消。",
+      "paginationAria": "问题分页",
+      "prevQuestionAria": "上一题",
+      "nextQuestionAria": "下一题",
+      "contextAria": "问题背景",
+      "writeAnswer": "写一个答案",
+      "writeYourAnswer": "输入你的答案",
+      "attachToAnswerAria": "为「{{prompt}}」的答案添加图片",
+      "filterChoices": "筛选选项",
+      "filterChoicesAria": "为「{{prompt}}」筛选选项",
+      "other": "其他",
+      "typeYourAnswer": "输入你的答案",
+      "attachToOtherAria": "为「{{prompt}}」的其他答案添加图片",
+      "submitAnswers": "提交答案",
+      "next": "下一题"
+    },
+    "interaction": {
+      "status": {
+        "pending": "待处理",
+        "accepted": "已接受",
+        "rejected": "已拒绝",
+        "answered": "已回答",
+        "cancelled": "已取消",
+        "expired": "已过期",
+        "failed": "失败"
+      },
+      "kind": {
+        "suggestTasks": {
+          "fallbackTitle": "建议的任务",
+          "label": "任务"
+        },
+        "askUserQuestions": {
+          "fallbackTitle": "提问",
+          "label": "提问"
+        },
+        "requestConfirmation": {
+          "fallbackTitle": "确认",
+          "label": "确认"
+        },
+        "requestCheckboxConfirmation": {
+          "fallbackTitle": "选择选项",
+          "label": "选择"
+        },
+        "requestItemVerdicts": {
+          "fallbackTitle": "待评审条目",
+          "label": "评审"
+        },
+        "connectionIntent": {
+          "fallbackTitle": "连接服务",
+          "label": "连接"
+        }
+      },
+      "target": {
+        "attachment": "附件"
+      },
+      "openPlanAria": "打开{{title}}",
+      "planNoun": "计划",
+      "planRevision": "计划修订版本 {{n}}",
+      "answerPrefix": "答案：",
+      "noOptionsSelected": "未选择任何选项",
+      "noVerdictsSubmitted": "未提交任何裁定",
+      "noTasksCreated": "未创建任何任务",
+      "requestAccess": "{{agent}}请求访问{{service}}。",
+      "riskLabel": "· {{risk}}风险",
+      "expiresAt": "过期时间 {{time}}",
+      "secret": "密钥",
+      "binding": "绑定",
+      "why": "原因",
+      "expiresNoun": "过期时间",
+      "reasonPrefix": "原因：",
+      "questionsAnswered": "问题已回答",
+      "viewOriginal": "查看原始请求与处理结果",
+      "acceptPlanPrompt": "你接受这个计划吗？",
+      "whatShouldChange": "希望修改什么？",
+      "optionalSuffix": "（可选）",
+      "describeChangePlaceholder": "描述希望修改的内容",
+      "addShortNote": "写一条简短说明",
+      "rejectFallback": "拒绝",
+      "approveFallback": "批准",
+      "declineFallback": "谢绝",
+      "confirmSelection": "确认所选",
+      "argumentsAndHash": "参数与审计哈希",
+      "selectedCount": "已选 {{n}} 项",
+      "selectedChooseRange": "已选 {{n}} 项 · 需选择 {{min}}–{{max}} 项",
+      "selectedAtLeast": "已选 {{n}} 项 · 至少 {{min}} 项",
+      "filterOptions": "筛选选项",
+      "whyChangeTasks": "为什么需要修改这些任务？（可选）",
+      "selectTasks": "选择要创建的任务。",
+      "filterSuggestedTasks": "筛选建议的任务",
+      "selectedOf": "已选 {{selected}} / {{total}} 项",
+      "requestRevision": "请求修改",
+      "sendBack": "退回",
+      "reviseEllipsis": "要求修改……",
+      "revise": "要求修改",
+      "create": "创建",
+      "createSelected": "创建所选任务",
+      "hiddenFollowUp": "+ {{n}} 个后续任务已隐藏",
+      "suggestedTaskHeading": "建议的任务",
+      "theAddressedUser": "被指定的用户",
+      "noReviewItems": "未提供待评审条目。",
+      "decidedCount": "已裁定 {{n}} 项",
+      "itemPaginationAria": "条目分页",
+      "prevItemAria": "上一条",
+      "nextItemAria": "下一条",
+      "verdictForAria": "为「{{label}}」给出裁定",
+      "verdicts": {
+        "approve": "批准",
+        "reject": "拒绝"
+      },
+      "reasonLabel": "原因",
+      "addShortReason": "写一条简短原因",
+      "submitRejectionReason": "提交拒绝原因",
+      "applyN": "应用 {{n}} 项",
+      "applyDecisions": "应用裁定"
+    },
+    "interactionCard": {
+      "questionNoun": "问题",
+      "answerQuestionAria": "回答问题：{{prompt}}",
+      "unansweredQuestion": "未回答的问题",
+      "reviewRequest": "查看请求",
+      "openRequestAria": "打开请求：{{label}}"
+    },
+    "queued": {
+      "steerUnsupported": "该运行器不支持转向（steering）",
+      "steerUnavailable": "转向（steering）暂时不可用",
+      "steerTitle": "将此消息转向注入当前进行中的轮次",
+      "reorderAria": "调整排队消息顺序：{{body}}",
+      "sendQueuedAria": "发送排队中的消息",
+      "interruptTitle": "中断当前轮次并发送排队中的消息",
+      "sendNowTitle": "立即发送排队中的消息",
+      "interrupt": "中断",
+      "send": "发送",
+      "steer": "转向",
+      "discardTitle": "丢弃排队中的消息",
+      "discardAria": "丢弃排队中的消息：{{body}}",
+      "actionsTitle": "排队消息操作",
+      "actionsAria": "排队消息操作：{{body}}",
+      "editMessage": "编辑消息",
+      "stillQueued": "消息仍在排队中。任务就绪后将会发送。",
+      "movedToPosition": "已将排队消息移动到第 {{n}} 位（共 {{total}} 条）。",
+      "reorderConflictRestored": "队列已在另一个会话中变化，已恢复其最新顺序。",
+      "reorderFailed": "无法重新排序，已恢复原顺序。",
+      "steeringAnnouncement": "正在转向注入排队消息。",
+      "sendingAnnouncement": "正在发送排队中的消息。",
+      "discardingAnnouncement": "正在丢弃排队中的消息。",
+      "stillQueuedShort": "消息仍在排队中。",
+      "steeredAnnouncement": "消息已转向注入当前轮次。",
+      "willSendAfterStop": "排队中的消息将在上一次运行停止后发送。",
+      "submittedWaitingAgent": "排队消息已提交，正在等待智能体。",
+      "discardedAnnouncement": "排队消息已丢弃。",
+      "tooLateDiscard": "来不及丢弃：此消息已在发送中。",
+      "steerFailed": "无法转向，消息仍在排队中。",
+      "interruptFailed": "无法中断，消息仍在排队中。",
+      "sendFailed": "无法发送，消息仍在排队中。",
+      "reorderConflictRetry": "队列已在另一个会话中变化，请检查后重试。",
+      "discardFailed": "无法丢弃，消息仍在排队中。",
+      "queuedMessagesAria": "排队中的消息"
+    },
+    "protocol": {
+      "planStepsAria": "计划步骤",
+      "delegatedAgentsAria": "委派的智能体",
+      "researchSourcesAria": "调研来源",
+      "outputTruncated": "输出已截断至 8 KiB。",
+      "filesChanged": "{{label}}已更改",
+      "changesInProgress": "工作区更改进行中",
+      "workspaceChanges": "工作区更改",
+      "binarySuffix": "二进制 · ",
+      "showFewerFiles": "收起部分文件",
+      "showMoreFiles": "展开其余 {{n}} 个文件",
+      "reviewDiff": "查看差异",
+      "workspaceDiff": "工作区差异",
+      "changedFilesAria": "已更改的文件",
+      "binaryNoDiff": "二进制文件，无法提供文本差异。",
+      "noInlinePatch": "此文件未记录内联补丁。",
+      "fileNoun": "文件",
+      "lineN": "第 {{n}} 行",
+      "preview": "预览",
+      "previewUnavailable": "预览不可用。上方仍提供经过验证的工作区引用。",
+      "previewTruncated": "预览已被运行器截断。",
+      "answerDetailsNotRecorded": "此较旧版本的运行时未记录答案详情。",
+      "noAnswersSubmitted": "未提交任何答案；此请求当时的状态为 {{status}}。",
+      "receipt": {
+        "answered": "问题已回答",
+        "cancelled": "问题已取消",
+        "expired": "问题已过期",
+        "resolved": "问题已处理"
+      },
+      "runtimeInput": "运行时输入",
+      "runtimePermission": "运行时权限",
+      "responseLabel": "答复",
+      "resolveFailed": "无法处理该运行时请求。",
+      "submitting": "提交中……",
+      "submitResponse": "提交答复",
+      "deny": "拒绝",
+      "resolveInRuntime": "请在活跃的运行时会话中处理此请求。",
+      "runResult": "运行结果",
+      "blockedWithCode": "受阻：{{code}}",
+      "verificationResultsAria": "验证结果",
+      "blocksCompletionSuffix": " · 阻碍完成",
+      "runEnded": "运行已结束"
+    },
+    "marker": {
+      "agentCouldntStart": "{{agent}}无法启动",
+      "credentialBody": "{{agent}}被配置为使用{{credential}}，但{{who}}无权访问该凭据。",
+      "anAiCredential": "AI 凭据",
+      "youDont": "你",
+      "subjectDont": "{{who}}",
+      "chooseConnectionBody": "请选择一个{{who}}使用的 AI 连接，或请管理员更新 {{agent}} 的连接，然后重试。",
+      "youCan": "你可以",
+      "subjectCan": "{{who}}可以",
+      "changeConnection": "更换 AI 连接",
+      "viewSavedPlan": "查看已保存的计划"
+    },
+    "plan": {
+      "planNoun": "计划",
+      "writing": "正在编写",
+      "inSidebar": "（在侧栏中）",
+      "openInSidebarAria": "在任务侧栏中打开{{title}}{{revision}}",
+      "revisionSuffix": " 修订版本 {{n}}",
+      "writingPlan": "正在编写计划",
+      "revPrefix": "修订 {{n}}",
+      "waitingFirstStep": "正在等待第一个计划步骤……",
+      "openToReview": "打开同步的计划进行审阅。",
+      "openPlanAria": "打开计划{{revision}}",
+      "streamingPlanPreviewAria": "正在流式输出计划预览"
+    },
+    "systemNotice": {
+      "updateAria": "系统更新：{{title}}"
+    },
+    "scroller": {
+      "conversationAria": "会话消息",
+      "historyError": "较早的消息加载失败。",
+      "historyLoading": "正在加载较早的消息……",
+      "scrollUpHint": "向上滚动查看较早的消息",
+      "scrollToLatestAria": "滚动到最新"
+    },
+    "richInput": {
+      "attachAria": "添加图片",
+      "attachImage": "添加图片",
+      "dropHint": "或将图片拖入/粘贴到备注中",
+      "uploadsUnavailable": "图片上传不可用。",
+      "uploadFailed": "图片上传失败。"
+    },
+    "attachment": {
+      "loadFailedStatus": "无法加载文件（{{status}}）。",
+      "emptyResponse": "文件响应为空。",
+      "tooLarge": "此文件过大，无法预览。请改为下载。",
+      "binaryData": "此文件包含二进制数据。请改为下载。",
+      "htmlView": "HTML 视图",
+      "csvView": "CSV 视图",
+      "markdownView": "Markdown 视图",
+      "downloadAria": "下载 {{title}}",
+      "fileEmpty": "文件为空。",
+      "rawTextAria": "{{title}} 原始文本",
+      "loadingFile": "正在加载文件……",
+      "noLongerAvailable": "文件已不可用。请关闭此标签页或选择其他文件。",
+      "previewFailed": "无法预览此文件。请重试或下载。",
+      "tooLargeOrUnsupported": "此文件过大或不支持文本预览。请改为下载。",
+      "downloadFile": "下载文件"
+    },
+    "tweak": {
+      "panelTitle": "动效调节面板",
+      "resetAll": "全部重置",
+      "expand": "展开",
+      "minimize": "最小化",
+      "copyAsTheme": "复制为 @theme",
+      "copied": "已复制到剪贴板",
+      "copyFailed": "复制失败——请手动选中文本复制",
+      "clickToCopy": "点击文本框即可复制"
+    }
+  }
+}

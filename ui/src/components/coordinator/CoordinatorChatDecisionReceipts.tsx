@@ -7,6 +7,7 @@ import { Link } from "@/lib/router";
 import { useCoordinatorWorkspaceEnabled } from "@/hooks/useCoordinatorWorkspaceEnabled";
 import { CoordinatorRelativeTime } from "./CoordinatorRelativeTime";
 import { Button } from "@/components/ui/button";
+import { useTranslation } from "@/i18n";
 
 export function useCoordinatorChatDecisionReceipts(issueId: string | null, conversationMode: boolean | undefined) {
   const { enabled, userId } = useCoordinatorWorkspaceEnabled();
@@ -49,12 +50,13 @@ export function CoordinatorChatDecisionReceipt({ receipt }: { receipt: DecisionH
 }
 
 export function CoordinatorChatReceiptStatus({ query, scroll = false }: { scroll?: boolean; query: ReturnType<typeof useCoordinatorChatDecisionReceipts> }) {
+  const { t } = useTranslation();
   if (!query.enabled) return null;
   if (query.isError) return <div role="status" className="flex flex-wrap items-center gap-2 text-sm text-muted-foreground">
-    <span>Decision updates couldn’t load.</span><Button size="sm" variant="ghost" onClick={() => void query.refetch()}>Retry</Button>
+    <span>{t("comps2.coordinator.decisionUpdatesLoadError")}</span><Button size="sm" variant="ghost" onClick={() => void query.refetch()}>{t("agentConfig.common.retry")}</Button>
   </div>;
   if (!scroll && query.hasNextPage) return <Button size="sm" variant="ghost" disabled={query.isFetchingNextPage} onClick={() => void query.fetchNextPage()}>
-    {query.isFetchingNextPage ? "Loading earlier decisions…" : "Load earlier decisions"}
+    {query.isFetchingNextPage ? t("comps2.coordinator.loadingEarlierDecisions") : t("comps2.coordinator.loadEarlierDecisions")}
   </Button>;
   return null;
 }

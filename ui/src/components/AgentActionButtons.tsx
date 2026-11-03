@@ -38,6 +38,7 @@ import { pendingAgentSetupChoice } from "../lib/agent-setup-choice";
 import { copyTextToClipboard } from "../lib/clipboard";
 import { useDialogActions } from "../context/DialogContext";
 import { useToastActions } from "../context/ToastContext";
+import { useTranslation } from "@/i18n";
 import {
   buildDuplicateAgentPayload,
   duplicateAgentName,
@@ -53,7 +54,7 @@ import type {
 export function RunButton({
   onClick,
   disabled,
-  label = "Run now",
+  label,
   size = "sm",
 }: {
   onClick: () => void;
@@ -61,10 +62,11 @@ export function RunButton({
   label?: string;
   size?: "sm" | "default";
 }) {
+  const { t } = useTranslation();
   return (
     <Button variant="outline" size={size} onClick={onClick} disabled={disabled}>
       <Play className="h-3.5 w-3.5 sm:mr-1" />
-      <span className="hidden sm:inline">{label}</span>
+      <span className="hidden sm:inline">{label ?? t("comps1.agentActions.runNow")}</span>
     </Button>
   );
 }
@@ -82,11 +84,12 @@ export function PauseResumeButton({
   disabled?: boolean;
   size?: "sm" | "default";
 }) {
+  const { t } = useTranslation();
   if (isPaused) {
     return (
       <Button variant="outline" size={size} onClick={onResume} disabled={disabled}>
         <Play className="h-3.5 w-3.5 sm:mr-1" />
-        <span className="hidden sm:inline">Resume</span>
+        <span className="hidden sm:inline">{t("comps1.agentActions.resume")}</span>
       </Button>
     );
   }
@@ -94,7 +97,7 @@ export function PauseResumeButton({
   return (
     <Button variant="outline" size={size} onClick={onPause} disabled={disabled}>
       <Pause className="h-3.5 w-3.5 sm:mr-1" />
-      <span className="hidden sm:inline">Pause</span>
+      <span className="hidden sm:inline">{t("comps1.agentActions.pause")}</span>
     </Button>
   );
 }
@@ -108,6 +111,7 @@ export function ClearErrorButton({
   disabled?: boolean;
   size?: "sm" | "default";
 }) {
+  const { t } = useTranslation();
   return (
     <Button
       variant="outline"
@@ -115,10 +119,10 @@ export function ClearErrorButton({
       onClick={onClick}
       disabled={disabled}
       className="border-destructive/60 text-destructive hover:bg-destructive/10 hover:text-destructive dark:border-destructive/50"
-      aria-label="Clear error and return agent to idle"
+      aria-label={t("comps1.agentActions.clearErrorAria")}
     >
       <CheckCircle2 className="h-3.5 w-3.5 sm:mr-1" />
-      <span className="hidden sm:inline">Clear error</span>
+      <span className="hidden sm:inline">{t("comps1.agentActions.clearError")}</span>
     </Button>
   );
 }
@@ -160,8 +164,8 @@ export function AgentActionButtons({
   agent,
   companyId,
   size = "sm",
-  assignLabel = "Assign Task",
-  runLabel = "Run now",
+  assignLabel,
+  runLabel,
   showStatus = true,
   showRun = true,
   actionsDisabled = false,
@@ -217,6 +221,9 @@ export function AgentActionButtons({
   children?: React.ReactNode;
   className?: string;
 }) {
+  const { t } = useTranslation();
+  const resolvedAssignLabel = assignLabel ?? t("comps1.agentActions.assignTask");
+  const resolvedRunLabel = runLabel ?? t("comps1.agentActions.runNow");
   const navigate = useNavigate();
   const queryClient = useQueryClient();
   const { openNewIssue } = useDialogActions();
@@ -255,7 +262,7 @@ export function AgentActionButtons({
       if (onActionError) {
         onActionError(message);
       } else {
-        pushToast({ title: "Action failed", body: message, tone: "error" });
+        pushToast({ title: t("comps1.agentActions.actionFailed"), body: message, tone: "error" });
       }
     },
     [onActionError, pushToast],
@@ -299,14 +306,14 @@ export function AgentActionButtons({
       }
     },
     onError: (err) => {
-      reportError(err instanceof Error ? err.message : "Action failed");
+      reportError(err instanceof Error ? err.message : t("comps1.agentActions.actionFailed"));
     },
   });
 
   const duplicateAgent = useMutation({
     mutationFn: async () => {
       if (!resolvedCompanyId) {
-        throw new Error("Agent is not ready to duplicate");
+        throw new Error(t("comps1.agentActions.notReadyToDuplicate"));
       }
       const instructionsBundle = await loadDuplicateInstructionsBundle(agent.id, resolvedCompanyId);
       const payload = buildDuplicateAgentPayload(agent, instructionsBundle);
@@ -325,21 +332,21 @@ export function AgentActionButtons({
       if (resolvedCompanyId) {
         await queryClient.invalidateQueries({ queryKey: queryKeys.agents.list(resolvedCompanyId) });
       }
-      pushToast({ title: "Agent duplicated", body: createdAgent.name, tone: "success" });
+      pushToast({ title: t("comps1.agentActions.duplicated"), body: createdAgent.name, tone: "success" });
       if (!confirmLateNavigationChanges(duplicateStartedDirtyRef)) return;
       navigate(`/agents/${agentRouteRef(createdAgent)}/dashboard`);
     },
     onError: (err) => {
-      const message = err instanceof Error ? err.message : "Failed to duplicate agent";
+      const message = err instanceof Error ? err.message : t("comps1.agentActions.duplicateFailed");
       onActionError?.(message);
-      pushToast({ title: "Could not duplicate agent", body: message, tone: "error" });
+      pushToast({ title: t("comps1.agentActions.duplicateFailedTitle"), body: message, tone: "error" });
     },
   });
 
   const handleDuplicateAgent = useCallback(() => {
     if (duplicateAgent.isPending) return;
     const nextName = duplicateAgentName(agent.name);
-    const confirmed = window.confirm(`Duplicate ${agent.name} as ${nextName}?`);
+    const confirmed = window.confirm(t("comps1.agentActions.duplicateConfirm", { name: agent.name, next: nextName }));
     setMoreOpen(false);
     if (!confirmed || !confirmNavigationStart(duplicateStartedDirtyRef)) return;
     duplicateAgent.mutate();
@@ -353,7 +360,7 @@ export function AgentActionButtons({
       queryClient.invalidateQueries({ queryKey: queryKeys.agents.taskSessions(agent.id) });
     },
     onError: (err) => {
-      reportError(err instanceof Error ? err.message : "Failed to reset session");
+      reportError(err instanceof Error ? err.message : t("comps1.agentActions.resetSessionFailed"));
     },
   });
 
@@ -389,9 +396,9 @@ export function AgentActionButtons({
           </AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter>
-          <AlertDialogCancel>Cancel</AlertDialogCancel>
+          <AlertDialogCancel>{t("comps1.agentActions.cancel")}</AlertDialogCancel>
           <AlertDialogAction onClick={() => agentAction.mutate("pause")}>
-            Pause anyway
+            {t("comps1.agentActions.pauseAnyway")}
           </AlertDialogAction>
         </AlertDialogFooter>
       </AlertDialogContent>
@@ -410,16 +417,16 @@ export function AgentActionButtons({
         {persistentProviderTrace ? (
           <span
             className="hidden items-center gap-1 rounded-md border border-primary/30 bg-primary/10 px-2 py-1 text-xs font-medium text-primary lg:inline-flex"
-            title="Exact provider traffic will be captured for future runs and retained for up to 24 hours."
+            title={t("comps1.agentActions.tracingTitle")}
           >
             <Bug className="h-3.5 w-3.5" />
-            Raw tracing on
+            {t("comps1.agentActions.tracingOn")}
           </span>
         ) : null}
         {children}
         <Popover open={moreOpen} onOpenChange={setMoreOpen}>
           <PopoverTrigger asChild>
-            <Button variant="ghost" size="icon" aria-label={`Open actions for ${agent.name}`}>
+            <Button variant="ghost" size="icon" aria-label={t("comps1.agentActions.openActionsAria", { name: agent.name })}>
               <MoreHorizontal className="size-4" />
             </Button>
           </PopoverTrigger>
@@ -433,7 +440,7 @@ export function AgentActionButtons({
                 onClick={select(() => openNewIssue({ assigneeAgentId: agent.id }))}
               >
                 <Plus className={icon} />
-                {assignLabel}
+                {resolvedAssignLabel}
               </button>
             ) : showRun ? (
               <button
@@ -447,7 +454,7 @@ export function AgentActionButtons({
                 })}
               >
                 <Play className={icon} />
-                {runLabel}
+                {resolvedRunLabel}
               </button>
             ) : null}
             {needsSetup ? null : isError ? (
@@ -455,16 +462,16 @@ export function AgentActionButtons({
                 type="button"
                 className={cn(item, "text-destructive")}
                 disabled={clearErrorDisabled}
-                aria-label="Clear error and return agent to idle"
+                aria-label={t("comps1.agentActions.clearErrorAria")}
                 onClick={select(() => agentAction.mutate("clear_error"))}
               >
                 <CheckCircle2 className={cn(icon, "text-destructive")} />
-                Clear error
+                {t("comps1.agentActions.clearError")}
               </button>
             ) : isPaused ? (
               <button type="button" className={item} disabled={pauseResumeDisabled} onClick={select(() => agentAction.mutate("resume"))}>
                 <Play className={icon} />
-                Resume
+                {t("comps1.agentActions.resume")}
               </button>
             ) : (
               <button
@@ -474,7 +481,7 @@ export function AgentActionButtons({
                 onClick={select(() => (pauseConfirm ? setPauseConfirmOpen(true) : agentAction.mutate("pause")))}
               >
                 <Pause className={icon} />
-                Pause
+                {t("comps1.agentActions.pause")}
               </button>
             )}
             <div role="separator" className="-mx-1 my-1 h-px bg-border" />
@@ -486,23 +493,23 @@ export function AgentActionButtons({
             ))}
             <button type="button" className={item} disabled={duplicateAgent.isPending} onClick={handleDuplicateAgent}>
               {duplicateAgent.isPending ? <Loader2 className={cn(icon, "animate-spin")} /> : <Copy className={icon} />}
-              Duplicate agent
+              {t("comps1.agentActions.duplicateAgent")}
             </button>
             <button
               type="button"
               className={item}
               onClick={select(() => {
                 void copyTextToClipboard(agent.id).catch(() => {
-                  pushToast({ title: "Copy failed", body: "Clipboard access is unavailable.", tone: "error" });
+                  pushToast({ title: t("comps1.agentActions.copyFailed"), body: t("comps1.agentActions.clipboardUnavailable"), tone: "error" });
                 });
               })}
             >
               <Copy className={icon} />
-              Copy agent ID
+              {t("comps1.agentActions.copyAgentId")}
             </button>
             <button type="button" className={item} onClick={select(() => resetTaskSession.mutate())}>
               <RotateCcw className={icon} />
-              Reset sessions
+              {t("comps1.agentActions.resetSessions")}
             </button>
             {hideTerminate ? null : (
               <>
@@ -516,7 +523,7 @@ export function AgentActionButtons({
                   })}
                 >
                   <Trash2 className={cn(icon, "text-destructive")} />
-                  Terminate
+                  {t("comps1.agentActions.terminate")}
                 </button>
               </>
             )}
@@ -525,7 +532,7 @@ export function AgentActionButtons({
         {needsSetup ? (
           <Button size={size} disabled={disabled} onClick={finishSetup}>
             <Play className="size-4" />
-            Finish setup
+            {t("comps1.agentActions.finishSetup")}
           </Button>
         ) : (
           <Button
@@ -535,7 +542,7 @@ export function AgentActionButtons({
             title={workActionsDisabled ? workActionsDisabledReason : undefined}
           >
             <Plus className="size-4" />
-            {assignLabel}
+            {resolvedAssignLabel}
           </Button>
         )}
         {pauseDialog}
@@ -548,10 +555,10 @@ export function AgentActionButtons({
       {persistentProviderTrace ? (
         <span
           className="hidden items-center gap-1 rounded-md border border-primary/30 bg-primary/10 px-2 py-1 text-xs font-medium text-primary lg:inline-flex"
-          title="Exact provider traffic will be captured for future runs and retained for up to 24 hours."
+          title={t("comps1.agentActions.tracingTitle")}
         >
           <Bug className="h-3.5 w-3.5" />
-          Raw tracing on
+          {t("comps1.agentActions.tracingOn")}
         </span>
       ) : null}
       <Button
@@ -562,7 +569,7 @@ export function AgentActionButtons({
         title={workActionsDisabled ? workActionsDisabledReason : undefined}
       >
         <Plus className="h-3.5 w-3.5 sm:mr-1" />
-        <span className="hidden sm:inline">{assignLabel}</span>
+        <span className="hidden sm:inline">{resolvedAssignLabel}</span>
       </Button>
       {needsSetup ? (
         <Button variant="outline" size={size} disabled={disabled} onClick={() => {
@@ -573,7 +580,7 @@ export function AgentActionButtons({
             ...(agent.adapterType === "paperclip_runner" ? { runner: "paperclip" } : ["codex_local", "claude_local", "opencode_local", "pi_local"].includes(agent.adapterType) ? { runner: "legacy" } : {}),
             ...pendingAgentSetupChoice(agent),
           })}`);
-        }}>Finish setup</Button>
+        }}>{t("comps1.agentActions.finishSetup")}</Button>
       ) : showRun && <RunButton
         onClick={() => {
           if (navigateToRunOnInvoke && !confirmNavigationStart(agentActionStartedDirtyRef)) return;
@@ -608,9 +615,9 @@ export function AgentActionButtons({
               </AlertDialogDescription>
             </AlertDialogHeader>
             <AlertDialogFooter>
-              <AlertDialogCancel>Cancel</AlertDialogCancel>
+              <AlertDialogCancel>{t("comps1.agentActions.cancel")}</AlertDialogCancel>
               <AlertDialogAction onClick={() => agentAction.mutate("pause")}>
-                Pause anyway
+                {t("comps1.agentActions.pauseAnyway")}
               </AlertDialogAction>
             </AlertDialogFooter>
           </AlertDialogContent>
@@ -624,7 +631,7 @@ export function AgentActionButtons({
       {children}
       <Popover open={moreOpen} onOpenChange={setMoreOpen}>
         <PopoverTrigger asChild>
-          <Button variant="ghost" size="icon-xs" aria-label={`Open actions for ${agent.name}`}>
+          <Button variant="ghost" size="icon-xs" aria-label={t("comps1.agentActions.openActionsAria", { name: agent.name })}>
             <MoreHorizontal className="h-4 w-4" />
           </Button>
         </PopoverTrigger>
@@ -639,19 +646,19 @@ export function AgentActionButtons({
             ) : (
               <Copy className="h-3 w-3" />
             )}
-            Duplicate Agent
+            {t("comps1.agentActions.duplicateAgentCap")}
           </button>
           <button
             className="flex items-center gap-2 w-full px-2 py-1.5 text-xs rounded hover:bg-accent/50"
             onClick={() => {
               void copyTextToClipboard(agent.id).catch(() => {
-                pushToast({ title: "Copy failed", body: "Clipboard access is unavailable.", tone: "error" });
+                pushToast({ title: t("comps1.agentActions.copyFailed"), body: t("comps1.agentActions.clipboardUnavailable"), tone: "error" });
               });
               setMoreOpen(false);
             }}
           >
             <Copy className="h-3 w-3" />
-            Copy Agent ID
+            {t("comps1.agentActions.copyAgentIdCap")}
           </button>
           <button
             className="flex items-center gap-2 w-full px-2 py-1.5 text-xs rounded hover:bg-accent/50"
@@ -661,7 +668,7 @@ export function AgentActionButtons({
             }}
           >
             <RotateCcw className="h-3 w-3" />
-            Reset Sessions
+            {t("comps1.agentActions.resetSessionsCap")}
           </button>
           {!hideTerminate && (
             <button
@@ -673,7 +680,7 @@ export function AgentActionButtons({
               }}
             >
               <Trash2 className="h-3 w-3" />
-              Terminate
+              {t("comps1.agentActions.terminate")}
             </button>
           )}
         </PopoverContent>

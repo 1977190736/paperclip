@@ -1,0 +1,968 @@
+{
+  "taskChat": {
+    "common": {
+      "cancel": "Cancel",
+      "retry": "Retry",
+      "back": "Back",
+      "skip": "Skip",
+      "open": "Open",
+      "details": "Details",
+      "you": "You",
+      "noMatches": "No matches.",
+      "defaultLabel": "Default",
+      "oneFile": "1 file",
+      "nFiles": "{{n}} files",
+      "pageOf": "{{n}} of {{total}}",
+      "noAnswer": "No answer",
+      "viewRun": "View run",
+      "tryAgain": "Try again",
+      "tryingAgain": "Trying again..."
+    },
+    "tools": {
+      "unnamed": "Unnamed tool",
+      "runningPrefix": "Running",
+      "runningNamed": "Running {{name}}",
+      "ranNamed": "Ran {{name}}",
+      "runningUnnamedTool": "Running an unnamed tool",
+      "ranUnnamedTool": "Ran an unnamed tool",
+      "failedSuffix": "failed",
+      "interruptedSuffix": "stopped",
+      "diffEditName": "Edit",
+      "interruptedDetail": "Interrupted before the provider reported completion.",
+      "action": {
+        "read": {
+          "running": "Reading data",
+          "runningObject": "Reading {{object}}",
+          "completed": "Read data",
+          "completedObject": "Read {{object}}"
+        },
+        "list": {
+          "running": "Listing items",
+          "runningObject": "Listing {{object}}",
+          "completed": "Listed items",
+          "completedObject": "Listed {{object}}"
+        },
+        "search": {
+          "running": "Searching",
+          "runningObject": "Searching {{object}}",
+          "completed": "Searched",
+          "completedObject": "Searched {{object}}"
+        },
+        "fetch": {
+          "running": "Fetching data",
+          "runningObject": "Fetching {{object}}",
+          "completed": "Fetched data",
+          "completedObject": "Fetched {{object}}"
+        },
+        "open": {
+          "running": "Opening an item",
+          "runningObject": "Opening {{object}}",
+          "completed": "Opened an item",
+          "completedObject": "Opened {{object}}"
+        },
+        "update": {
+          "running": "Updating data",
+          "runningObject": "Updating {{object}}",
+          "completed": "Updated data",
+          "completedObject": "Updated {{object}}"
+        },
+        "create": {
+          "running": "Creating an item",
+          "runningObject": "Creating {{object}}",
+          "completed": "Created an item",
+          "completedObject": "Created {{object}}"
+        },
+        "delete": {
+          "running": "Deleting an item",
+          "runningObject": "Deleting {{object}}",
+          "completed": "Deleted an item",
+          "completedObject": "Deleted {{object}}"
+        },
+        "move": {
+          "running": "Moving an item",
+          "runningObject": "Moving {{object}}",
+          "completed": "Moved an item",
+          "completedObject": "Moved {{object}}"
+        },
+        "run": {
+          "running": "Running a command",
+          "runningObject": "Running a command",
+          "completed": "Ran a command",
+          "completedObject": "Ran a command"
+        },
+        "request": {
+          "running": "Requesting input",
+          "runningObject": "Requesting {{object}}",
+          "completed": "Requested input",
+          "completedObject": "Requested {{object}}"
+        },
+        "post": {
+          "running": "Posting an update",
+          "runningObject": "Posting {{object}}",
+          "completed": "Posted an update",
+          "completedObject": "Posted {{object}}"
+        },
+        "start": {
+          "running": "Starting an operation",
+          "runningObject": "Starting {{object}}",
+          "completed": "Started an operation",
+          "completedObject": "Started {{object}}"
+        },
+        "stop": {
+          "running": "Stopping an operation",
+          "runningObject": "Stopping {{object}}",
+          "completed": "Stopped an operation",
+          "completedObject": "Stopped {{object}}"
+        },
+        "wait": {
+          "running": "Waiting",
+          "runningObject": "Waiting",
+          "completed": "Finished waiting",
+          "completedObject": "Finished waiting"
+        },
+        "finish": {
+          "running": "Reporting completion",
+          "runningObject": "Reporting completion",
+          "completed": "Reported completion",
+          "completedObject": "Reported completion"
+        },
+        "block": {
+          "running": "Reporting a blocker",
+          "runningObject": "Reporting a blocker",
+          "completed": "Reported a blocker",
+          "completedObject": "Reported a blocker"
+        },
+        "think": {
+          "running": "Thinking",
+          "runningObject": "Thinking",
+          "completed": "Finished thinking",
+          "completedObject": "Finished thinking"
+        },
+        "switch": {
+          "running": "Switching mode",
+          "runningObject": "Switching {{object}}",
+          "completed": "Switched mode",
+          "completedObject": "Switched {{object}}"
+        },
+        "other": {
+          "running": "Running",
+          "runningObject": "Running",
+          "completed": "Ran",
+          "completedObject": "Ran"
+        }
+      },
+      "exact": {
+        "applyPatch": { "running": "Applying a patch", "completed": "Applied a patch" },
+        "read": { "running": "Reading a file", "completed": "Read a file" },
+        "write": { "running": "Writing a file", "completed": "Wrote a file" },
+        "edit": { "running": "Editing a file", "completed": "Edited a file" },
+        "notebookRead": { "running": "Reading a notebook", "completed": "Read a notebook" },
+        "notebookEdit": { "running": "Editing a notebook", "completed": "Edited a notebook" },
+        "glob": { "running": "Searching files", "completed": "Searched files" },
+        "grep": { "running": "Searching file contents", "completed": "Searched file contents" },
+        "toolSearch": { "running": "Searching available tools", "completed": "Searched available tools" },
+        "webSearch": { "running": "Searching the web", "completed": "Searched the web" },
+        "webFetch": { "running": "Fetching a web page", "completed": "Fetched a web page" },
+        "todoWrite": { "running": "Updating the task list", "completed": "Updated the task list" },
+        "taskCreate": { "running": "Creating a task", "completed": "Created a task" },
+        "taskUpdate": { "running": "Updating a task", "completed": "Updated a task" },
+        "taskList": { "running": "Listing tasks", "completed": "Listed tasks" },
+        "taskGet": { "running": "Reading a task", "completed": "Read a task" },
+        "enterPlanMode": { "running": "Entering plan mode", "completed": "Entered plan mode" },
+        "exitPlanMode": { "running": "Leaving plan mode", "completed": "Left plan mode" },
+        "skill": { "running": "Loading a skill", "completed": "Loaded a skill" },
+        "requestInput": { "running": "Requesting input", "completed": "Requested input" },
+        "startSubagent": { "running": "Starting a subagent", "completed": "Started a subagent" },
+        "checkSubagentProgress": { "running": "Checking subagent progress", "completed": "Checked subagent progress" },
+        "stopSubagent": { "running": "Stopping a subagent", "completed": "Stopped a subagent" },
+        "messageSubagent": { "running": "Messaging a subagent", "completed": "Messaged a subagent" },
+        "checkTaskProgress": { "running": "Checking task progress", "completed": "Checked task progress" },
+        "interruptSubagent": { "running": "Interrupting a subagent", "completed": "Interrupted a subagent" },
+        "reportFindings": { "running": "Reporting findings", "completed": "Reported findings" },
+        "reviewSafety": { "running": "Reviewing safety", "completed": "Reviewed safety" },
+        "inspectCodeIntelligence": { "running": "Inspecting code intelligence", "completed": "Inspected code intelligence" },
+        "compactContext": { "running": "Compacting context", "completed": "Compacted context" },
+        "generateImage": { "running": "Generating an image", "completed": "Generated an image" },
+        "viewImage": { "running": "Viewing an image", "completed": "Viewed an image" },
+        "runToolsParallel": { "running": "Running tools in parallel", "completed": "Ran tools in parallel" },
+        "readTaskContext": { "running": "Reading task context", "completed": "Read task context" },
+        "readTaskHistory": { "running": "Reading task history", "completed": "Read task history" },
+        "listDocuments": { "running": "Listing documents", "completed": "Listed documents" },
+        "readDocument": { "running": "Reading a document", "completed": "Read a document" },
+        "listDocumentRevisions": { "running": "Listing document revisions", "completed": "Listed document revisions" },
+        "reportProgress": { "running": "Reporting progress", "completed": "Reported progress" },
+        "answerStatusQuestion": { "running": "Answering a status question", "completed": "Answered a status question" },
+        "writeDocument": { "running": "Writing a document", "completed": "Wrote a document" },
+        "registerDeliverable": { "running": "Registering a deliverable", "completed": "Registered a deliverable" },
+        "reportCompletion": { "running": "Reporting completion", "completed": "Reported completion" },
+        "reportBlocker": { "running": "Reporting a blocker", "completed": "Reported a blocker" },
+        "requestReview": { "running": "Requesting review", "completed": "Requested review" },
+        "listAgents": { "running": "Listing agents", "completed": "Listed agents" },
+        "readAgentDetails": { "running": "Reading agent details", "completed": "Read agent details" },
+        "searchTasks": { "running": "Searching tasks", "completed": "Searched tasks" },
+        "listApprovals": { "running": "Listing approvals", "completed": "Listed approvals" },
+        "readApproval": { "running": "Reading an approval", "completed": "Read an approval" },
+        "readApprovalContext": { "running": "Reading approval context", "completed": "Read approval context" },
+        "readWorkspaceStatus": { "running": "Reading workspace status", "completed": "Read workspace status" },
+        "controlWorkspaceService": { "running": "Controlling a workspace service", "completed": "Controlled a workspace service" },
+        "updateTaskDependencies": { "running": "Updating task dependencies", "completed": "Updated task dependencies" },
+        "nameTask": { "running": "Naming the task", "completed": "Named the task" },
+        "requestApproval": { "running": "Requesting approval", "completed": "Requested approval" },
+        "decideApproval": { "running": "Deciding an approval", "completed": "Decided an approval" },
+        "commentOnApproval": { "running": "Commenting on an approval", "completed": "Commented on an approval" },
+        "scheduleWake": { "running": "Scheduling a wake-up", "completed": "Scheduled a wake-up" },
+        "callPaperclipApi": { "running": "Calling the Paperclip API", "completed": "Called the Paperclip API" }
+      }
+    },
+    "phase": {
+      "thoughtForSeconds": "Thought for {{n}}s",
+      "thoughtForMinutes": "Thought for {{n}}m {{s}}s",
+      "tokensLabel": "{{n}} tokens",
+      "planStepFallback": "Plan step",
+      "subagentFallback": "Subagent",
+      "interruptedBeforeCompletion": "Interrupted before completion.",
+      "readFile": "Read a file",
+      "readFiles": "Read {{n}} files",
+      "editedFile": "Edited a file",
+      "editedFiles": "Edited {{n}} files",
+      "ranCommand": "Ran a command",
+      "ranCommands": "Ran {{n}} commands",
+      "searchedOnce": "Searched once",
+      "searchedTimes": "Searched {{n}} times",
+      "usedTool": "Used a tool",
+      "usedTools": "Used {{n}} tools",
+      "updatedPlan": "Updated the plan",
+      "updatedPlans": "Updated {{n}} plans",
+      "usedSubagent": "Used a subagent",
+      "usedSubagents": "Used {{n}} subagents",
+      "updatedModel": "Updated the model",
+      "updatedModelTimes": "Updated the model {{n}} times",
+      "compactedContext": "Compacted context",
+      "compactedContextTimes": "Compacted context {{n}} times",
+      "handledArtifact": "Handled an artifact",
+      "handledArtifacts": "Handled {{n}} artifacts",
+      "changedReviewMode": "Changed review mode",
+      "changedReviewModeTimes": "Changed review mode {{n}} times",
+      "ranHook": "Ran a hook",
+      "ranHooks": "Ran {{n}} hooks",
+      "referencedMemory": "Referenced memory",
+      "referencedMemoryTimes": "Referenced memory {{n}} times",
+      "ranSafetyReview": "Ran a safety review",
+      "ranSafetyReviews": "Ran {{n}} safety reviews",
+      "sentTerminalInput": "Sent terminal input",
+      "sentTerminalInputTimes": "Sent terminal input {{n}} times",
+      "waited": "Waited",
+      "waitedTimes": "Waited {{n}} times",
+      "receivedProviderNotice": "Received a provider notice",
+      "receivedProviderNotices": "Received {{n}} provider notices",
+      "searchedAvailableToolsTimes": "Searched available tools {{n}} times",
+      "readFromPaperclip": "Read from Paperclip",
+      "readFromPaperclipTimes": "Read from Paperclip {{n}} times",
+      "usedPaperclip": "Used Paperclip",
+      "usedPaperclipTimes": "Used Paperclip {{n}} times",
+      "changedFile": "Changed a file",
+      "changedFiles": "Changed {{n}} files",
+      "runnerActivity": "Runner activity",
+      "runnerUpdates": "{{n}} runner updates",
+      "reasoning": "Reasoning",
+      "noToolActivity": "No tool activity",
+      "andMore": ", +{{n}} more"
+    },
+    "usage": {
+      "sessionTotalLabel": "Provider session total",
+      "sessionTotalDetail": "This cumulative usage can include earlier runs in the resumed provider session."
+    },
+    "status": {
+      "responding": "Responding",
+      "thinking": "Thinking",
+      "running": "Running"
+    },
+    "activity": {
+      "research": {
+        "openPage": {
+          "running": "Opening a web page",
+          "completed": "Opened a web page",
+          "failed": "Couldn’t open the web page",
+          "interrupted": "Stopped opening the web page"
+        },
+        "findInPage": {
+          "running": "Searching the page",
+          "completed": "Searched the page",
+          "failed": "Page search failed",
+          "interrupted": "Page search stopped"
+        },
+        "default": {
+          "running": "Searching the web",
+          "completed": "Searched the web",
+          "failed": "Web search failed",
+          "interrupted": "Web search stopped"
+        }
+      },
+      "plan": {
+        "running": "Updating the plan",
+        "completed": "Updated the plan",
+        "failed": "Plan update failed",
+        "interrupted": "Plan update stopped"
+      },
+      "delegation": {
+        "message": {
+          "running": "Messaging a subagent",
+          "completed": "Messaged a subagent",
+          "failed": "Subagent message failed",
+          "interrupted": "Subagent message stopped"
+        },
+        "resume": {
+          "running": "Resuming a subagent",
+          "completed": "Resumed a subagent",
+          "failed": "Couldn’t resume the subagent",
+          "interrupted": "Subagent resume stopped"
+        },
+        "close": {
+          "running": "Closing a subagent",
+          "completed": "Closed a subagent",
+          "failed": "Couldn’t close the subagent",
+          "interrupted": "Subagent close stopped"
+        },
+        "wait": {
+          "running": "Waiting for subagents",
+          "completed": "Finished waiting for subagents",
+          "failed": "Subagent wait failed",
+          "interrupted": "Stopped waiting for subagents"
+        },
+        "default": {
+          "running": "Starting a subagent",
+          "completed": "Started a subagent",
+          "failed": "Subagent start failed",
+          "interrupted": "Subagent start stopped"
+        }
+      },
+      "modelIdentity": {
+        "switch": {
+          "running": "Switching models",
+          "completed": "Switched models",
+          "failed": "Model switch failed",
+          "interrupted": "Model switch stopped"
+        },
+        "verify": {
+          "running": "Verifying the model",
+          "completed": "Verified the model",
+          "failed": "Model verification failed",
+          "interrupted": "Model verification stopped"
+        }
+      },
+      "context": {
+        "running": "Compacting context",
+        "completed": "Compacted context",
+        "failed": "Context compaction failed",
+        "interrupted": "Context compaction stopped"
+      },
+      "artifact": {
+        "view": {
+          "running": "Viewing an artifact",
+          "completed": "Viewed an artifact",
+          "failed": "Couldn’t view the artifact",
+          "interrupted": "Artifact view stopped"
+        },
+        "generate": {
+          "running": "Generating an artifact",
+          "completed": "Generated an artifact",
+          "failed": "Artifact generation failed",
+          "interrupted": "Artifact generation stopped"
+        }
+      },
+      "review": {
+        "exit": {
+          "running": "Leaving review mode",
+          "completed": "Left review mode",
+          "failed": "Couldn’t leave review mode",
+          "interrupted": "Review-mode change stopped"
+        },
+        "enter": {
+          "running": "Entering review mode",
+          "completed": "Entered review mode",
+          "failed": "Couldn’t enter review mode",
+          "interrupted": "Review-mode change stopped"
+        }
+      },
+      "hook": {
+        "running": "Running a hook",
+        "completed": "Ran a hook",
+        "failed": "Hook failed",
+        "interrupted": "Hook stopped"
+      },
+      "memory": {
+        "running": "Checking memory",
+        "completed": "Referenced memory",
+        "failed": "Memory lookup failed",
+        "interrupted": "Memory lookup stopped"
+      },
+      "safety": {
+        "running": "Reviewing safety",
+        "completed": "Reviewed safety",
+        "failed": "Safety review failed",
+        "interrupted": "Safety review stopped"
+      },
+      "terminal": {
+        "running": "Sending terminal input",
+        "completed": "Sent terminal input",
+        "failed": "Terminal input failed",
+        "interrupted": "Terminal input stopped"
+      },
+      "wait": {
+        "running": "Waiting",
+        "completed": "Finished waiting",
+        "failed": "Wait failed",
+        "interrupted": "Wait stopped"
+      },
+      "providerNotice": {
+        "running": "Provider notice",
+        "completed": "Provider notice",
+        "failed": "Provider error",
+        "interrupted": "Provider notice"
+      },
+      "workspaceChange": {
+        "running": "Editing files",
+        "completed": "Edited files"
+      },
+      "workspaceFile": {
+        "running": "Referencing a file",
+        "completed": "Referenced a file"
+      },
+      "resource": {
+        "running": "Saving a resource",
+        "completedDocument": "Added a document",
+        "completedDeliverable": "Added a deliverable"
+      }
+    },
+    "completed": {
+      "terminal": "Ran commands",
+      "searchedFiles": "Searched files",
+      "readFiles": "Read files",
+      "editedFiles": "Edited files",
+      "searchedWeb": "Searched the web",
+      "workedOnPlan": "Worked on a plan",
+      "requestedInput": "Requested input",
+      "workedWithAgents": "Worked with agents",
+      "reviewedSafety": "Reviewed safety",
+      "workedWithImages": "Worked with images",
+      "waited": "Waited",
+      "usedConnectedTools": "Used connected tools",
+      "usedTools": "Used tools",
+      "workedWithArtifacts": "Worked with artifacts",
+      "managedContext": "Managed context",
+      "checkedMemory": "Checked memory",
+      "checkedModelSettings": "Checked model settings",
+      "workedInReviewMode": "Worked in review mode",
+      "ranHooks": "Ran hooks",
+      "workedOnFiles": "Worked on files",
+      "referencedFiles": "Referenced files",
+      "addedResources": "Added resources",
+      "receivedProviderUpdate": "Received a provider update",
+      "providerErrorReported": "Provider error reported",
+      "providerWarningReported": "Provider warning reported",
+      "receivedProviderUpdates": "Received provider updates",
+      "checkedFiles": "Checked files",
+      "thoughtThroughTask": "Thought through the task",
+      "activityStopped": "Activity stopped",
+      "recordedUsage": "Recorded usage",
+      "andMore": ", and more"
+    },
+    "composer": {
+      "unassigned": "Unassigned",
+      "theAgent": "the agent",
+      "editQueuedPlaceholder": "Edit queued message…",
+      "goalCommandName": "Goal",
+      "goalVerifyDescription": "Support will be verified when the session starts.",
+      "goalPursueDescription": "Pursue work across turns.",
+      "goalUnsupported": "Session goals are unsupported by this agent.",
+      "placeholder": {
+        "mobilePlanning": "Plan with {{agent}}…",
+        "mobileAsk": "Ask {{agent}}…",
+        "mobileMessage": "Message {{agent}}…",
+        "planning": "Plan with {{agent}} — shapes the plan doc, no code changes…",
+        "ask": "Ask {{agent}} a question — read-only, nothing runs…",
+        "message": "Message {{agent}} — describe what you want done…"
+      },
+      "goalExtraArgsError": "/goal {{command}} does not accept extra arguments.",
+      "uploadNoUrlError": "Upload did not return a file URL",
+      "attachmentRemovedError": "Attachment was removed",
+      "cannotAttachType": "This file type cannot be attached here",
+      "goalInConversationError": "Create a separate task for work that needs an ongoing execution goal.",
+      "goalAttachmentsError": "Remove attachments before using /goal.",
+      "goalNeedsAgentError": "Select an agent before starting a session goal.",
+      "goalActionFailed": "The goal action could not be applied.",
+      "skipFailed": "This request could not be skipped.",
+      "pendingCount": "{{n}} pending",
+      "pendingInput": "Pending input",
+      "dismissAria": "Dismiss {{label}}",
+      "contextBarAria": "Task project and worktrees",
+      "sendNewHint": "Send /new to start a fresh session and resume this conversation.",
+      "disabled": "Composer disabled",
+      "newSessionName": "New session",
+      "newSessionDescription": "Start fresh context here, preserving conversation history.",
+      "uploading": "Uploading…",
+      "uploadFailed": "Upload failed",
+      "retryAria": "Retry {{name}}",
+      "removeAria": "Remove {{name}}",
+      "queuedChanged": "Queued message changed",
+      "editingQueued": "Editing queued message",
+      "assigneePlaceholder": "Assignee",
+      "selectAssignee": "Select assignee",
+      "noAssignee": "No assignee",
+      "searchAssignees": "Search assignees…",
+      "stopping": "Stopping…",
+      "stopResponseTitle": "Stop response",
+      "queueAsNewTitle": "Queue as new message",
+      "saveQueuedTitle": "Save queued message",
+      "waitingUploadTitle": "Waiting for upload to finish",
+      "removeFailedTitle": "Remove the failed attachment to send",
+      "submitWithShortcut": "{{label}} (⌘+Enter)",
+      "sendShortcut": "Send (⌘+Enter)",
+      "stopAria": "Stop",
+      "send": "Send"
+    },
+    "worktree": {
+      "new": {
+        "label": "New worktree",
+        "description": "Start in an isolated checkout."
+      },
+      "shared": {
+        "label": "Project workspace",
+        "description": "Use the project's shared checkout."
+      },
+      "branch": {
+        "label": "New branch",
+        "description": "Create a branch in the project workspace."
+      },
+      "agentDefault": {
+        "label": "Agent default",
+        "description": "Let the agent choose its workspace."
+      },
+      "inherit": {
+        "label": "Project default",
+        "description": "Use the project's worktree settings."
+      },
+      "reuseGroup": "Reuse a worktree",
+      "otherGroup": "Other options",
+      "existingWorkspace": "Existing workspace",
+      "title": "Worktrees",
+      "searchPlaceholder": "Search worktrees...",
+      "emptyMessage": "No matching worktrees.",
+      "prefix": "Worktrees ·",
+      "selectWorktree": "Select worktree",
+      "loading": "Loading existing worktrees…",
+      "loadFailed": "Couldn't load worktrees.",
+      "emptyFooter": "No existing worktrees yet. Choose New worktree to start one."
+    },
+    "runSettings": {
+      "chooseAgent": "Choose an agent",
+      "unavailable": {
+        "chooseAgent": "Choose an agent to select its model and effort.",
+        "muse": "Muse chooses its model and effort. Paperclip has no per-task override.",
+        "process": "This agent runs a command. Its harness does not expose a model or effort setting.",
+        "http": "This agent calls an HTTP endpoint. The destination service chooses its model.",
+        "gateway": "This gateway chooses its model remotely; Paperclip has no per-task model setting for it."
+      },
+      "closePickerAria": "Close picker",
+      "selectModelAria": "Select model and effort",
+      "selectModel": "Select model",
+      "defaultLabel": "Default",
+      "selectAssigneeAria": "Select assignee",
+      "chooseAssignee": "Choose assignee",
+      "resetToAgentDefault": "Reset to agent default",
+      "modelNoun": "Model",
+      "chooseExactModelAria": "Choose exact model",
+      "fastMode": "Fast mode",
+      "thinkingSlider": "Thinking",
+      "effortSlider": "Effort",
+      "searchAssignees": "Search assignees",
+      "assigneesAria": "Assignees",
+      "backToSelectionAria": "Back to selection",
+      "chooseModel": "Choose model",
+      "searchModelId": "Search or paste a model ID",
+      "modelsAria": "Models",
+      "useAgentDefault": "Use agent default",
+      "agentDefault": "Agent default",
+      "loadingModels": "Loading models…",
+      "noCatalogMatch": "No catalog match.",
+      "useExactIdPrefix": "Use exact ID",
+      "openrouterFormatError": "Use openrouter/provider/model with no spaces.",
+      "modelIdSpacesError": "Model IDs cannot contain spaces.",
+      "customIdsOpenrouter": "Custom IDs: openrouter/provider/model. Provider access is checked when the run starts.",
+      "customIdsGeneric": "Custom model IDs can be pasted here. Provider access is checked when the run starts.",
+      "agentRunSettings": "Agent run settings"
+    },
+    "addMenu": {
+      "filesAndImages": "Files and images",
+      "privateTask": "Private task",
+      "goal": "Goal",
+      "keepPursuing": "Keep pursuing",
+      "planMode": "Plan mode",
+      "planBeforeActing": "Plan before acting",
+      "askMode": "Ask mode",
+      "answerWithoutChanges": "Answer without changes",
+      "addToComposerAria": "Add to composer",
+      "add": "Add",
+      "closeAddMenuAria": "Close Add menu",
+      "removeChipAria": "Remove {{label}}",
+      "privacyExplanation": "Only you and people you share with can read this task",
+      "removePrivateTaskAria": "Remove private task",
+      "private": "Private"
+    },
+    "goal": {
+      "pending": {
+        "starting": "Starting",
+        "editing": "Saving",
+        "replacing": "Replacing",
+        "pausing": "Pausing after current turn",
+        "resuming": "Resuming",
+        "clearing": "Clearing",
+        "continuing": "Continuing in a new run"
+      },
+      "selectAgentForGoal": "Select an agent to use /goal.",
+      "noGoalToEdit": "There is no current session goal to edit.",
+      "addObjectiveAfterGoal": "Add an objective after /goal to start a goal.",
+      "sessionGoalAria": "Agent session goal",
+      "sessionGoal": "Session goal",
+      "workingNow": "Working now",
+      "typeSlashGoalHint": "Type /goal followed by an objective to pursue work across turns.",
+      "tokensLabel": "{{n}} tokens",
+      "iterationsLabel": "{{n}} iterations",
+      "editGoalAria": "Edit goal",
+      "pauseGoalAria": "Pause goal",
+      "resumeGoalAria": "Resume goal",
+      "clearGoalAria": "Clear goal",
+      "replaceGoalTitle": "Replace session goal?",
+      "editGoalTitle": "Edit session goal",
+      "replaceGoalDescription": "This clears the unfinished goal and starts a new goal with the objective below.",
+      "editGoalDescription": "Update the objective without clearing the goal's progress.",
+      "goalObjective": "Goal objective",
+      "saving": "Saving…",
+      "replaceGoal": "Replace goal",
+      "saveGoal": "Save goal"
+    },
+    "workProduct": {
+      "changesRequested": "Changes requested",
+      "review": "Review",
+      "failed": "Failed",
+      "opening": "Opening",
+      "pending": "Pending",
+      "open": "Open",
+      "draft": "Draft",
+      "merged": "Merged",
+      "closed": "Closed",
+      "running": "Running",
+      "stopped": "Stopped",
+      "openPreview": "Open preview",
+      "openOnGithub": "Open on GitHub",
+      "branch": "Branch",
+      "branchNoRemote": "Branch · no remote link",
+      "image": "Image",
+      "video": "Video",
+      "file": "File",
+      "openGallery": "Open gallery",
+      "download": "Download",
+      "document": "Document",
+      "rev": "rev {{n}}",
+      "openDocument": "Open document",
+      "openService": "Open service",
+      "port": "port {{n}}",
+      "down": "Down",
+      "unhealthy": "Unhealthy",
+      "noLink": "No link was provided for this work product.",
+      "updated": "Updated {{time}}",
+      "savedDescription": "Saved description",
+      "openInTab": "Open in tab",
+      "openInTabAria": "Open in tab: {{title}}",
+      "actionAria": "{{action}}: {{title}}",
+      "hideDetailsAria": "Hide details: {{title}}",
+      "showDetailsAria": "Show details: {{title}}",
+      "hideDetails": "Hide details",
+      "showDetails": "Show details"
+    },
+    "questions": {
+      "requiredError": "This question is required.",
+      "customAnswerError": "Enter a custom answer.",
+      "minLengthError": "Enter at least {{n}} characters.",
+      "maxLengthError": "Enter no more than {{n}} characters.",
+      "unsupportedPatternError": "This question has an unsupported validation pattern.",
+      "formatError": "Use the requested format.",
+      "validTypeError": "Enter a valid {{type}}.",
+      "minValueError": "Enter a value of at least {{n}}.",
+      "maxValueError": "Enter a value no greater than {{n}}.",
+      "recommended": "Recommended",
+      "noQuestions": "No answerable questions were provided.",
+      "questionNeedsAnswer": "Question {{n}} needs an answer before you can send.",
+      "submitFailed": "The answers could not be submitted.",
+      "cancelFailed": "The questions could not be cancelled.",
+      "paginationAria": "Question pagination",
+      "prevQuestionAria": "Previous question",
+      "nextQuestionAria": "Next question",
+      "contextAria": "Question context",
+      "writeAnswer": "Write an answer",
+      "writeYourAnswer": "Write your answer",
+      "attachToAnswerAria": "Attach image to answer for {{prompt}}",
+      "filterChoices": "Filter choices",
+      "filterChoicesAria": "Filter choices for {{prompt}}",
+      "other": "Other",
+      "typeYourAnswer": "Type your answer",
+      "attachToOtherAria": "Attach image to other answer for {{prompt}}",
+      "submitAnswers": "Submit answers",
+      "next": "Next"
+    },
+    "interaction": {
+      "status": {
+        "pending": "Pending",
+        "accepted": "Accepted",
+        "rejected": "Rejected",
+        "answered": "Answered",
+        "cancelled": "Cancelled",
+        "expired": "Expired",
+        "failed": "Failed"
+      },
+      "kind": {
+        "suggestTasks": {
+          "fallbackTitle": "Suggested tasks",
+          "label": "Tasks"
+        },
+        "askUserQuestions": {
+          "fallbackTitle": "Questions",
+          "label": "Questions"
+        },
+        "requestConfirmation": {
+          "fallbackTitle": "Confirmation",
+          "label": "Confirmation"
+        },
+        "requestCheckboxConfirmation": {
+          "fallbackTitle": "Choose options",
+          "label": "Selection"
+        },
+        "requestItemVerdicts": {
+          "fallbackTitle": "Review items",
+          "label": "Review"
+        },
+        "connectionIntent": {
+          "fallbackTitle": "Connect service",
+          "label": "Connection"
+        }
+      },
+      "target": {
+        "attachment": "Attachment"
+      },
+      "openPlanAria": "Open {{title}}",
+      "planNoun": "plan",
+      "planRevision": "plan revision {{n}}",
+      "answerPrefix": "Answer:",
+      "noOptionsSelected": "No options selected",
+      "noVerdictsSubmitted": "No verdicts submitted",
+      "noTasksCreated": "No tasks created",
+      "requestAccess": "{{agent}} requested access to {{service}}.",
+      "riskLabel": "· {{risk}} risk",
+      "expiresAt": "Expires {{time}}",
+      "secret": "Secret",
+      "binding": "Binding",
+      "why": "Why",
+      "expiresNoun": "Expires",
+      "reasonPrefix": "Reason:",
+      "questionsAnswered": "Questions answered",
+      "viewOriginal": "View original request and resolution",
+      "acceptPlanPrompt": "Do you accept this plan?",
+      "whatShouldChange": "What should change?",
+      "optionalSuffix": " (optional)",
+      "describeChangePlaceholder": "Describe what should change",
+      "addShortNote": "Add a short note",
+      "rejectFallback": "Reject",
+      "approveFallback": "Approve",
+      "declineFallback": "Decline",
+      "confirmSelection": "Confirm selection",
+      "argumentsAndHash": "Arguments and audit hash",
+      "selectedCount": "{{n}} selected",
+      "selectedChooseRange": "{{n}} selected · choose {{min}}–{{max}}",
+      "selectedAtLeast": "{{n}} selected · at least {{min}}",
+      "filterOptions": "Filter options",
+      "whyChangeTasks": "Why should these tasks change? (optional)",
+      "selectTasks": "Select the tasks to create.",
+      "filterSuggestedTasks": "Filter suggested tasks",
+      "selectedOf": "{{selected}} of {{total}} selected",
+      "requestRevision": "Request revision",
+      "sendBack": "Send back",
+      "reviseEllipsis": "Revise…",
+      "revise": "Revise",
+      "create": "Create",
+      "createSelected": "Create selected",
+      "hiddenFollowUp": "+ {{n}} hidden follow-up",
+      "suggestedTaskHeading": "Suggested Task",
+      "theAddressedUser": "the addressed user",
+      "noReviewItems": "No review items were provided.",
+      "decidedCount": "{{n}} decided",
+      "itemPaginationAria": "Item pagination",
+      "prevItemAria": "Previous item",
+      "nextItemAria": "Next item",
+      "verdictForAria": "Verdict for {{label}}",
+      "verdicts": {
+        "approve": "Approve",
+        "reject": "Reject"
+      },
+      "reasonLabel": "Reason",
+      "addShortReason": "Add a short reason",
+      "submitRejectionReason": "Submit rejection reason",
+      "applyN": "Apply {{n}}",
+      "applyDecisions": "Apply decisions"
+    },
+    "interactionCard": {
+      "questionNoun": "Question",
+      "answerQuestionAria": "Answer question: {{prompt}}",
+      "unansweredQuestion": "Unanswered question",
+      "reviewRequest": "Review request",
+      "openRequestAria": "Open request: {{label}}"
+    },
+    "queued": {
+      "steerUnsupported": "This runner does not support steering",
+      "steerUnavailable": "Steering is temporarily unavailable",
+      "steerTitle": "Steer this message into the active turn",
+      "reorderAria": "Reorder queued message: {{body}}",
+      "sendQueuedAria": "Send queued messages",
+      "interruptTitle": "Interrupt the active turn and send queued messages",
+      "sendNowTitle": "Send queued messages now",
+      "interrupt": "Interrupt",
+      "send": "Send",
+      "steer": "Steer",
+      "discardTitle": "Discard queued message",
+      "discardAria": "Discard queued message: {{body}}",
+      "actionsTitle": "Queued message actions",
+      "actionsAria": "Queued message actions: {{body}}",
+      "editMessage": "Edit message",
+      "stillQueued": "Messages are still queued. They will send when the task is ready.",
+      "movedToPosition": "Moved queued message to position {{n}} of {{total}}.",
+      "reorderConflictRestored": "The queue changed in another session. Its latest order has been restored.",
+      "reorderFailed": "Couldn’t reorder. Previous order restored.",
+      "steeringAnnouncement": "Steering queued message.",
+      "sendingAnnouncement": "Sending queued messages.",
+      "discardingAnnouncement": "Discarding queued message.",
+      "stillQueuedShort": "Messages are still queued.",
+      "steeredAnnouncement": "Message steered into the active turn.",
+      "willSendAfterStop": "Queued messages will be sent when the previous run has stopped.",
+      "submittedWaitingAgent": "Queued messages submitted. Waiting for the agent.",
+      "discardedAnnouncement": "Queued message discarded.",
+      "tooLateDiscard": "Too late to discard: this message is already being sent.",
+      "steerFailed": "Couldn’t steer. Message is still queued.",
+      "interruptFailed": "Couldn’t interrupt. Message is still queued.",
+      "sendFailed": "Couldn’t send. Message is still queued.",
+      "reorderConflictRetry": "The queue changed in another session. Review it and try again.",
+      "discardFailed": "Couldn’t discard. Message is still queued.",
+      "queuedMessagesAria": "Queued messages"
+    },
+    "protocol": {
+      "planStepsAria": "Plan steps",
+      "delegatedAgentsAria": "Delegated agents",
+      "researchSourcesAria": "Research sources",
+      "outputTruncated": "Output truncated to 8 KiB.",
+      "filesChanged": "{{label}} changed",
+      "changesInProgress": "Workspace changes in progress",
+      "workspaceChanges": "Workspace changes",
+      "binarySuffix": "binary · ",
+      "showFewerFiles": "Show fewer files",
+      "showMoreFiles": "Show {{n}} more files",
+      "reviewDiff": "Review diff",
+      "workspaceDiff": "Workspace diff",
+      "changedFilesAria": "Changed files",
+      "binaryNoDiff": "Binary file; text diff is unavailable.",
+      "noInlinePatch": "No inline patch was recorded for this file.",
+      "fileNoun": "File",
+      "lineN": "line {{n}}",
+      "preview": "Preview",
+      "previewUnavailable": "Preview unavailable. The verified workspace reference is still available above.",
+      "previewTruncated": "Preview truncated by the runner.",
+      "answerDetailsNotRecorded": "Answer details were not recorded by this older runtime.",
+      "noAnswersSubmitted": "No answers were submitted; this request was {{status}}.",
+      "receipt": {
+        "answered": "Questions answered",
+        "cancelled": "Questions cancelled",
+        "expired": "Questions expired",
+        "resolved": "Questions resolved"
+      },
+      "runtimeInput": "Runtime input",
+      "runtimePermission": "Runtime permission",
+      "responseLabel": "Response",
+      "resolveFailed": "The runtime request could not be resolved.",
+      "submitting": "Submitting…",
+      "submitResponse": "Submit response",
+      "deny": "Deny",
+      "resolveInRuntime": "Resolve this request in the active runtime session.",
+      "runResult": "Run result",
+      "blockedWithCode": "Blocked: {{code}}",
+      "verificationResultsAria": "Verification results",
+      "blocksCompletionSuffix": " · blocks completion",
+      "runEnded": "Run ended"
+    },
+    "marker": {
+      "agentCouldntStart": "{{agent}} couldn’t start",
+      "credentialBody": "{{agent}} is configured to use {{credential}}, but {{who}} have access to that credential.",
+      "anAiCredential": "an AI credential",
+      "youDont": "you don’t",
+      "subjectDont": "{{who}} doesn’t",
+      "chooseConnectionBody": "Choose an AI connection {{who}} use, or ask an administrator to update {{agent}}’s connection. Then try again.",
+      "youCan": "you can",
+      "subjectCan": "{{who}} can",
+      "changeConnection": "Change AI connection",
+      "viewSavedPlan": "View saved plan"
+    },
+    "plan": {
+      "planNoun": "Plan",
+      "writing": "Writing",
+      "inSidebar": "in the sidebar",
+      "openInSidebarAria": "Open {{title}}{{revision}} in task sidebar",
+      "revisionSuffix": " revision {{n}}",
+      "writingPlan": "Writing plan",
+      "revPrefix": "rev {{n}}",
+      "waitingFirstStep": "Waiting for the first plan step…",
+      "openToReview": "Open the synchronized plan to review it.",
+      "openPlanAria": "Open Plan{{revision}}",
+      "streamingPlanPreviewAria": "Streaming Plan preview"
+    },
+    "systemNotice": {
+      "updateAria": "System update: {{title}}"
+    },
+    "scroller": {
+      "conversationAria": "Conversation messages",
+      "historyError": "Earlier messages couldn’t load.",
+      "historyLoading": "Loading earlier messages…",
+      "scrollUpHint": "Scroll up for earlier messages",
+      "scrollToLatestAria": "Scroll to latest"
+    },
+    "richInput": {
+      "attachAria": "Attach image",
+      "attachImage": "Attach image",
+      "dropHint": "or drop/paste an image into the note",
+      "uploadsUnavailable": "Image uploads are unavailable.",
+      "uploadFailed": "The image could not be uploaded."
+    },
+    "attachment": {
+      "loadFailedStatus": "Could not load file ({{status}}).",
+      "emptyResponse": "The file response is empty.",
+      "tooLarge": "This file is too large to preview. Download it instead.",
+      "binaryData": "This file contains binary data. Download it instead.",
+      "htmlView": "HTML view",
+      "csvView": "CSV view",
+      "markdownView": "Markdown view",
+      "downloadAria": "Download {{title}}",
+      "fileEmpty": "File is empty.",
+      "rawTextAria": "{{title}} raw text",
+      "loadingFile": "Loading file…",
+      "noLongerAvailable": "File no longer available. Close this tab or choose another file.",
+      "previewFailed": "Could not preview this file. Retry or download it.",
+      "tooLargeOrUnsupported": "This file is too large or is not supported for text preview. Download it instead.",
+      "downloadFile": "Download file"
+    },
+    "tweak": {
+      "panelTitle": "Motion tweak panel",
+      "resetAll": "Reset all",
+      "expand": "Expand",
+      "minimize": "Minimize",
+      "copyAsTheme": "Copy as @theme",
+      "copied": "Copied to clipboard",
+      "copyFailed": "Copy failed — select the text and copy it manually",
+      "clickToCopy": "Click the box to copy"
+    }
+  }
+}

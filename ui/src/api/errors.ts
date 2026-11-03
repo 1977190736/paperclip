@@ -11,6 +11,7 @@
  * client can depend on this module without an import cycle, and errors thrown
  * by hand-rolled fetches (health, uploads) classify the same way.
  */
+import { t } from "@/i18n";
 
 export type ErrorKind =
   | "transient"
@@ -30,7 +31,11 @@ export interface ErrorDescription {
 }
 
 export interface DescribeErrorOptions {
-  /** What the user was doing, as a verb phrase: "save the comment". */
+  /**
+   * What the user was doing, as an English verb-phrase IDENTIFIER (e.g.
+   * "save the comment") — never display text. Known fragments are localized;
+   * unknown ones fall back to the English title template.
+   */
   action?: string;
 }
 
@@ -59,60 +64,86 @@ const CONNECTIVITY_CODES = new Set(["tenant_app_unavailable", "tenant_app_starti
 // The only place user-facing error copy lives. Keys are server error codes (the
 // raw `body.error`/`body.code`) or an `ErrorKind` fallback. Never return a raw
 // code to the user: anything not in this table falls back to its kind's copy.
+// Copy resolves through i18n at call time; the English strings below live
+// verbatim in the base locale packs under `errors.*`.
 
-const UNAVAILABLE_BODY = "Paperclip is temporarily unavailable. Please try again in a moment.";
+const UNAVAILABLE_BODY_KEY = "errors.unavailableBody";
 
-const CODE_COPY: Record<string, { title: string; body: string }> = {
+const CODE_COPY_KEYS: Record<string, { titleKey: string; bodyKey: string }> = {
   tenant_app_unavailable: {
-    title: "Reconnecting to Paperclip",
-    body: "Paperclip is restarting or updating. Please try again in a moment.",
+    titleKey: "errors.code.tenantAppUnavailable.title",
+    bodyKey: "errors.code.tenantAppUnavailable.body",
   },
   tenant_app_starting: {
-    title: "Paperclip is starting",
-    body: "Paperclip is starting up. Please try again in a few seconds.",
+    titleKey: "errors.code.tenantAppStarting.title",
+    bodyKey: "errors.code.tenantAppStarting.body",
   },
   WORKER_UNAVAILABLE: {
-    title: "Plugin unavailable",
-    body: "This plugin is restarting. Please try again in a moment.",
+    titleKey: "errors.code.workerUnavailable.title",
+    bodyKey: "errors.code.workerUnavailable.body",
   },
   TIMEOUT: {
-    title: "Request timed out",
-    body: "This took too long to respond. Please try again in a moment.",
+    titleKey: "errors.code.timeout.title",
+    bodyKey: "errors.code.timeout.body",
   },
   // Issue-thread interaction resolution (moved from lib/interaction-resolution-error.ts).
   interaction_audience_denied: {
-    title: "You can’t respond to this card",
-    body: "You are not in this card's resolver audience.",
+    titleKey: "errors.code.interactionAudienceDenied.title",
+    bodyKey: "errors.code.interactionAudienceDenied.body",
   },
   interaction_forbidden: {
-    title: "You can’t respond to this card",
-    body: "You do not have permission to respond to this card.",
+    titleKey: "errors.code.interactionForbidden.title",
+    bodyKey: "errors.code.interactionForbidden.body",
   },
   interaction_settled: {
-    title: "Already handled",
-    body: "This request is no longer waiting for a decision.",
+    titleKey: "errors.code.interactionSettled.title",
+    bodyKey: "errors.code.interactionSettled.body",
   },
   interaction_submit_failed: {
-    title: "Couldn't submit",
-    body: "Couldn't submit. Try again.",
+    titleKey: "errors.code.interactionSubmitFailed.title",
+    bodyKey: "errors.code.interactionSubmitFailed.body",
   },
 };
 
-const KIND_COPY: Record<ErrorKind, { title: string; body: string }> = {
+const KIND_COPY_KEYS: Record<ErrorKind, { titleKey: string; bodyKey: string }> = {
   // Moved from `ApiUnavailableError` (api/response.ts).
-  transient: { title: "Connection interrupted", body: UNAVAILABLE_BODY },
-  auth: { title: "Signed out", body: "Your session has ended. Sign in again to continue." },
-  forbidden: { title: "Not allowed", body: "You don’t have permission to do that." },
-  not_found: { title: "Not found", body: "This item doesn’t exist or was moved." },
-  conflict: { title: "Out of date", body: "This changed since you loaded it. Refresh and try again." },
-  invalid: { title: "Check your input", body: "Some details aren’t valid. Review them and try again." },
-  aborted: { title: "Cancelled", body: "The request was cancelled." },
-  unknown: { title: "Something went wrong", body: "An unexpected error occurred. Please try again." },
+  transient: { titleKey: "errors.kind.transient.title", bodyKey: "errors.kind.transient.body" },
+  auth: { titleKey: "errors.kind.auth.title", bodyKey: "errors.kind.auth.body" },
+  forbidden: { titleKey: "errors.kind.forbidden.title", bodyKey: "errors.kind.forbidden.body" },
+  not_found: { titleKey: "errors.kind.notFound.title", bodyKey: "errors.kind.notFound.body" },
+  conflict: { titleKey: "errors.kind.conflict.title", bodyKey: "errors.kind.conflict.body" },
+  invalid: { titleKey: "errors.kind.invalid.title", bodyKey: "errors.kind.invalid.body" },
+  aborted: { titleKey: "errors.kind.aborted.title", bodyKey: "errors.kind.aborted.body" },
+  unknown: { titleKey: "errors.kind.unknown.title", bodyKey: "errors.kind.unknown.body" },
+};
+
+/**
+ * `action` fragments passed by callers, mapped to i18n keys. The fragment is an
+ * English verb-phrase IDENTIFIER, never display text: pass the same English
+ * phrase the original code used, not a translated string.
+ */
+const ACTION_COPY_KEYS: Record<string, string> = {
+  "post the comment": "errors.action.postTheComment",
+  "check the monitor": "errors.action.checkTheMonitor",
+  "save the document": "errors.action.saveTheDocument",
+  "approve this request": "errors.action.approveThisRequest",
+  "reject this request": "errors.action.rejectThisRequest",
+  "create the task": "errors.action.createTheTask",
+  "request a revision": "errors.action.requestARevision",
+  "resubmit this request": "errors.action.resubmitThisRequest",
+  "upload the file": "errors.action.uploadTheFile",
+  "send this message": "errors.action.sendThisMessage",
+  "load this goal": "errors.action.loadThisGoal",
+  "load workspaces": "errors.action.loadWorkspaces",
+  "load your chats": "errors.action.loadYourChats",
+  "load this case": "errors.action.loadThisCase",
+  "load plugin extensions": "errors.action.loadPluginExtensions",
 };
 
 /** Copy for a specific code or kind, for callers that build their own messages. */
 export function errorCopy(key: string): { title: string; body: string } {
-  return CODE_COPY[key] ?? KIND_COPY[key as ErrorKind] ?? KIND_COPY.unknown;
+  const coded = CODE_COPY_KEYS[key] ?? KIND_COPY_KEYS[key as ErrorKind] ?? KIND_COPY_KEYS.unknown;
+  return { title: t(coded.titleKey), body: t(coded.bodyKey) };
 }
 
 // --- Field extraction -------------------------------------------------------------
@@ -171,7 +202,7 @@ function readableServerMessage(err: unknown): string | null {
     if (!candidate) continue;
     if (isRawErrorCode(candidate)) continue;
     if (/^Request failed: \d+$/.test(candidate)) continue;
-    if (candidate === UNAVAILABLE_BODY) continue;
+    if (candidate === t(UNAVAILABLE_BODY_KEY)) continue;
     return candidate;
   }
   return null;
@@ -268,17 +299,20 @@ export function errorRetryAfterMs(err: unknown): number | null {
 export function describeError(err: unknown, options: DescribeErrorOptions = {}): ErrorDescription {
   const kind = classifyError(err);
   const retryable = kind === "transient" || kind === "unknown";
-  const coded = errorCodes(err).map((code) => CODE_COPY[code]).find(Boolean);
-  const fallback = KIND_COPY[kind];
+  const coded = errorCodes(err).map((code) => CODE_COPY_KEYS[code]).find(Boolean);
+  const fallback = KIND_COPY_KEYS[kind];
 
   let body: string;
-  if (coded) body = coded.body;
-  else if (kind === "transient" || kind === "aborted") body = fallback.body;
-  else body = readableServerMessage(err) ?? fallback.body;
+  if (coded) body = t(coded.bodyKey);
+  else if (kind === "transient" || kind === "aborted") body = t(fallback.bodyKey);
+  else body = readableServerMessage(err) ?? t(fallback.bodyKey);
 
+  const actionKey = options.action ? ACTION_COPY_KEYS[options.action] : undefined;
   const title = options.action && kind !== "transient"
-    ? `Couldn't ${options.action}`
-    : (coded?.title ?? fallback.title);
+    ? actionKey
+      ? t("errors.actionTitleTemplate", { action: t(actionKey) })
+      : `Couldn't ${options.action}`
+    : (coded ? t(coded.titleKey) : t(fallback.titleKey));
   return { title, body, retryable };
 }
 

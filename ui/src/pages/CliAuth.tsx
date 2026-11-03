@@ -7,6 +7,7 @@ import { accessApi } from "../api/access";
 import { ApiError } from "../api/client";
 import { authApi } from "../api/auth";
 import { queryKeys } from "../lib/queryKeys";
+import { t, useTranslation } from "@/i18n";
 
 function cliAuthRetryDelay(error: unknown): number {
   const body = error instanceof ApiError && error.body && typeof error.body === "object"
@@ -22,6 +23,7 @@ function isCliAuthRateLimit(error: unknown): error is ApiError {
 }
 
 export function CliAuthPage() {
+  const { t } = useTranslation();
   const queryClient = useQueryClient();
   const params = useParams();
   const [searchParams] = useSearchParams();
@@ -69,13 +71,13 @@ export function CliAuthPage() {
   });
 
   if (!challengeId || !token) {
-    return <div className="mx-auto max-w-xl py-10 text-sm text-destructive">Invalid CLI auth URL.</div>;
+    return <div className="mx-auto max-w-xl py-10 text-sm text-destructive">{t("pages2.cliAuth.invalidUrl")}</div>;
   }
 
   const waitingForRateLimit = isCliAuthRateLimit(challengeQuery.failureReason) && challengeQuery.isFetching;
   if (sessionQuery.isLoading || challengeQuery.isLoading || waitingForRateLimit) {
     return <div role="status" className="mx-auto max-w-xl py-10 text-sm text-muted-foreground">
-      {waitingForRateLimit ? "Too many CLI approval requests. Retrying shortly..." : "Loading CLI auth challenge..."}
+      {waitingForRateLimit ? t("pages2.cliAuth.rateLimited") : t("pages2.cliAuth.loadingChallenge")}
     </div>;
   }
 
@@ -83,9 +85,9 @@ export function CliAuthPage() {
     return (
       <div className="mx-auto max-w-xl py-10">
         <Card className="block p-6">
-          <h1 className="text-lg font-semibold">CLI auth challenge unavailable</h1>
+          <h1 className="text-lg font-semibold">{t("pages2.cliAuth.challengeUnavailable")}</h1>
           <p className="mt-2 text-sm text-muted-foreground">
-            {challengeQuery.error instanceof Error ? challengeQuery.error.message : "Challenge is invalid or expired."}
+            {challengeQuery.error instanceof Error ? challengeQuery.error.message : t("pages2.boardClaim.challengeInvalid")}
           </p>
         </Card>
       </div>
@@ -94,19 +96,19 @@ export function CliAuthPage() {
 
   const challenge = challengeQuery.data;
   if (!challenge) {
-    return <div className="mx-auto max-w-xl py-10 text-sm text-destructive">CLI auth challenge unavailable.</div>;
+    return <div className="mx-auto max-w-xl py-10 text-sm text-destructive">{t("pages2.cliAuth.challengeUnavailable")}</div>;
   }
 
   if (challenge.status === "approved") {
     return (
       <div className="mx-auto max-w-xl py-10">
         <Card className="block p-6">
-          <h1 className="text-xl font-semibold">CLI access approved</h1>
+          <h1 className="text-xl font-semibold">{t("pages2.cliAuth.approved")}</h1>
           <p className="mt-2 text-sm text-muted-foreground">
-            The Paperclip CLI can now finish authentication on the requesting machine.
+            {t("pages2.cliAuth.approvedBody")}
           </p>
           <p className="mt-4 text-sm text-muted-foreground">
-            Command: <span className="font-mono text-foreground">{challenge.command}</span>
+            {t("pages2.cliAuth.commandLabel")} <span className="font-mono text-foreground">{challenge.command}</span>
           </p>
         </Card>
       </div>
@@ -118,10 +120,10 @@ export function CliAuthPage() {
       <div className="mx-auto max-w-xl py-10">
         <Card className="block p-6">
           <h1 className="text-xl font-semibold">
-            {challenge.status === "expired" ? "CLI auth challenge expired" : "CLI auth challenge cancelled"}
+            {challenge.status === "expired" ? t("pages2.cliAuth.expired") : t("pages2.cliAuth.cancelled")}
           </h1>
           <p className="mt-2 text-sm text-muted-foreground">
-            Start the CLI auth flow again from your terminal to generate a new approval request.
+            {t("pages2.cliAuth.restartHint")}
           </p>
         </Card>
       </div>
@@ -132,12 +134,12 @@ export function CliAuthPage() {
     return (
       <div className="mx-auto max-w-xl py-10">
         <Card className="block p-6">
-          <h1 className="text-xl font-semibold">Sign in required</h1>
+          <h1 className="text-xl font-semibold">{t("pages2.boardClaim.signInRequired")}</h1>
           <p className="mt-2 text-sm text-muted-foreground">
-            Sign in or create an account, then return to this page to approve the CLI access request.
+            {t("pages2.cliAuth.signInBody")}
           </p>
           <Button asChild className="mt-4">
-            <Link to={`/auth?next=${encodeURIComponent(currentPath)}`}>Sign in / Create account</Link>
+            <Link to={`/auth?next=${encodeURIComponent(currentPath)}`}>{t("pages2.boardClaim.signInCta")}</Link>
           </Button>
         </Card>
       </div>
@@ -147,29 +149,29 @@ export function CliAuthPage() {
   return (
     <div className="mx-auto max-w-xl py-10">
       <Card className="block p-6">
-        <h1 className="text-xl font-semibold">Approve Paperclip CLI access</h1>
+        <h1 className="text-xl font-semibold">{t("pages2.cliAuth.title")}</h1>
         <p className="mt-2 text-sm text-muted-foreground">
-          A CLI client is requesting full board access to the organizations you can access on this instance. Approve only if you started this request in your own terminal.
+          {t("pages2.cliAuth.body")}
         </p>
 
         <div className="mt-5 space-y-3 text-sm">
           <div>
-            <div className="text-muted-foreground">Command</div>
+            <div className="text-muted-foreground">{t("pages2.cliAuth.commandLabel")}</div>
             <div className="font-mono text-foreground">{challenge.command}</div>
           </div>
           <div>
-            <div className="text-muted-foreground">Client</div>
+            <div className="text-muted-foreground">{t("pages2.cliAuth.client")}</div>
             <div className="text-foreground">{challenge.clientName ?? "paperclipai cli"}</div>
           </div>
           <div>
-            <div className="text-muted-foreground">Requested access</div>
+            <div className="text-muted-foreground">{t("pages2.cliAuth.requestedAccess")}</div>
             <div className="text-foreground">
-              {challenge.requestedAccess === "instance_admin_required" ? "Instance admin" : "Board"}
+              {challenge.requestedAccess === "instance_admin_required" ? t("pages2.cliAccess.instanceAdmin") : t("pages2.cliAccess.board")}
             </div>
           </div>
           {challenge.requestedCompanyName && (
             <div>
-              <div className="text-muted-foreground">Organization for audit context</div>
+              <div className="text-muted-foreground">{t("pages2.cliAuth.auditOrg")}</div>
               <div className="text-foreground">{challenge.requestedCompanyName}</div>
             </div>
           )}
@@ -179,15 +181,15 @@ export function CliAuthPage() {
           <p className="mt-4 text-sm text-destructive">
             {(approveMutation.error ?? cancelMutation.error) instanceof Error
               ? ((approveMutation.error ?? cancelMutation.error) as Error).message
-              : "Failed to update CLI auth challenge"}
+              : t("pages2.cliAuth.updateFailed")}
           </p>
         )}
 
         {!challenge.canApprove && (
           <p className="mt-4 text-sm text-destructive">
             {challenge.requestedAccess === "instance_admin_required"
-              ? "This challenge requires instance-admin access. Sign in with an instance admin account to approve it."
-              : "You do not have access to the requested organization."}
+              ? t("pages2.cliAuth.needsAdmin")
+              : t("pages2.cliAuth.noAccess")}
           </p>
         )}
 
@@ -196,7 +198,7 @@ export function CliAuthPage() {
             onClick={() => approveMutation.mutate()}
             disabled={!challenge.canApprove || approveMutation.isPending || cancelMutation.isPending}
           >
-            {approveMutation.isPending ? "Approving..." : "Approve CLI access"}
+            {approveMutation.isPending ? t("pages2.cliAuth.approving") : t("pages2.cliAuth.approveCta")}
           </Button>
           <Button
             type="button"
@@ -204,7 +206,7 @@ export function CliAuthPage() {
             onClick={() => cancelMutation.mutate()}
             disabled={approveMutation.isPending || cancelMutation.isPending}
           >
-            {cancelMutation.isPending ? "Cancelling..." : "Cancel"}
+            {cancelMutation.isPending ? t("pages2.cliAuth.cancelling") : t("pages2.cliAuth.cancel")}
           </Button>
         </div>
       </Card>

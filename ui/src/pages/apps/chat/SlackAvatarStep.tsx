@@ -5,6 +5,7 @@ import {
   Loader2,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { useTranslation } from "@/i18n";
 
 export interface SlackAvatarProps {
   agentName: string;
@@ -20,6 +21,7 @@ export function SlackAvatarContent({
   compact = false,
 }: SlackAvatarProps & { compact?: boolean }) {
   const id = useId();
+  const { t } = useTranslation();
   const filename = `${appName.replace(/[^a-zA-Z0-9_-]+/g, "-") || "agent"}-avatar.png`;
   const [downloading, setDownloading] = useState(false);
   const [downloadError, setDownloadError] = useState(false);
@@ -59,18 +61,18 @@ export function SlackAvatarContent({
           src={avatarUrl}
           width={512}
           height={512}
-          alt={`${agentName}’s Cliptoon avatar`}
+          alt={t("apps.chat.avatar.avatarAlt", { name: agentName })}
           className="size-40 shrink-0 rounded-lg bg-muted object-contain"
         />
         <div className="space-y-3">
           <div className="space-y-1">
             <h2 id={`${id}-download`} className="text-sm font-semibold">
               {compact
-                ? "Download your agent’s avatar"
-                : "1. Download your agent’s avatar"}
+                ? t("apps.chat.avatar.downloadTitle")
+                : t("apps.chat.avatar.downloadTitleNumbered")}
             </h2>
             <p className="text-xs text-muted-foreground">
-              PNG · 512 × 512 · Ready for Slack
+              {t("apps.chat.avatar.specs")}
             </p>
           </div>
           <Button variant="outline" asChild>
@@ -88,12 +90,12 @@ export function SlackAvatarContent({
               ) : (
                 <Download className="size-4" />
               )}
-              Download avatar
+              {t("apps.chat.avatar.download")}
             </a>
           </Button>
           {downloadError && (
             <p role="alert" className="text-sm text-destructive">
-              Couldn’t download the avatar. Try downloading it again.
+              {t("apps.chat.avatar.downloadError")}
             </p>
           )}
         </div>
@@ -107,16 +109,15 @@ export function SlackAvatarContent({
               : "hidden"
           }
         >
-          How to upload in Slack
+          {t("apps.chat.avatar.howToUpload")}
         </summary>
         <section aria-labelledby={`${id}-upload`} className="space-y-4">
           <div className="space-y-1">
             <h2 id={`${id}-upload`} className="text-sm font-semibold">
-              {compact ? "Upload it in Slack" : "2. Upload it in Slack"}
+              {compact ? t("apps.chat.avatar.uploadTitle") : t("apps.chat.avatar.uploadTitleNumbered")}
             </h2>
             <p className="text-sm text-muted-foreground">
-              You’ll upload the downloaded image directly in Slack’s app
-              settings.
+              {t("apps.chat.avatar.uploadHint")}
             </p>
           </div>
           <ol className="list-decimal space-y-3 pl-5 text-sm">
@@ -127,23 +128,21 @@ export function SlackAvatarContent({
                 rel="noopener noreferrer"
                 className="underline underline-offset-4"
               >
-                Open Slack app Settings{" "}
+                {t("apps.chat.avatar.step1Link")}{" "}
                 <ExternalLink className="inline size-3" />
               </a>{" "}
-              and choose <strong>{appName}</strong>.
+              {t("apps.chat.avatar.step1Suffix", { name: appName })}
             </li>
             <li>
-              Choose <strong>Basic Information</strong>, then scroll to{" "}
-              <strong>Display Information</strong>.
+              {t("apps.chat.avatar.step2Prefix")} <strong>{t("apps.chat.avatar.basicInformation")}</strong>{t("apps.chat.avatar.step2Middle")}{" "}
+              <strong>{t("apps.chat.avatar.displayInformation")}</strong>{t("apps.chat.avatar.step2Suffix")}
             </li>
             <li>
-              Under <strong>App icon &amp; Preview</strong>, click the app icon
-              and upload{" "}
-              <span className="break-all font-mono text-xs">{filename}</span>.
+              {t("apps.chat.avatar.step3Prefix")} <strong>{t("apps.chat.avatar.appIconPreview")}</strong>{t("apps.chat.avatar.step3Middle")}{" "}
+              <span className="break-all font-mono text-xs">{filename}</span>{t("apps.chat.avatar.step3Suffix")}
             </li>
             <li>
-              Confirm the crop, then click <strong>Save Changes</strong> in
-              Slack.
+              {t("apps.chat.avatar.step4Prefix")} <strong>{t("apps.chat.avatar.saveChanges")}</strong>{t("apps.chat.avatar.step4Suffix")}
             </li>
           </ol>
         </section>
@@ -154,12 +153,13 @@ export function SlackAvatarContent({
 
 
 export function SlackAvatarSettings(props: SlackAvatarProps) {
+  const { t } = useTranslation();
   return (
-    <section className="space-y-4" aria-label="Slack avatar">
+    <section className="space-y-4" aria-label={t("apps.chat.avatar.sectionAria")}>
       <div className="space-y-1">
-        <h2 className="text-lg font-semibold">Agent avatar</h2>
+        <h2 className="text-lg font-semibold">{t("apps.chat.avatar.agentAvatarTitle")}</h2>
         <p className="text-sm text-muted-foreground">
-          Use {props.agentName}’s avatar so your team recognizes the agent
+          {t("apps.chat.avatar.recognizeHint", { name: props.agentName })}
         </p>
       </div>
       <SlackAvatarContent {...props} compact />

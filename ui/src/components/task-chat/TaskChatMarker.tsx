@@ -6,6 +6,7 @@ import type { TaskChatMarkerItem } from "./task-chat-model";
 import { Button } from "@/components/ui/button";
 import { Link } from "@/lib/router";
 import { timeAgo } from "@/lib/timeAgo";
+import { useTranslation } from "@/i18n";
 
 const VARIANT_ICON = {
   session_start: CircleDot,
@@ -29,6 +30,7 @@ export function TaskChatMarker({
 }) {
   const [open, setOpen] = useState(false);
   const detailsId = useId();
+  const { t } = useTranslation();
   const streamlined = useStreamlinedTaskChatPresentation();
   const Icon = item.tone === "neutral" ? Square : VARIANT_ICON[item.variant];
   const interrupted = item.variant === "interrupted" && item.tone !== "neutral";
@@ -47,16 +49,23 @@ export function TaskChatMarker({
         className="tc-enter-marker flex w-full items-start gap-3 rounded-lg border border-destructive/40 bg-destructive/10 p-4 text-sm">
         <KeyRound className="mt-0.5 size-5 shrink-0 text-destructive" aria-hidden />
         <div className="flex min-w-0 flex-1 flex-col gap-2">
-          <p className="font-semibold text-destructive">{agentName} couldn’t start</p>
+          <p className="font-semibold text-destructive">{t("taskChat.marker.agentCouldntStart", { agent: agentName })}</p>
           <p className="break-words font-medium text-foreground">
-            {agentName} is configured to use {credentialName || "an AI credential"}, but {deniedUser === "you" ? "you don’t" : `${deniedUser} doesn’t`} have access to that credential.
+            {t("taskChat.marker.credentialBody", {
+              agent: agentName,
+              credential: credentialName || t("taskChat.marker.anAiCredential"),
+              who: deniedUser === "you" ? t("taskChat.marker.youDont") : t("taskChat.marker.subjectDont", { who: deniedUser }),
+            })}
           </p>
           <p className="text-muted-foreground">
-            Choose an AI connection {deniedUser === "you" ? "you can" : `${deniedUser} can`} use, or ask an administrator to update {agentName}’s connection. Then try again.
+            {t("taskChat.marker.chooseConnectionBody", {
+              who: deniedUser === "you" ? t("taskChat.marker.youCan") : t("taskChat.marker.subjectCan", { who: deniedUser }),
+              agent: agentName,
+            })}
           </p>
           <div className="flex flex-wrap items-center gap-2 pt-1">
-            <Button asChild variant="outline" size="sm"><Link to={settingsHref}>Change AI connection</Link></Button>
-            {item.runHref && <Button asChild variant="ghost" size="sm"><Link to={item.runHref}>View run</Link></Button>}
+            <Button asChild variant="outline" size="sm"><Link to={settingsHref}>{t("taskChat.marker.changeConnection")}</Link></Button>
+            {item.runHref && <Button asChild variant="ghost" size="sm"><Link to={item.runHref}>{t("taskChat.common.viewRun")}</Link></Button>}
           </div>
         </div>
       </div>
@@ -105,7 +114,7 @@ export function TaskChatMarker({
               disabled={tryAgainPending}
               data-testid="task-chat-run-failed-try-again"
             >
-              {tryAgainPending ? "Trying again..." : "Try again"}
+              {tryAgainPending ? t("taskChat.common.tryingAgain") : t("taskChat.common.tryAgain")}
             </Button>
           ) : null}
         </div>
@@ -124,12 +133,12 @@ export function TaskChatMarker({
               <div className="flex items-center justify-end gap-2 border-t border-border/70 bg-background/50 px-3 py-2 dark:bg-background/30">
                 {item.planHref ? (
                   <Button asChild variant="ghost" size="xs">
-                    <Link to={item.planHref}>View saved plan</Link>
+                    <Link to={item.planHref}>{t("taskChat.marker.viewSavedPlan")}</Link>
                   </Button>
                 ) : null}
                 {item.runHref ? (
                   <Button asChild variant="ghost" size="xs">
-                    <Link to={item.runHref}>View run</Link>
+                    <Link to={item.runHref}>{t("taskChat.common.viewRun")}</Link>
                   </Button>
                 ) : null}
                 {onTryAgain ? (
@@ -140,7 +149,7 @@ export function TaskChatMarker({
                     disabled={tryAgainPending}
                     data-testid="task-chat-run-failed-try-again"
                   >
-                    {tryAgainPending ? "Trying again..." : "Try again"}
+                    {tryAgainPending ? t("taskChat.common.tryingAgain") : t("taskChat.common.tryAgain")}
                   </Button>
                 ) : null}
               </div>
@@ -179,7 +188,7 @@ export function TaskChatMarker({
             disabled={tryAgainPending}
             data-testid="task-chat-run-failed-try-again"
           >
-            {tryAgainPending ? "Trying again..." : "Try again"}
+            {tryAgainPending ? t("taskChat.common.tryingAgain") : t("taskChat.common.tryAgain")}
           </Button>
         ) : null}
       </span>

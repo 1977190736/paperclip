@@ -49,6 +49,7 @@ import { useLocation } from "@/lib/router";
 import { useArtifactsV1Enabled } from "@/hooks/useArtifactsV1Enabled";
 import { ArtifactFileRow, ArtifactRow, ROW_ACTION_CLASS, fileRowSourceFromAttachment, fileRowSourceFromWorkProduct, subjectFromAttachment, subjectFromIssueDocument, subjectFromWorkProduct, workProductStateBadge, type ArtifactSubject } from "@/components/artifacts/v1";
 import { artifactUrl } from "@/lib/artifact-card-data";
+import { t, useTranslation } from "@/i18n";
 
 export type TaskDocumentEditorOptions = Pick<ComponentProps<typeof IssueDocumentsSection>,
   "mentions" | "imageUploadHandler" | "externalReferences" | "feedbackVotes" | "feedbackDataSharingPreference"
@@ -87,16 +88,16 @@ function workProductStatusBadge(
   switch (status) {
     case "active":
     case "draft":
-      return { label: "In progress", cssVar: "--status-task-in_progress" };
+      return { label: t("comps1.artifacts.statusInProgress"), cssVar: "--status-task-in_progress" };
     case "ready_for_review":
-      return { label: "For review", cssVar: "--status-task-in_review" };
+      return { label: t("comps1.artifacts.statusForReview"), cssVar: "--status-task-in_review" };
     case "approved":
     case "merged":
-      return { label: "Done", cssVar: "--status-task-done" };
+      return { label: t("comps1.artifacts.statusDone"), cssVar: "--status-task-done" };
     case "changes_requested":
-      return { label: "Changes requested", cssVar: "--status-task-todo" };
+      return { label: t("comps1.artifacts.statusChangesRequested"), cssVar: "--status-task-todo" };
     case "failed":
-      return { label: "Failed", cssVar: "--status-task-blocked" };
+      return { label: t("comps1.artifacts.statusFailed"), cssVar: "--status-task-blocked" };
     default:
       return null;
   }
@@ -209,7 +210,7 @@ function MarkdownWorkProductRow({
   if (tooLarge) {
     expandedBody = (
       <p className="text-sm text-muted-foreground">
-        This Markdown file is too large to preview. Use Raw or Download instead.
+        {t("comps1.artifacts.tooLargeNote")}
       </p>
     );
   } else if (reviewDoc) {
@@ -230,15 +231,15 @@ function MarkdownWorkProductRow({
           <MarkdownBody>{reviewDoc.body}</MarkdownBody>
         </IssueDocumentAnnotations>
       ) : (
-        <p className="text-sm text-muted-foreground">Document is empty.</p>
+        <p className="text-sm text-muted-foreground">{t("comps1.artifacts.emptyDocument")}</p>
       );
   } else if (ensure.isError) {
     expandedBody = (
       <div className="flex flex-col items-start gap-1.5">
         <p className="text-sm text-muted-foreground">
           {unsupportedError
-            ? "This file can't be previewed as Markdown. Use Raw or Download instead."
-            : "Preview failed to load."}
+            ? t("comps1.artifacts.unsupportedNote")
+            : t("comps1.artifacts.previewFailed")}
         </p>
         {!unsupportedError ? (
           <button
@@ -249,14 +250,14 @@ function MarkdownWorkProductRow({
               ensure.mutate();
             }}
           >
-            Retry
+            {t("comps1.taskDecision.retry")}
           </button>
         ) : null}
       </div>
     );
   } else {
     expandedBody = (
-      <p className="text-sm text-muted-foreground">Preparing preview…</p>
+      <p className="text-sm text-muted-foreground">{t("comps1.artifacts.preparing")}</p>
     );
   }
 
@@ -282,8 +283,8 @@ function MarkdownWorkProductRow({
                 <button
                   type="button"
                   onClick={() => openTextAttachment(metadata.attachmentId, metadata.originalFilename ?? workProduct.title)}
-                  aria-label={`Open in tab: ${workProduct.title}`}
-                  title="Open in tab"
+                  aria-label={t("comps1.artifacts.openInTabAria", { title: workProduct.title })}
+                  title={t("comps1.artifacts.openInTab")}
                   className={face ? ROW_ACTION_CLASS : "shrink-0 px-1.5 py-1.5 text-muted-foreground hover:text-foreground"}
                 >
                   <FileText className="h-3 w-3" />
@@ -293,16 +294,16 @@ function MarkdownWorkProductRow({
                 href={metadata.openPath}
                 target="_blank"
                 rel="noreferrer"
-                aria-label={`Open raw ${workProduct.title}`}
-                title="Open raw"
+                aria-label={t("comps1.artifacts.openRawAria", { title: workProduct.title })}
+                title={t("comps1.artifacts.openRaw")}
                 className={face ? ROW_ACTION_CLASS : "shrink-0 px-1.5 py-1.5 text-muted-foreground hover:text-foreground"}
               >
                 <ExternalLink className="h-3 w-3" />
               </a>
               <a
                 href={metadata.downloadPath}
-                aria-label={`Download ${workProduct.title}`}
-                title="Download"
+                aria-label={t("comps1.artifacts.downloadAria", { title: workProduct.title })}
+                title={t("comps1.artifacts.download")}
                 className={face ? ROW_ACTION_CLASS : "shrink-0 py-1.5 pr-2 pl-0.5 text-muted-foreground hover:text-foreground"}
               >
                 <Download className="h-3 w-3" />
@@ -412,7 +413,7 @@ function DocumentRow({
               <MarkdownBody>{doc.body}</MarkdownBody>
             </IssueDocumentAnnotations>
           ) : (
-            <p className="text-sm text-muted-foreground">Document is empty.</p>
+            <p className="text-sm text-muted-foreground">{t("comps1.artifacts.emptyDocument")}</p>
           )}
         </div>
       ) : null}

@@ -13,6 +13,95 @@
     "hoursAgo": "{{n}} 小时前",
     "daysAgo": "{{n}} 天前"
   },
+  "errors": {
+    "unavailableBody": "Paperclip 暂时不可用，请稍后重试。",
+    "actionTitleTemplate": "无法{{action}}",
+    "action": {
+      "postTheComment": "发表评论",
+      "checkTheMonitor": "检查监控",
+      "saveTheDocument": "保存文档",
+      "approveThisRequest": "批准该请求",
+      "rejectThisRequest": "拒绝该请求",
+      "createTheTask": "创建任务",
+      "requestARevision": "请求修订",
+      "resubmitThisRequest": "重新提交该请求",
+      "uploadTheFile": "上传文件",
+      "sendThisMessage": "发送这条消息",
+      "loadThisGoal": "加载该目标",
+      "loadWorkspaces": "加载工作区",
+      "loadYourChats": "加载你的会话",
+      "loadThisCase": "加载该案件",
+      "loadPluginExtensions": "加载插件扩展"
+    },
+    "code": {
+      "tenantAppUnavailable": {
+        "title": "正在重新连接 Paperclip",
+        "body": "Paperclip 正在重启或更新，请稍候再试。"
+      },
+      "tenantAppStarting": {
+        "title": "Paperclip 正在启动",
+        "body": "Paperclip 正在启动，请几秒后再试。"
+      },
+      "workerUnavailable": {
+        "title": "插件不可用",
+        "body": "该插件正在重启，请稍候再试。"
+      },
+      "timeout": {
+        "title": "请求超时",
+        "body": "响应时间过长，请稍候再试。"
+      },
+      "interactionAudienceDenied": {
+        "title": "你无法响应这张卡片",
+        "body": "你不在此卡片的响应人范围内。"
+      },
+      "interactionForbidden": {
+        "title": "你无法响应这张卡片",
+        "body": "你没有响应这张卡片的权限。"
+      },
+      "interactionSettled": {
+        "title": "已处理完毕",
+        "body": "该请求已不再等待决定。"
+      },
+      "interactionSubmitFailed": {
+        "title": "无法提交",
+        "body": "无法提交，请重试。"
+      }
+    },
+    "kind": {
+      "transient": {
+        "title": "连接中断",
+        "body": "Paperclip 暂时不可用，请稍后重试。"
+      },
+      "auth": {
+        "title": "已退出登录",
+        "body": "你的会话已结束，请重新登录后继续。"
+      },
+      "forbidden": {
+        "title": "没有权限",
+        "body": "你没有权限执行该操作。"
+      },
+      "notFound": {
+        "title": "未找到",
+        "body": "该项不存在或已被移动。"
+      },
+      "conflict": {
+        "title": "内容已过期",
+        "body": "该内容在你加载后发生了变化，请刷新后重试。"
+      },
+      "invalid": {
+        "title": "请检查输入",
+        "body": "部分信息无效，请检查后重试。"
+      },
+      "aborted": {
+        "title": "已取消",
+        "body": "请求已取消。"
+      },
+      "unknown": {
+        "title": "出了点问题",
+        "body": "发生意外错误，请重试。"
+      }
+    }
+  },
   "agentNav": {
     "agent": "智能体",
     "audit": "审计",

@@ -43,6 +43,7 @@ import {
 } from "@/components/JsonSchemaForm";
 import { cn, relativeTime } from "@/lib/utils";
 import { appTabHref } from "../app-tabs";
+import { t, useTranslation } from "@/i18n";
 
 // ---------------------------------------------------------------------------
 // Small format helpers
@@ -63,7 +64,7 @@ function relTime(date: Date): string {
 // Decision badges
 // ---------------------------------------------------------------------------
 
-type DecisionMeta = { label: string; className: string };
+type DecisionMeta = { labelKey: string; className: string };
 
 type TestAgentWithAccess = ToolConnectionTestAgent & {
   effectiveAccess: ToolConnectionAccessSummary;
@@ -129,38 +130,38 @@ export function ActionTestDialog({
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="max-h-(--sz-85vh) overflow-y-auto sm:max-w-2xl">
         <DialogHeader>
-          <DialogTitle>Test {title}</DialogTitle>
+          <DialogTitle>{t("apps.detail.test.title", { title })}</DialogTitle>
           <DialogDescription>
-            Run a real action with the same permissions and credentials an agent would use.
+            {t("apps.detail.test.description")}
           </DialogDescription>
         </DialogHeader>
 
         {testAgentsQuery.isLoading ? (
           <div className="flex items-center gap-2 py-6 text-sm text-muted-foreground" role="status">
             <Loader2 className="h-4 w-4 animate-spin" />
-            Loading agents…
+            {t("apps.detail.test.loadingAgents")}
           </div>
         ) : testAgentsQuery.isError ? (
           <TestLoadError
-            message="We couldn't load the agents available for testing."
+            message={t("apps.detail.test.agentsLoadError")}
             onRetry={() => { void testAgentsQuery.refetch(); }}
           />
         ) : agents.length === 0 ? (
-          <p className="py-6 text-sm text-muted-foreground">No agents are available to test as.</p>
+          <p className="py-6 text-sm text-muted-foreground">{t("apps.detail.test.noAgents")}</p>
         ) : accessQuery.isError && !accessQuery.data ? (
           <TestLoadError
-            message={`We couldn't load ${selectedAgentBase?.name ?? "this agent"}'s permissions.`}
+            message={t("apps.detail.test.accessLoadError", { name: selectedAgentBase?.name ?? t("apps.detail.test.thisAgent") })}
             onRetry={() => { void accessQuery.refetch(); }}
           />
         ) : !selectedAgent ? (
           <div className="flex items-center gap-2 py-6 text-sm text-muted-foreground" role="status">
             <Loader2 className="h-4 w-4 animate-spin" />
-            Loading agent permissions…
+            {t("apps.detail.test.loadingPermissions")}
           </div>
         ) : (
           <div className="space-y-5">
             <div className="rounded-md border border-border bg-muted/30 p-4">
-              <p className="text-xs font-medium text-muted-foreground">Act as</p>
+              <p className="text-xs font-medium text-muted-foreground">{t("apps.detail.test.actAs")}</p>
               <div className="mt-1 flex flex-wrap items-center justify-between gap-2">
                 <AgentPicker
                   agents={agents}
@@ -191,20 +192,21 @@ export function ActionTestDialog({
 
 const DECISION_META: Record<ToolConnectionTestDecision, DecisionMeta> = {
   allowed: {
-    label: "Allowed",
+    labelKey: "apps.permissions.allowed",
     className: "border-emerald-500/40 bg-emerald-500/10 text-emerald-700 dark:text-emerald-300",
   },
   ask_first: {
-    label: "Ask first",
+    labelKey: "apps.permissions.ask",
     className: "border-amber-500/40 bg-amber-500/10 text-amber-700 dark:text-amber-300",
   },
   off: {
-    label: "Off",
+    labelKey: "apps.permissions.off",
     className: "border-border bg-muted text-muted-foreground",
   },
 };
 
 function DecisionBadge({ decision }: { decision: ToolConnectionTestDecision }) {
+  const { t } = useTranslation();
   const meta = DECISION_META[decision];
   return (
     <span
@@ -213,17 +215,18 @@ function DecisionBadge({ decision }: { decision: ToolConnectionTestDecision }) {
         meta.className,
       )}
     >
-      {meta.label}
+      {t(meta.labelKey)}
     </span>
   );
 }
 
 function TestLoadError({ message, onRetry }: { message: string; onRetry: () => void }) {
+  const { t } = useTranslation();
   return (
     <div className="py-8 text-center">
       <p className="text-sm font-medium text-foreground">{message}</p>
       <Button className="mt-3" size="sm" variant="outline" onClick={onRetry}>
-        Try again
+        {t("apps.chat.defaults.tryAgain")}
       </Button>
     </div>
   );
@@ -248,6 +251,7 @@ function AgentPicker({
 }) {
   const [open, setOpen] = useState(false);
   const [search, setSearch] = useState("");
+  const { t } = useTranslation();
 
   const filtered = agents.filter((a) =>
     a.name.toLowerCase().includes(search.trim().toLowerCase()),
@@ -259,7 +263,7 @@ function AgentPicker({
         <button
           type="button"
           className="inline-flex items-center gap-1.5 font-semibold text-foreground underline-offset-2 outline-none hover:text-primary hover:underline focus-visible:text-primary"
-          aria-label="Choose which agent to test as"
+          aria-label={t("apps.detail.test.chooseAgentAria")}
         >
           {selectedAgent.name}
           <ChevronsUpDown className="h-3.5 w-3.5 text-muted-foreground" />
@@ -270,7 +274,7 @@ function AgentPicker({
           <div className="relative">
             <Search className="pointer-events-none absolute left-2.5 top-1/2 h-3.5 w-3.5 -translate-y-1/2 text-muted-foreground" />
             <Input
-              aria-label="Search agents"
+              aria-label={t("apps.detail.test.searchAria")}
               placeholder="Search agents…"
               className="h-8 pl-8 text-sm"
               value={search}
@@ -281,7 +285,7 @@ function AgentPicker({
         </div>
         <div className="max-h-60 overflow-y-auto p-1">
           {filtered.length === 0 ? (
-            <p className="px-3 py-4 text-center text-xs text-muted-foreground">No agents match.</p>
+            <p className="px-3 py-4 text-center text-xs text-muted-foreground">{t("apps.detail.test.noMatch")}</p>
           ) : (
             filtered.map((agent) => {
               const detail = agent.title?.trim() || agent.role;
@@ -315,23 +319,23 @@ function AgentPicker({
           )}
         </div>
         <div className="border-t border-border px-3 py-2 text-(length:--text-micro) text-muted-foreground">
-          <p>Only agents you can assign tasks to are listed.</p>
-          <p>Pick one to preview what they'd see in {appName}.</p>
+          <p>{t("apps.detail.test.assignableOnly")}</p>
+          <p>{t("apps.detail.test.pickToPreview", { app: appName })}</p>
         </div>
         <div className="border-t border-border p-3">
-          <p className="text-xs font-semibold text-foreground">What the badges mean</p>
+          <p className="text-xs font-semibold text-foreground">{t("apps.detail.test.badgeLegend")}</p>
           <ul className="mt-1.5 space-y-1 text-xs text-muted-foreground">
-            <li><span className="font-medium text-foreground">Allowed</span> — runs immediately when you press Run.</li>
-            <li><span className="font-medium text-foreground">Ask first</span> — Run is parked in Review for your OK.</li>
+            <li><span className="font-medium text-foreground">{t("apps.permissions.allowed")}</span>{t("apps.detail.test.badgeAllowedSuffix")}</li>
+            <li><span className="font-medium text-foreground">{t("apps.permissions.ask")}</span>{t("apps.detail.test.badgeAskSuffix")}</li>
             <li>
-              <span className="font-medium text-foreground">Off</span> — won't run. Change it in{" "}
+              <span className="font-medium text-foreground">{t("apps.permissions.off")}</span>{t("apps.detail.test.badgeOffPrefix")}{" "}
               <Link className="text-primary hover:underline" to={appTabHref(connectionId, "permissions")}>
-                Permissions
+                {t("apps.detail.test.permissionsLink")}
               </Link>.
             </li>
           </ul>
           <p className="mt-2 text-(length:--text-micro) text-muted-foreground">
-            Badges reflect this agent's current settings, not yours. Swap agents to see how an action would behave for each.
+            {t("apps.detail.test.badgesNote")}
           </p>
         </div>
       </PopoverContent>
@@ -407,9 +411,9 @@ function splitRequiredOptional(schema: JsonSchemaNode): JsonSchemaNode {
 }
 
 const GUT_CHECK: Record<ToolConnectionTestDecision, (app: string, agent: string) => string> = {
-  allowed: (app, agent) => `This runs a real call against ${app} as ${agent}.`,
-  ask_first: () => `Waiting for your OK before this call leaves Paperclip.`,
-  off: (_app, agent) => `No call will be made — this action is off for ${agent}.`,
+  allowed: (app, agent) => t("apps.detail.test.gutAllowed", { app, agent }),
+  ask_first: () => t("apps.detail.test.gutAskFirst"),
+  off: (_app, agent) => t("apps.detail.test.gutOff", { agent }),
 };
 
 function ActionTester({
@@ -431,6 +435,7 @@ function ActionTester({
 }) {
   const queryClient = useQueryClient();
   const { selectedCompanyId } = useCompany();
+  const { t } = useTranslation();
   const rawSchema = (entry.inputSchema ?? { type: "object", properties: {} }) as JsonSchemaNode;
   const formSchema = useMemo(() => splitRequiredOptional(rawSchema), [rawSchema]);
   const [values, setValues] = useState<Record<string, unknown>>(() => getDefaultValues(rawSchema));
@@ -537,10 +542,10 @@ function ActionTester({
           onChange={setValues}
           errors={errors}
           disabled={running}
-          advancedLabel="More options"
+          advancedLabel={t("apps.detail.test.moreOptions")}
         />
       ) : (
-        <p className="text-xs text-muted-foreground">This action takes no inputs.</p>
+        <p className="text-xs text-muted-foreground">{t("apps.detail.test.noInputs")}</p>
       )}
 
       <p className="text-xs text-muted-foreground">{GUT_CHECK[decision](appName, agent.name)}</p>
@@ -549,20 +554,20 @@ function ActionTester({
         <Button onClick={onRun} disabled={running || !!outcome?.result.upstreamPending?.resumeTool || outcome?.result.decision === "ask_first"} size="sm">
           {running ? (
             <>
-              <Loader2 className="h-3.5 w-3.5 animate-spin" /> Running…
+              <Loader2 className="h-3.5 w-3.5 animate-spin" /> {t("apps.detail.test.running")}
             </>
           ) : (
             <>
-              <Play className="h-3.5 w-3.5" /> {outcome ? "Run again" : "Run"}
+              <Play className="h-3.5 w-3.5" /> {outcome ? t("apps.detail.test.runAgain") : t("apps.detail.test.run")}
             </>
           )}
         </Button>
         <Button onClick={onReset} disabled={running} size="sm" variant="ghost">
-          Reset
+          {t("apps.detail.test.reset")}
         </Button>
       </div>
 
-      {(outcome?.result.decision === "ask_first" || outcome?.result.upstreamPending?.resumeTool) && <p className="text-xs text-muted-foreground">Finish the existing request below. Use Reset only when you intend to start a new call.</p>}
+      {(outcome?.result.decision === "ask_first" || outcome?.result.upstreamPending?.resumeTool) && <p className="text-xs text-muted-foreground">{t("apps.detail.test.finishExisting")}</p>}
 
       {running && (
         <RunningCard entry={entry} appName={appName} agentName={agent.name} elapsedMs={elapsedMs} onCancel={onCancelRunning} />
@@ -570,7 +575,7 @@ function ActionTester({
 
       {run.isError && !running && (
         <div className="rounded-md border border-destructive/40 bg-destructive/10 p-3 text-sm text-destructive">
-          Couldn't reach {agent.name}. {run.error instanceof Error ? run.error.message : "Please try again."}
+          {t("apps.detail.test.couldntReach", { name: agent.name })} {run.error instanceof Error ? run.error.message : t("apps.common.tryAgain")}
         </div>
       )}
 
@@ -598,20 +603,20 @@ function RunningCard({
   elapsedMs: number;
   onCancel: () => void;
 }) {
-  const verb = entry.isReadOnly ? "Reading from" : entry.isWrite ? "Writing to" : "Calling";
+  const verb = entry.isReadOnly ? t("apps.detail.test.verbReading") : entry.isWrite ? t("apps.detail.test.verbWriting") : t("apps.detail.test.verbCalling");
   return (
     <div className="rounded-md border border-border bg-muted/30 p-4">
       <div className="flex items-center gap-2">
         <Loader2 className="h-4 w-4 animate-spin text-muted-foreground" />
-        <span className="text-sm font-medium text-foreground">Running…</span>
+        <span className="text-sm font-medium text-foreground">{t("apps.detail.test.running")}</span>
       </div>
       <p className="mt-1 text-xs text-muted-foreground">
-        {verb} {appName} as {agentName}.
+        {t("apps.detail.test.runningDetail", { verb, app: appName, agent: agentName })}
       </p>
       <div className="mt-3 flex items-center justify-between">
-        <span className="text-xs text-muted-foreground">Started {seconds(elapsedMs)} ago · Press cancel to stop</span>
+        <span className="text-xs text-muted-foreground">{t("apps.detail.test.startedAgo", { time: seconds(elapsedMs) })}</span>
         <Button onClick={onCancel} size="sm" variant="outline">
-          Cancel
+          {t("apps.common.cancel")}
         </Button>
       </div>
     </div>
@@ -643,7 +648,7 @@ function ResultPanel({
   if (result.decision === "off") {
     return (
       <div className="rounded-md border border-border bg-muted/40 p-3 text-sm text-muted-foreground">
-        {result.error?.message ?? "This action is off and won't run."}
+        {result.error?.message ?? t("apps.detail.test.offWontRun")}
       </div>
     );
   }
@@ -664,29 +669,29 @@ function ProviderPendingResult({ pending, appName, connectionId, agent }: { pend
     ((resumed.action === "decline" && /request was declined by the user/i.test(resumeError.message)) ||
       (resumed.action === "cancel" && /request was cancelled by the user/i.test(resumeError.message)));
   if (stoppedByUser) return <div role="status" className="space-y-2 rounded-md border border-border bg-muted/40 p-4 text-sm">
-    <p className="font-medium">{resumed.action === "decline" ? "Request declined" : "Request cancelled"}</p>
+    <p className="font-medium">{resumed.action === "decline" ? t("apps.detail.test.requestDeclined") : t("apps.detail.test.requestCancelled")}</p>
     <p>{resumeError.message}</p>
-    <p className="text-muted-foreground">The original call was not repeated.</p>
-    {pending.executionId && <p>Execution: <code className="break-all">{pending.executionId}</code></p>}
+    <p className="text-muted-foreground">{t("apps.detail.test.notRepeated")}</p>
+    {pending.executionId && <p>{t("apps.detail.test.executionPrefix")} <code className="break-all">{pending.executionId}</code></p>}
   </div>;
   if (resumed) return <ResultPanel outcome={resumed.outcome} entry={resumed.entry} appName={appName} connectionId={connectionId} agent={agent} />;
   return (
     <div role="status" className="space-y-3 rounded-md border border-border bg-muted/40 p-4 text-sm">
-      <p className="font-medium">{pending.kind === "approval" ? "Approval needed" : "Authorization needed"} in {appName}</p>
-      <p className="text-muted-foreground">Paperclip allowed this call. The provider needs your input before it can continue.</p>
+      <p className="font-medium">{pending.kind === "approval" ? t("apps.detail.test.pendingApprovalTitle", { app: appName }) : t("apps.detail.test.pendingAuthTitle", { app: appName })}</p>
+      <p className="text-muted-foreground">{t("apps.detail.test.pendingDesc")}</p>
       {pending.links.map((link) => {
         const checked = checkOAuthEndpointUrl(link.url);
-        return checked.ok ? <Button key={checked.url} variant="outline" asChild><a href={checked.url} target="_blank" rel="noopener noreferrer">Continue at {checked.host}</a></Button> : null;
+        return checked.ok ? <Button key={checked.url} variant="outline" asChild><a href={checked.url} target="_blank" rel="noopener noreferrer">{t("apps.detail.test.continueAt", { host: checked.host })}</a></Button> : null;
       })}
       {pending.message && <p className="whitespace-pre-wrap break-words">{pending.message}</p>}
-      {pending.links.length === 0 && !pending.resumeTool && <p>Open the provider dashboard to complete this request.</p>}
-      {pending.executionId && <p>Execution: <code className="break-all">{pending.executionId}</code></p>}
-      {pending.elicitationId && <p>Request: <code className="break-all">{pending.elicitationId}</code></p>}
-      {pending.expiresAt && <p>Approval expires {new Date(pending.expiresAt).toLocaleTimeString()}.</p>}
+      {pending.links.length === 0 && !pending.resumeTool && <p>{t("apps.detail.test.openDashboard")}</p>}
+      {pending.executionId && <p>{t("apps.detail.test.executionPrefix")} <code className="break-all">{pending.executionId}</code></p>}
+      {pending.elicitationId && <p>{t("apps.detail.test.requestPrefix")} <code className="break-all">{pending.elicitationId}</code></p>}
+      {pending.expiresAt && <p>{t("apps.detail.test.approvalExpires", { time: new Date(pending.expiresAt).toLocaleTimeString() })}</p>}
       {pending.resumeTool && agent ? <ProviderResumeControls pending={pending} connectionId={connectionId} agent={agent} onResult={setResumed} /> :
       <p className="text-muted-foreground">{pending.resumeTool
-        ? `After approval, test the ${pending.resumeTool} action with this execution ID. Do not start the original action again.`
-        : "After authorizing, check the provider's result before using Run again. Paperclip will not repeat the call automatically."}</p>}
+        ? t("apps.detail.test.resumeAfterApproval", { tool: pending.resumeTool })
+        : t("apps.detail.test.resumeAfterAuth")}</p>}
     </div>
   );
 }
@@ -695,6 +700,7 @@ function ProviderResumeControls({ pending, connectionId, agent, onResult }: {
   pending: ToolUpstreamPending; connectionId: string; agent: TestAgentWithAccess;
   onResult: (result: { outcome: RunOutcome; entry: ToolCatalogEntry; action: "accept" | "decline" | "cancel" }) => void;
 }) {
+  const { t } = useTranslation();
   const catalog = useQuery({ queryKey: queryKeys.tools.catalog(connectionId), queryFn: () => toolsApi.listCatalog(connectionId) });
   const entry = catalog.data?.catalog.find((item) => item.toolName === pending.resumeTool && item.status === "active");
   const schema = (pending.requestedSchema ?? { type: "object", properties: {} }) as JsonSchemaNode;
@@ -716,18 +722,18 @@ function ProviderResumeControls({ pending, connectionId, agent, onResult }: {
     if (!Object.keys(validation).length) resume.mutate(action);
   };
   return <div className="space-y-3">
-    <p className="text-muted-foreground">Review the provider's request, then resume this execution as {agent.name}. The original action will not be started again.</p>
-    <div className="flex items-center gap-2"><span>Resume permission</span><DecisionBadge decision={permission} /></div>
+    <p className="text-muted-foreground">{t("apps.detail.test.reviewAndResume", { name: agent.name })}</p>
+    <div className="flex items-center gap-2"><span>{t("apps.detail.test.resumePermission")}</span><DecisionBadge decision={permission} /></div>
     {Object.keys(schema.properties ?? {}).length > 0 && <JsonSchemaForm schema={schema} values={content} onChange={setContent} errors={errors} disabled={resume.isPending} />}
     <div className="flex flex-wrap gap-2">
-      <Button disabled={!entry || expired || permission === "off" || resume.isPending} onClick={() => submit("accept")}>{resume.isPending ? "Resuming…" : "Approve and resume"}</Button>
-      <Button variant="outline" disabled={!entry || expired || permission === "off" || resume.isPending} onClick={() => submit("decline")}>Decline</Button>
-      <Button variant="ghost" disabled={!entry || expired || permission === "off" || resume.isPending} onClick={() => submit("cancel")}>Cancel request</Button>
+      <Button disabled={!entry || expired || permission === "off" || resume.isPending} onClick={() => submit("accept")}>{resume.isPending ? t("apps.detail.test.resuming") : t("apps.detail.test.approveResume")}</Button>
+      <Button variant="outline" disabled={!entry || expired || permission === "off" || resume.isPending} onClick={() => submit("decline")}>{t("apps.detail.test.decline")}</Button>
+      <Button variant="ghost" disabled={!entry || expired || permission === "off" || resume.isPending} onClick={() => submit("cancel")}>{t("apps.detail.test.cancelRequest")}</Button>
     </div>
-    {expired && <p>This provider approval expired. Check the provider before starting a new action.</p>}
-    {permission === "off" && <p>Allow the resume action in Permissions before continuing.</p>}
-    {catalog.isError && <p role="alert">Could not load the resume action. Close this test and try again.</p>}
-    {resume.isError && <p role="alert">{resume.error instanceof Error ? resume.error.message : "Could not resume. Check the provider before trying again."}</p>}
+    {expired && <p>{t("apps.detail.test.expired")}</p>}
+    {permission === "off" && <p>{t("apps.detail.test.allowResumeFirst")}</p>}
+    {catalog.isError && <p role="alert">{t("apps.detail.test.resumeLoadError")}</p>}
+    {resume.isError && <p role="alert">{resume.error instanceof Error ? resume.error.message : t("apps.detail.test.resumeError")}</p>}
   </div>;
 }
 
@@ -748,7 +754,7 @@ function mcpToolError(value: unknown): { message: string; reasonCode: string | n
   const message =
     (typeof envelope.content === "string" && envelope.content.trim() !== "" && envelope.content)
     || (typeof envelope.error === "string" && envelope.error.trim() !== "" && envelope.error)
-    || "The app returned an error result.";
+    || t("apps.detail.test.appErrorResult");
   return { message, reasonCode: "tool_error" };
 }
 
@@ -829,7 +835,7 @@ function resultPreview(value: unknown): { items: Array<{ label: string | null; v
   return { items, summary: structured !== null && structured !== undefined ? structuredValue : items[0]?.value };
 }
 
-function writeVerb(entry: ToolCatalogEntry): string | null {
+function writeVerb(entry: ToolCatalogEntry): "added" | "updated" | "removed" | null {
   const n = `${entry.toolName} ${entry.title ?? ""}`.toLowerCase();
   if (/\b(append|add|insert|create|new)\b/.test(n)) return "added";
   if (/\b(update|edit|set|patch|change|modify)\b/.test(n)) return "updated";
@@ -839,11 +845,11 @@ function writeVerb(entry: ToolCatalogEntry): string | null {
 
 function successHeadline(value: unknown, entry: ToolCatalogEntry, appName: string): string {
   const verb = writeVerb(entry);
-  if (!entry.isReadOnly && verb) return `Worked. Row ${verb}.`;
+  if (!entry.isReadOnly && verb) return t(verb === "added" ? "apps.detail.test.workedRowAdded" : verb === "updated" ? "apps.detail.test.workedRowUpdated" : "apps.detail.test.workedRowRemoved");
   const rows = asRows(value);
-  if (rows) return `Worked. ${rows.length} ${rows.length === 1 ? "row" : "rows"} came back.`;
-  if (isEmptyResult(value)) return "Worked. No data to show.";
-  return `Worked. ${appName} sent back the result.`;
+  if (rows) return t(rows.length === 1 ? "apps.detail.test.workedRows_one" : "apps.detail.test.workedRows_other", { count: rows.length });
+  if (isEmptyResult(value)) return t("apps.detail.test.workedNoData");
+  return t("apps.detail.test.workedSentBack", { app: appName });
 }
 
 function AllowedResult({
@@ -857,6 +863,7 @@ function AllowedResult({
   appName: string;
   connectionId: string;
 }) {
+  const { t } = useTranslation();
   const value = outcome.result.result;
   const preview = resultPreview(value);
   return (
@@ -867,12 +874,12 @@ function AllowedResult({
       </div>
       <p className="mt-0.5 flex items-center gap-1.5 text-xs text-muted-foreground">
         <Clock className="h-3 w-3" />
-        Ran as {outcome.agentName} · {seconds(outcome.durationMs)} · {relTime(outcome.ranAt)}
+        {t("apps.detail.test.ranAs", { agent: outcome.agentName, duration: seconds(outcome.durationMs), when: relTime(outcome.ranAt) })}
       </p>
 
       {preview.items.some((item) => !isEmptyResult(item.value)) && (
         <div className="mt-3">
-          <p className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">Preview</p>
+          <p className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">{t("apps.detail.test.preview")}</p>
           <div className="mt-1.5">
             <div className="space-y-2">
               {preview.items.map((item, index) => (
@@ -889,19 +896,20 @@ function AllowedResult({
       <RawResponseDisclosure value={value} initiallyOpen={preview.rawFallback} />
 
       <p className="mt-3 text-xs text-muted-foreground">
-        This call is in the{" "}
+        {t("apps.detail.test.inAuditLogPrefix")}{" "}
         <Link className="text-primary hover:underline" to="/activity?mode=agents&action=tool_">
-          Audit log
+          {t("apps.detail.test.auditLog")}
         </Link>
         .
       </p>
-      <p className="mt-1 text-xs text-muted-foreground">Last run finished in {seconds(outcome.durationMs)}.</p>
+      <p className="mt-1 text-xs text-muted-foreground">{t("apps.detail.test.lastRunFinished", { duration: seconds(outcome.durationMs) })}</p>
     </div>
   );
 }
 
 /** Pretty preview: tables for row arrays, labeled fields for objects, plain text for prose. */
 function PrettyPreview({ value }: { value: unknown }) {
+  const { t } = useTranslation();
   const rows = asRows(value);
   if (rows) {
     const columns = Array.from(new Set(rows.flatMap((r) => Object.keys(r)))).slice(0, 6);
@@ -914,7 +922,7 @@ function PrettyPreview({ value }: { value: unknown }) {
         <div className="space-y-2">
           {shown.map((row, index) => <PreviewRowCard key={index} row={row} index={index} />)}
           {rows.length > shown.length && (
-            <p className="text-(length:--text-micro) text-muted-foreground">… {rows.length - shown.length} more rows in the raw response</p>
+            <p className="text-(length:--text-micro) text-muted-foreground">{t("apps.detail.test.moreRowsRaw", { n: rows.length - shown.length })}</p>
           )}
         </div>
       );
@@ -940,7 +948,7 @@ function PrettyPreview({ value }: { value: unknown }) {
           </tbody>
         </table>
         {rows.length > shown.length && (
-          <p className="px-2.5 py-1.5 text-(length:--text-micro) text-muted-foreground">… {rows.length - shown.length} more rows</p>
+          <p className="px-2.5 py-1.5 text-(length:--text-micro) text-muted-foreground">{t("apps.detail.test.moreRows", { n: rows.length - shown.length })}</p>
         )}
       </div>
     );
@@ -968,6 +976,7 @@ function PrettyPreview({ value }: { value: unknown }) {
 }
 
 function PreviewRowCard({ row, index }: { row: Record<string, unknown>; index: number }) {
+  const { t } = useTranslation();
   const titleKey = ["title", "name", "label"].find((key) => typeof row[key] === "string" && row[key] !== "");
   const summaryKey = ["highlight", "description", "summary"].find((key) => typeof row[key] === "string" && row[key] !== "");
   const url = typeof row.url === "string" && /^https?:\/\//i.test(row.url) ? row.url : null;
@@ -983,9 +992,9 @@ function PreviewRowCard({ row, index }: { row: Record<string, unknown>; index: n
     <div className="min-w-0 rounded-md border border-border bg-background p-3 text-xs">
       <div className="flex min-w-0 items-start justify-between gap-3">
         <p className="min-w-0 break-words text-sm font-medium text-foreground">
-          {titleKey ? cellText(row[titleKey]) : `Result ${index + 1}`}
+          {titleKey ? cellText(row[titleKey]) : t("apps.detail.test.resultN", { n: index + 1 })}
         </p>
-        {url && <a className="shrink-0 text-primary hover:underline" href={url} target="_blank" rel="noopener noreferrer">Open link</a>}
+        {url && <a className="shrink-0 text-primary hover:underline" href={url} target="_blank" rel="noopener noreferrer">{t("apps.detail.test.openLink")}</a>}
       </div>
       {summaryKey && <p className="mt-1 line-clamp-2 break-words text-muted-foreground">{cellText(row[summaryKey]).replace(/\*\*(.*?)\*\*/g, "$1")}</p>}
       {details.length > 0 && (
@@ -998,7 +1007,7 @@ function PreviewRowCard({ row, index }: { row: Record<string, unknown>; index: n
           ))}
         </dl>
       )}
-      {details.length > 3 && <p className="mt-2 text-muted-foreground">{details.length - 3} more {details.length === 4 ? "field" : "fields"} in the raw response</p>}
+      {details.length > 3 && <p className="mt-2 text-muted-foreground">{t(details.length === 4 ? "apps.detail.test.moreFields_one" : "apps.detail.test.moreFields_other", { n: details.length - 3 })}</p>}
     </div>
   );
 }
@@ -1022,6 +1031,7 @@ function collapseDeep(value: unknown, maxDepth: number, depth = 0): unknown {
 }
 
 function RawResponseDisclosure({ value, initiallyOpen = false }: { value: unknown; initiallyOpen?: boolean }) {
+  const { t } = useTranslation();
   const [showRaw, setShowRaw] = useState(initiallyOpen);
   if (value === undefined || value === null) return null;
   return (
@@ -1031,7 +1041,7 @@ function RawResponseDisclosure({ value, initiallyOpen = false }: { value: unknow
         onClick={() => setShowRaw((prev) => !prev)}
         className="text-xs font-semibold uppercase tracking-wide text-primary hover:underline"
       >
-        {showRaw ? "Hide raw response" : "Show raw response"}
+        {showRaw ? t("apps.detail.test.hideRaw") : t("apps.detail.test.showRaw")}
       </button>
       {showRaw && (
         <pre className="mt-2 max-h-64 overflow-auto rounded-md border border-border bg-background p-3 text-xs text-foreground">
@@ -1057,23 +1067,24 @@ function ErrorResult({
 }) {
   const hints = errorHints(error.message, error.reasonCode);
   const needsReconnect = isReconnectError(error.reasonCode);
+  const { t } = useTranslation();
   return (
     <div className="rounded-md border border-amber-500/40 bg-amber-500/5 p-4">
       <div className="flex items-center gap-2">
         <AlertTriangle className="h-4 w-4 text-amber-600 dark:text-amber-400" />
-        <span className="text-sm font-medium text-foreground">It didn't work.</span>
+        <span className="text-sm font-medium text-foreground">{t("apps.detail.test.didntWork")}</span>
       </div>
       <p className="mt-0.5 flex items-center gap-1.5 text-xs text-muted-foreground">
         <Clock className="h-3 w-3" />
-        Tried as {outcome.agentName} · {seconds(outcome.durationMs)} · {relTime(outcome.ranAt)}
+        {t("apps.detail.test.triedAs", { agent: outcome.agentName, duration: seconds(outcome.durationMs), when: relTime(outcome.ranAt) })}
       </p>
       <div className="mt-3">
-        <p className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">What {appName} said</p>
+        <p className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">{t("apps.detail.test.whatAppSaid", { app: appName })}</p>
         <p className="mt-1 break-words text-sm text-foreground">{error.message}</p>
-        {error.reasonCode && <p className="mt-0.5 text-xs text-muted-foreground">code: {error.reasonCode}</p>}
+        {error.reasonCode && <p className="mt-0.5 text-xs text-muted-foreground">{t("apps.detail.test.codePrefix")} {error.reasonCode}</p>}
       </div>
       <div className="mt-3">
-        <p className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">What to try</p>
+        <p className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">{t("apps.detail.test.whatToTry")}</p>
         <ul className="mt-1 list-disc space-y-0.5 pl-4 text-sm text-foreground">
           {hints.map((hint) => (
             <li key={hint}>{hint}</li>
@@ -1082,12 +1093,12 @@ function ErrorResult({
       </div>
       {outcome.result.result !== undefined && <RawResponseDisclosure value={outcome.result.result} initiallyOpen />}
       <p className="mt-3 text-xs text-muted-foreground">
-        {needsReconnect ? "After reconnecting, run this action again." : "Adjust the input above and try again."}
+        {needsReconnect ? t("apps.detail.test.retryAfterReconnect") : t("apps.detail.test.adjustAndRetry")}
       </p>
       <p className="mt-1 text-xs text-muted-foreground">
-        Also visible in the{" "}
+        {t("apps.detail.test.alsoInAuditLog")}{" "}
         <Link className="text-primary hover:underline" to="/activity?mode=agents&action=tool_">
-          Audit log
+          {t("apps.detail.test.auditLog")}
         </Link>
         .
       </p>
@@ -1133,6 +1144,7 @@ function AskFirstResult({
 }) {
   const { selectedCompanyId } = useCompany();
   const queryClient = useQueryClient();
+  const { t } = useTranslation();
   const actionRequestId = outcome.result.actionRequestId;
   const [cancelled, setCancelled] = useState(false);
 
@@ -1188,37 +1200,37 @@ function AskFirstResult({
   const where = formatWhere(status?.parameters);
   const statusLabel =
     phase === "running"
-      ? "Approved · running"
+      ? t("apps.detail.test.approvedRunning")
       : phase === "denied"
-        ? "Denied — see Review for why"
+        ? t("apps.detail.test.deniedSeeReview")
         : phase === "cancelled"
-          ? "Cancelled"
+          ? t("apps.detail.test.cancelledStatus")
           : phase === "expired"
-            ? "Expired — send it again"
-            : `Waiting · ${relTime(requestedAt)}`;
+            ? t("apps.detail.test.expiredResend")
+            : t("apps.detail.test.waitingSince", { when: relTime(requestedAt) });
   const settled = phase === "denied" || phase === "cancelled" || phase === "expired";
 
   return (
     <div className="rounded-md border border-amber-500/40 bg-amber-500/5 p-4">
       <div className="flex items-center gap-2">
         <ShieldQuestion className="h-4 w-4 text-amber-600 dark:text-amber-400" />
-        <span className="text-sm font-medium text-foreground">Sent for your OK.</span>
+        <span className="text-sm font-medium text-foreground">{t("apps.detail.test.sentForOk")}</span>
       </div>
-      <p className="mt-0.5 text-xs text-muted-foreground">{outcome.agentName} needs your approval before this runs.</p>
+      <p className="mt-0.5 text-xs text-muted-foreground">{t("apps.detail.test.needsApproval", { name: outcome.agentName })}</p>
 
       <dl className="mt-3 space-y-1.5 text-sm">
         <div className="flex gap-3">
-          <dt className="w-16 shrink-0 text-xs font-semibold uppercase tracking-wide text-muted-foreground">Action</dt>
+          <dt className="w-16 shrink-0 text-xs font-semibold uppercase tracking-wide text-muted-foreground">{t("apps.detail.test.dtAction")}</dt>
           <dd className="text-foreground">{entry.title ?? entry.toolName}</dd>
         </div>
         {where && (
           <div className="flex gap-3">
-            <dt className="w-16 shrink-0 text-xs font-semibold uppercase tracking-wide text-muted-foreground">Where</dt>
+            <dt className="w-16 shrink-0 text-xs font-semibold uppercase tracking-wide text-muted-foreground">{t("apps.detail.test.dtWhere")}</dt>
             <dd className="break-words text-foreground">{where}</dd>
           </div>
         )}
         <div className="flex gap-3">
-          <dt className="w-16 shrink-0 text-xs font-semibold uppercase tracking-wide text-muted-foreground">Status</dt>
+          <dt className="w-16 shrink-0 text-xs font-semibold uppercase tracking-wide text-muted-foreground">{t("apps.detail.test.dtStatus")}</dt>
           <dd className={cn("flex items-center gap-1.5 text-foreground", settled && "text-muted-foreground")}>
             {phase === "running" && <Loader2 className="h-3 w-3 animate-spin" />}
             {statusLabel}
@@ -1228,21 +1240,21 @@ function AskFirstResult({
 
       {!settled && (
         <p className="mt-3 text-sm text-foreground">
-          Approve it in the{" "}
+          {t("apps.detail.test.approveInReviewPrefix")}{" "}
           <Link className="font-medium text-primary hover:underline" to={appTabHref(connectionId, "review")}>
-            Review tab
+            {t("apps.detail.test.reviewTab")}
           </Link>{" "}
-          to finish the test. You can also cancel the request.
+          {t("apps.detail.test.approveInReviewSuffix")}
         </p>
       )}
 
       <div className="mt-3 flex flex-wrap items-center gap-2">
         <Button asChild size="sm" variant="outline">
-          <Link to={appTabHref(connectionId, "review")}>Open Review tab</Link>
+          <Link to={appTabHref(connectionId, "review")}>{t("apps.detail.test.openReviewTab")}</Link>
         </Button>
         {phase === "waiting" && actionRequestId && selectedCompanyId && (
           <Button size="sm" variant="ghost" onClick={() => cancel.mutate()} disabled={cancel.isPending}>
-            {cancel.isPending ? "Cancelling…" : "Cancel this request"}
+            {cancel.isPending ? t("apps.detail.test.cancelling") : t("apps.detail.test.cancelThisRequest")}
           </Button>
         )}
       </div>
@@ -1267,6 +1279,7 @@ function OffExplanation({
   onSelectAgent: (agentId: string) => void;
 }) {
   const title = entry.title ?? entry.toolName;
+  const { t } = useTranslation();
   const permHref = `${appTabHref(connectionId, "permissions")}?focus=${encodeURIComponent(entry.id)}`;
 
   // Other agents are intentionally not summarized up front. Selecting one
@@ -1275,8 +1288,8 @@ function OffExplanation({
   const others = allAgents.filter((a) => a.id !== agent.id);
 
   const whyBody = entry.status === "quarantined"
-    ? "This action is new and hasn't been turned on yet."
-    : `${agent.name}'s access profile sets this action to Off.`;
+    ? t("apps.detail.test.quarantinedWhy")
+    : t("apps.detail.test.profileOff", { name: agent.name });
 
   // "Last changed by {Actor} · {relativeTime}" — only the access config carries
   // this; a quarantined action has never been configured, so there's nothing to
@@ -1284,7 +1297,9 @@ function OffExplanation({
   const { lastChangedAt, lastChangedByName } = agent.effectiveAccess;
   const auditHint =
     entry.status !== "quarantined" && lastChangedAt
-      ? `Last changed${lastChangedByName ? ` by ${lastChangedByName}` : ""} · ${relTime(new Date(lastChangedAt))}`
+      ? lastChangedByName
+        ? t("apps.detail.test.lastChangedBy", { name: lastChangedByName, when: relTime(new Date(lastChangedAt)) })
+        : t("apps.detail.test.lastChanged", { when: relTime(new Date(lastChangedAt)) })
       : null;
 
   return (
@@ -1293,30 +1308,30 @@ function OffExplanation({
         <div className="flex items-start gap-2">
           <Ban className="mt-0.5 h-4 w-4 shrink-0 text-muted-foreground" />
           <div className="text-sm text-muted-foreground">
-            <p className="font-medium text-foreground">{title} is off for {agent.name}.</p>
-            <p className="mt-0.5">It won't run here, and it won't run from a task either.</p>
+            <p className="font-medium text-foreground">{t("apps.detail.test.offForAgent", { title, name: agent.name })}</p>
+            <p className="mt-0.5">{t("apps.detail.test.wontRunAnywhere")}</p>
             <p className="mt-2">
-              Want to test it? Turn it on for {agent.name} in{" "}
+              {t("apps.detail.test.wantToTestPrefix", { name: agent.name })}{" "}
               <Link className="font-medium text-primary hover:underline" to={appTabHref(connectionId, "permissions")}>
-                Permissions
+                {t("apps.detail.test.permissionsLink")}
               </Link>{" "}
-              — set it to Allowed or Ask first.
+              {t("apps.detail.test.wantToTestSuffix")}
             </p>
           </div>
         </div>
         <Button asChild size="sm">
-          <Link to={permHref}>Open Permissions →</Link>
+          <Link to={permHref}>{t("apps.detail.test.openPermissions")}</Link>
         </Button>
-        <p className="text-xs text-muted-foreground">No call will be made — this action is off for {agent.name}.</p>
+        <p className="text-xs text-muted-foreground">{t("apps.detail.test.gutOff", { agent: agent.name })}</p>
       </div>
 
       <aside>
-        <p className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">Why this is off</p>
+        <p className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">{t("apps.detail.test.whyOff")}</p>
         <p className="mt-1.5 text-xs text-muted-foreground">{whyBody}</p>
         {auditHint && <p className="mt-1.5 text-(length:--text-micro) text-muted-foreground">{auditHint}</p>}
         {others.length > 0 && (
           <div className="mt-3">
-            <p className="text-(length:--text-micro) font-medium text-muted-foreground">Try as a different agent:</p>
+            <p className="text-(length:--text-micro) font-medium text-muted-foreground">{t("apps.detail.test.tryDifferentAgent")}</p>
             <div className="mt-1 flex flex-wrap gap-1.5">
               {others.slice(0, 4).map((other) => (
                 <button
@@ -1359,33 +1374,33 @@ function isReconnectError(reasonCode: string | null | undefined): boolean {
 
 export function errorHints(message: string, reasonCode: string | null | undefined): string[] {
   if (reasonCode === "grant_credential_invalid") {
-    return ["Ask the connection owner to reconnect it from Connectors with a fresh key or server URL."];
+    return [t("apps.detail.test.hintReconnectOwner")];
   }
   if (reasonCode === "oauth_insufficient_scope") {
-    return ["Reconnect the app and allow the permissions required for this action."];
+    return [t("apps.detail.test.hintReconnectScopes")];
   }
   const haystack = `${reasonCode ?? ""} ${message}`.toUpperCase();
   if (haystack.includes("NOT_FOUND")) {
     return [
-      "Double-check the ID or name you entered — pick it from a dropdown if one is offered.",
-      "Make sure this agent has access to that resource in the connected account.",
+      t("apps.detail.test.hintNotFound1"),
+      t("apps.detail.test.hintNotFound2"),
     ];
   }
   if (haystack.includes("PERMISSION") || haystack.includes("FORBIDDEN") || haystack.includes("UNAUTHORIZED")) {
     return [
-      "The connected account may not have permission for this action.",
-      "Reconnect the app from Setup if its access was recently changed.",
+      t("apps.detail.test.hintPermission1"),
+      t("apps.detail.test.hintPermission2"),
     ];
   }
   if (haystack.includes("INVALID_ARGUMENT") || haystack.includes("INVALID") || haystack.includes("BAD_REQUEST")) {
     return [
-      "Check the field formats above — a value may be the wrong type or shape.",
-      "Open “More options” to confirm any advanced fields are filled in correctly.",
+      t("apps.detail.test.hintInvalid1"),
+      t("apps.detail.test.hintInvalid2"),
     ];
   }
   if (haystack.includes("RATE_LIMIT") || haystack.includes("RESOURCE_EXHAUSTED") || haystack.includes("429")) {
-    return ["The app is rate-limiting calls right now — wait a moment and run it again."];
+    return [t("apps.detail.test.hintRateLimit")];
   }
   // Locked generic fallback (copy-spec decision #2).
-  return ["Check the inputs above and try again."];
+  return [t("apps.detail.test.hintGeneric")];
 }

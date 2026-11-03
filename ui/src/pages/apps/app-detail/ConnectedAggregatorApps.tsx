@@ -8,11 +8,13 @@ import { useAccountIdentity } from "@/api/companies-query";
 import { toolsApi } from "@/api/tools";
 import { Button } from "@/components/ui/button";
 import { queryKeys } from "@/lib/queryKeys";
+import { useTranslation } from "@/i18n";
 import { AppLogo } from "../AppLogo";
 
 const catalogBySlug = new Map(AGGREGATOR_APP_CATALOG.map(app => [app.slug, app]));
 
 export function ConnectedAggregatorApps({ connection }: { connection: ToolConnection }) {
+  const { t } = useTranslation();
   const queryClient = useQueryClient();
   const { userId, settled, failed } = useAccountIdentity();
   const queryKey = queryKeys.tools.aggregatorApps(connection.id, userId);
@@ -54,37 +56,37 @@ export function ConnectedAggregatorApps({ connection }: { connection: ToolConnec
 
   return <section aria-labelledby="connected-aggregator-apps-heading" className="space-y-3">
     <div className="flex flex-wrap items-center justify-between gap-3">
-      <h2 id="connected-aggregator-apps-heading" className="text-sm font-semibold">Connected apps</h2>
-      <Button variant="outline" size="sm" aria-label={`Refresh ${providerName}`}
+      <h2 id="connected-aggregator-apps-heading" className="text-sm font-semibold">{t("apps.detail.aggregator.connectedApps")}</h2>
+      <Button variant="outline" size="sm" aria-label={t("apps.detail.aggregator.refreshProvider", { provider: providerName })}
         disabled={!settled || query.isLoading || syncing || Boolean(unavailable)}
         onClick={() => refresh.mutate(userId)}>
         <RefreshCw className={syncing ? "size-4 animate-spin" : "size-4"} aria-hidden="true" />
-        {syncing ? "Refreshing…" : `Refresh ${providerName}`}
+        {syncing ? t("apps.common.refreshing") : t("apps.detail.aggregator.refreshProvider", { provider: providerName })}
       </Button>
     </div>
     {loadFailed || syncFailed ? <p role="alert" className="text-sm text-destructive">
-      Couldn’t refresh {providerName} apps.{apps.length ? " Last known apps are shown." : " Try refreshing again."}
+      {t("apps.detail.aggregator.refreshFailed", { provider: providerName })}{apps.length ? t("apps.detail.aggregator.lastKnownSuffix") : t("apps.detail.aggregator.tryAgainSuffix")}
     </p> : null}
     {syncing ? <p role="status" className="text-sm text-muted-foreground">
-      Refreshing apps…{data?.sync.total ? ` ${data.sync.checked} of ${data.sync.total}` : ""}
-    </p> : refresh.isSuccess && !syncFailed && !unavailable ? <p role="status" className="text-sm text-muted-foreground">Apps refreshed.</p> : null}
-    {(!settled && !failed) || query.isLoading ? <p role="status" className="text-sm text-muted-foreground">Loading apps…</p>
-      : apps.length ? <ul aria-label={`Connected ${providerName} apps`} tabIndex={0}
+      {t("apps.detail.aggregator.refreshingApps")}{data?.sync.total ? t("apps.detail.aggregator.progressSuffix", { checked: data.sync.checked, total: data.sync.total }) : ""}
+    </p> : refresh.isSuccess && !syncFailed && !unavailable ? <p role="status" className="text-sm text-muted-foreground">{t("apps.detail.aggregator.refreshed")}</p> : null}
+    {(!settled && !failed) || query.isLoading ? <p role="status" className="text-sm text-muted-foreground">{t("apps.detail.aggregator.loadingApps")}</p>
+      : apps.length ? <ul aria-label={t("apps.detail.aggregator.listAria", { provider: providerName })} tabIndex={0}
         className="max-h-80 overflow-y-auto rounded-lg border border-border divide-y divide-border">
         {apps.map(snapshots => {
           const app = snapshots[0];
           const accounts = [...new Map(snapshots.flatMap(snapshot => snapshot.accounts).map(account => [account.id, account])).values()];
           const stale = loadFailed || syncFailed || unavailable || snapshots.some(snapshot => snapshot.freshness === "stale" || snapshot.errorAt);
           const connected = !stale && accounts.some(account => account.status === "ACTIVE");
-          const status = stale ? "Not verified" : connected ? "Connected"
-            : accounts.some(account => account.status === "UNVERIFIED") ? "Not verified"
-            : accounts.some(account => account.status === "INITIATED") ? "Waiting for sign-in" : "Needs sign-in";
+          const status = stale ? t("apps.detail.aggregator.notVerified") : connected ? t("apps.detail.aggregator.connected")
+            : accounts.some(account => account.status === "UNVERIFIED") ? t("apps.detail.aggregator.notVerified")
+            : accounts.some(account => account.status === "INITIATED") ? t("apps.detail.aggregator.waitingSignIn") : t("apps.detail.aggregator.needsSignIn");
           const logoUrl = catalogBySlug.get(app.appSlug)?.routes.find(route => route.provider === provider)?.logoUrl;
           return <li key={app.appSlug} className="flex items-center gap-3 px-3 py-3">
             <AppLogo name={app.appName} brandKey={app.appSlug} logoUrl={logoUrl} />
             <div className="min-w-0 flex-1">
               <p className="truncate text-sm font-medium" title={app.appName}>{app.appName}</p>
-              {accounts.length > 1 ? <p className="text-xs text-muted-foreground">{accounts.length} accounts</p>
+              {accounts.length > 1 ? <p className="text-xs text-muted-foreground">{t("apps.detail.aggregator.accountsCount", { n: accounts.length })}</p>
                 : accounts[0]?.alias ? <p className="truncate text-xs text-muted-foreground">{accounts[0].alias}</p> : null}
             </div>
             <span className="flex shrink-0 items-center gap-1.5 text-xs text-muted-foreground">
@@ -94,7 +96,7 @@ export function ConnectedAggregatorApps({ connection }: { connection: ToolConnec
           </li>;
         })}
       </ul> : !loadFailed && !syncFailed && !syncing ? <p className="text-sm text-muted-foreground">
-        {data?.discovery.message ?? `No connected apps found in ${providerName}.`}
+        {data?.discovery.message ?? t("apps.detail.aggregator.noApps", { provider: providerName })}
       </p> : null}
   </section>;
 }

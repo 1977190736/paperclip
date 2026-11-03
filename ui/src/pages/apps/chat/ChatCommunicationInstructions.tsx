@@ -1,12 +1,14 @@
 import { useId, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
+import { useTranslation } from "@/i18n";
 
 export function ChatCommunicationInstructions({ value, onSave }: {
   value: string;
   onSave: (instructions: string) => Promise<void>;
 }) {
   const id = useId();
+  const { t } = useTranslation();
   const [draft, setDraft] = useState<string | null>(null);
   const [pending, setPending] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -25,15 +27,15 @@ export function ChatCommunicationInstructions({ value, onSave }: {
         setDraft(null);
         setSaved(true);
       } catch (cause) {
-        setError(cause instanceof Error ? cause.message : "Couldn’t save instructions. Try again.");
+        setError(cause instanceof Error ? cause.message : t("apps.chat.instructions.errorFallback"));
       } finally {
         setPending(false);
       }
     }}>
       <div className="space-y-1">
-        <label id={`${id}-label`} htmlFor={id} className="text-sm font-semibold">Additional communication instructions</label>
+        <label id={`${id}-label`} htmlFor={id} className="text-sm font-semibold">{t("apps.chat.instructions.label")}</label>
         <p id={`${id}-help`} className="text-sm text-muted-foreground">
-          Applies to new conversations.
+          {t("apps.chat.instructions.help")}
         </p>
       </div>
       <Textarea
@@ -43,16 +45,16 @@ export function ChatCommunicationInstructions({ value, onSave }: {
         disabled={pending}
         maxLength={4000}
         rows={4}
-        placeholder="For example: Keep replies brief and explain technical terms."
+        placeholder={t("apps.chat.instructions.placeholder")}
         onChange={(event) => { setDraft(event.target.value); setSaved(false); setError(null); }}
       />
       {error && <p role="alert" className="text-sm text-destructive">{error}</p>}
       <div className="flex items-center justify-between gap-3">
         <div>
-          {dirty ? <Button type="button" variant="ghost" disabled={pending} onClick={() => { setDraft(null); setError(null); setSaved(false); }}>Cancel</Button>
-            : saved ? <span role="status" className="text-sm text-muted-foreground">Saved. Applies to new tasks.</span> : null}
+          {dirty ? <Button type="button" variant="ghost" disabled={pending} onClick={() => { setDraft(null); setError(null); setSaved(false); }}>{t("apps.common.cancel")}</Button>
+            : saved ? <span role="status" className="text-sm text-muted-foreground">{t("apps.chat.instructions.saved")}</span> : null}
         </div>
-        <Button type="submit" disabled={!dirty || pending}>{pending ? "Saving…" : "Save instructions"}</Button>
+        <Button type="submit" disabled={!dirty || pending}>{pending ? t("apps.chat.instructions.saving") : t("apps.chat.instructions.save")}</Button>
       </div>
     </form>
   );

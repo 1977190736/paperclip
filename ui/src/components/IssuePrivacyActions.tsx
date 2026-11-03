@@ -17,13 +17,11 @@ import { issuesApi } from "@/api/issues";
 import { useToastActions } from "@/context/ToastContext";
 import { queryKeys } from "@/lib/queryKeys";
 import { cn } from "@/lib/utils";
+import { useTranslation } from "@/i18n";
 import { IssueShareSheet, type ShareSheetImplicitPrincipal } from "./IssueShareSheet";
 
 const MENU_ITEM_CLASS =
   "flex items-center gap-2 w-full px-2 py-1.5 text-xs rounded hover:bg-accent/50 disabled:cursor-not-allowed disabled:opacity-50 disabled:hover:bg-transparent";
-
-const NON_SETTER_TOOLTIP =
-  "Only the task owner or an admin can change who can see this task.";
 
 /**
  * Privacy actions for the task `⋯` menu. Renders the menu buttons plus the
@@ -53,6 +51,7 @@ export function IssuePrivacyActions({
   children: (menuItems: React.ReactNode) => React.ReactNode;
 }) {
   const queryClient = useQueryClient();
+  const { t } = useTranslation();
   const { pushToast } = useToastActions();
   const [shareOpen, setShareOpen] = useState(false);
   const [makePublicOpen, setMakePublicOpen] = useState(false);
@@ -63,13 +62,13 @@ export function IssuePrivacyActions({
     enabled: canManage && isPrivate,
   });
   const publicBlockedReason = constraintsQuery.isError
-    ? "Couldn't check task privacy. Retry before making this task public."
+    ? t("comps1.privacy.checkFailed")
     : !constraintsQuery.data || constraintsQuery.isFetching
-      ? "Checking task privacy…"
+      ? t("comps1.privacy.checking")
       : constraintsQuery.data.publicBlockedBy === "parent"
-        ? "Move this task out of its private parent before making it public."
+        ? t("comps1.privacy.blockedByParent")
         : constraintsQuery.data.publicBlockedBy === "project"
-          ? "Move this task out of its private project before making it public."
+          ? t("comps1.privacy.blockedByProject")
           : null;
 
   const visibilityMutation = useMutation({
@@ -84,12 +83,12 @@ export function IssuePrivacyActions({
       queryClient.invalidateQueries({ queryKey: queryKeys.issues.accessGrants(issue.id) });
       setMakePublicOpen(false);
       pushToast({
-        title: visibility === "private" ? "Task is now private" : "Task is now public",
+        title: visibility === "private" ? t("comps1.privacy.nowPrivate") : t("comps1.privacy.nowPublic"),
         tone: "success",
       });
     },
     onError: (error) => {
-      pushToast({ title: "Couldn't change visibility", body: (error as Error).message, tone: "error" });
+      pushToast({ title: t("comps1.privacy.changeFailed"), body: (error as Error).message, tone: "error" });
     },
   });
 
@@ -100,7 +99,7 @@ export function IssuePrivacyActions({
         <TooltipTrigger asChild>
           <span className="block w-full" tabIndex={0}>{node}</span>
         </TooltipTrigger>
-        <TooltipContent className="max-w-xs text-xs">{canManage ? blockedReason : NON_SETTER_TOOLTIP}</TooltipContent>
+        <TooltipContent className="max-w-xs text-xs">{canManage ? blockedReason : t("comps1.privacy.nonSetterTooltip")}</TooltipContent>
       </Tooltip>
     );
   }
@@ -119,7 +118,7 @@ export function IssuePrivacyActions({
                 setShareOpen(true);
               }}
             >
-              <Users className="h-4 w-4" aria-hidden="true" /> Share…
+              <Users className="h-4 w-4" aria-hidden="true" /> {t("comps1.privacy.shareMenu")}
             </button>,
           )}
           {withTooltip(
@@ -132,14 +131,14 @@ export function IssuePrivacyActions({
                 setMakePublicOpen(true);
               }}
             >
-              <Globe className="h-4 w-4" aria-hidden="true" /> Make public
+              <Globe className="h-4 w-4" aria-hidden="true" /> {t("comps1.privacy.makePublic")}
             </button>,
             publicBlockedReason,
           )}
           {canManage && constraintsQuery.isError ? (
             <button type="button" className={MENU_ITEM_CLASS} onClick={() => {
               void constraintsQuery.refetch();
-            }}>Retry access check</button>
+            }}>{t("comps1.privacy.retryAccessCheck")}</button>
           ) : null}
         </>
       ) : (
@@ -153,7 +152,7 @@ export function IssuePrivacyActions({
               visibilityMutation.mutate("private");
             }}
           >
-            <Lock className="h-4 w-4" aria-hidden="true" /> Make private
+            <Lock className="h-4 w-4" aria-hidden="true" /> {t("comps1.privacy.makePrivate")}
           </button>,
         )
       ))}
@@ -170,17 +169,16 @@ export function IssuePrivacyActions({
       <AlertDialog open={makePublicOpen} onOpenChange={setMakePublicOpen}>
         <AlertDialogContent>
           <AlertDialogHeader>
-            <AlertDialogTitle>Make this task public?</AlertDialogTitle>
+            <AlertDialogTitle>{t("comps1.privacy.makePublicTitle")}</AlertDialogTitle>
             <AlertDialogDescription>
-              Everyone in the company will be able to read this task, its comments, documents, and
-              run history. Existing private subtasks keep their privacy.{" "}
+              {t("comps1.privacy.makePublicDescription")}{" "}
               {constraintsQuery.data?.leavesPersonalProject
-                ? "This task will also leave its personal project. " : null}
-              <span className="font-semibold text-foreground">Content already seen by others cannot be taken back.</span>
+                ? t("comps1.privacy.leavesPersonalProject") : null}
+              <span className="font-semibold text-foreground">{t("comps1.privacy.cannotTakeBack")}</span>
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
-            <AlertDialogCancel>Keep private</AlertDialogCancel>
+            <AlertDialogCancel>{t("comps1.privacy.keepPrivate")}</AlertDialogCancel>
             <AlertDialogAction
               className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
               onClick={(event) => {
@@ -189,7 +187,7 @@ export function IssuePrivacyActions({
               }}
               disabled={visibilityMutation.isPending || Boolean(publicBlockedReason)}
             >
-              {visibilityMutation.isPending ? "Making public…" : "Make public"}
+              {visibilityMutation.isPending ? t("comps1.privacy.makingPublic") : t("comps1.privacy.makePublic")}
             </AlertDialogAction>
           </AlertDialogFooter>
         </AlertDialogContent>

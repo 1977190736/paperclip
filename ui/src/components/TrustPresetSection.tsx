@@ -18,6 +18,7 @@ import {
   type LowTrustBoundaryTarget,
 } from "../lib/trust-policy-ui";
 import { cn } from "../lib/utils";
+import { useTranslation, t as translate } from "@/i18n";
 
 const inputClass =
   "w-full rounded-md border border-border px-2.5 py-1.5 bg-transparent outline-none text-sm font-mono placeholder:text-muted-foreground/40";
@@ -44,10 +45,10 @@ export interface LowTrustBoundaryCandidate {
 
 type LowTrustBoundaryTargetType = LowTrustBoundaryTarget["type"];
 
-const BOUNDARY_TARGET_LABELS: Record<LowTrustBoundaryTargetType, string> = {
-  project: "Project",
-  root_issue: "Root issue",
-  issue: "Issue",
+const BOUNDARY_TARGET_KEYS: Record<LowTrustBoundaryTargetType, string> = {
+  project: "project",
+  root_issue: "rootIssue",
+  issue: "issue",
 };
 
 export function TrustPresetSection({
@@ -76,6 +77,7 @@ export function TrustPresetSection({
   layout?: "select" | "cards";
   aside?: ReactNode;
 }) {
+  const { t } = useTranslation();
   const [policyOpen, setPolicyOpen] = useState(false);
   const preset = getTrustPreset(permissions);
   const boundary = getLowTrustBoundary(permissions);
@@ -130,30 +132,30 @@ export function TrustPresetSection({
             <div className="min-w-0 flex-1 space-y-2">
               <div>
                 <p className="font-medium">
-                  {hasScope ? "Containment active" : "Containment not configured"}
+                  {hasScope ? t("comps2.trust.containmentActive") : t("comps2.trust.containmentNotConfigured")}
                 </p>
                 <p className="mt-1 text-xs leading-5">
                   {hasScope
-                    ? "This agent can only read and mutate work inside its assigned review boundary. Raw output is quarantined from higher-trust agents until a trusted reviewer promotes it."
-                    : "This agent is set to low-trust review, but no project, root issue, or issue scope is set in the core policy. Add a scope before this agent can run without denial."}
+                    ? t("comps2.trust.containmentActiveNote")
+                    : t("comps2.trust.containmentMissingNote")}
                 </p>
               </div>
               {projectAccessEditor && (boundary?.projectIds?.length ?? 0) > 1 ? null : boundaryEditable ? (
                 <div className="rounded-md border border-border/70 bg-background/70 p-3 text-foreground space-y-3">
                   <div className="grid gap-3 sm:grid-cols-(--gtc-12)">
-                    <Field label="Boundary type">
+                    <Field label={t("comps2.trust.boundaryType")}>
                       <select
                         className={inputClass}
                         value={targetType}
                         onChange={(event) => setTargetType(event.target.value as LowTrustBoundaryTargetType)}
                         disabled={disabled}
                       >
-                        <option value="project">Project</option>
-                        <option value="root_issue">Root issue</option>
-                        {allowSingleIssue && <option value="issue">Issue</option>}
+                        <option value="project">{t("comps2.trust.project")}</option>
+                        <option value="root_issue">{t("comps2.trust.rootIssue")}</option>
+                        {allowSingleIssue && <option value="issue">{t("comps2.trust.issue")}</option>}
                       </select>
                     </Field>
-                    <Field label={BOUNDARY_TARGET_LABELS[targetType]}>
+                    <Field label={t(`comps2.trust.${BOUNDARY_TARGET_KEYS[targetType]}`)}>
                       <select
                         className={inputClass}
                         value={boundaryValue}
@@ -162,10 +164,10 @@ export function TrustPresetSection({
                       >
                         <option value="">
                           {candidatesLoading
-                            ? "Loading…"
+                            ? t("secrets.common.loading")
                             : targetCandidates.length === 0
-                              ? `No ${targetType === "project" ? "projects" : "issues"} available`
-                              : "Select boundary"}
+                              ? (targetType === "project" ? t("comps2.trust.noProjectsAvailable") : t("comps2.trust.noIssuesAvailable"))
+                              : t("comps2.trust.selectBoundary")}
                         </option>
                         {targetCandidates.map((candidate) => (
                           <option key={candidate.id} value={candidate.id}>
@@ -177,7 +179,7 @@ export function TrustPresetSection({
                   </div>
                   <div className="flex flex-wrap items-center justify-between gap-2">
                     <p className="text-xs text-muted-foreground">
-                      CE saves one containment boundary at a time. Saved policies include this organization id.
+                      {t("comps2.trust.singleBoundaryNote")}
                     </p>
                     {boundaryTarget ? (
                       <Button
@@ -188,49 +190,49 @@ export function TrustPresetSection({
                         onClick={handleClearBoundary}
                         disabled={disabled}
                       >
-                        Clear boundary
+                        {t("comps2.trust.clearBoundary")}
                       </Button>
                     ) : null}
                   </div>
                 </div>
               ) : (
                 <div className="rounded-md border border-border/70 bg-background/70 p-3 text-foreground">
-                  <p className="text-sm font-medium">Managed by EE/API</p>
+                  <p className="text-sm font-medium">{t("comps2.trust.managedByEe")}</p>
                   <p className="mt-1 text-xs leading-5 text-muted-foreground">
-                    This policy has {summarizeLowTrustBoundaryTarget(boundary).toLowerCase()} and cannot be edited by the CE single-boundary editor.
+                    {t("comps2.trust.managedByEeNote", { summary: summarizeLowTrustBoundaryTarget(boundary).toLowerCase() })}
                   </p>
                 </div>
               )}
               {!projectAccessEditor && <p className="text-xs text-muted-foreground">
-                Want to set more than one containment boundary?{" "}
+                {t("comps2.trust.moreBoundariesQuestion")}{" "}
                 <a
                   className="underline underline-offset-2 hover:text-foreground"
                   href="https://paperclip.ing/ee"
                   target="_blank"
                   rel="noreferrer"
                 >
-                  Get Paperclip EE.
+                  {t("comps2.trust.getEe")}
                 </a>
               </p>}
               <CollapsibleSection
-                title="View policy"
+                title={t("comps2.trust.viewPolicy")}
                 open={policyOpen}
                 onToggle={() => setPolicyOpen((open) => !open)}
               >
                 <div className="divide-y divide-border/60 text-foreground">
-                  <PolicyRow label="Preset" value="Low-trust review v1" />
-                  <PolicyRow label="Raw output" value="Quarantined from higher-trust agents" />
-                  <PolicyRow label="Projects" value={formatCount(boundary?.projectIds, "project", "projects")} />
-                  <PolicyRow label="Root issue" value={boundary?.rootIssueId ? boundary.rootIssueId.slice(0, 8) : "-"} />
-                  <PolicyRow label="Explicit issues" value={formatCount(boundary?.issueIds, "issue", "issues")} />
-                  <PolicyRow label="Allowed agents" value={formatCount(boundary?.allowedAgentIds, "agent", "agents")} />
-                  <PolicyRow label="Allowed tools" value={boundary?.allowedToolClasses?.join(" · ") || "-"} />
-                  <PolicyRow label="Allowed secrets" value={formatCount(boundary?.allowedSecretBindingIds, "binding", "bindings")} />
-                  <PolicyRow label="Promotion target" value={boundary?.outputPromotionTarget?.issueId?.slice(0, 8) ?? "-"} />
+                  <PolicyRow label={t("comps2.trust.preset")} value={t("comps2.trust.lowTrustV1")} />
+                  <PolicyRow label={t("comps2.trust.rawOutput")} value={t("comps2.trust.quarantined")} />
+                  <PolicyRow label={t("comps2.trust.projects")} value={formatCount(boundary?.projectIds, t("comps2.trust.project"), t("comps2.trust.projects"))} />
+                  <PolicyRow label={t("comps2.trust.rootIssue")} value={boundary?.rootIssueId ? boundary.rootIssueId.slice(0, 8) : "-"} />
+                  <PolicyRow label={t("comps2.trust.explicitIssues")} value={formatCount(boundary?.issueIds, t("comps2.trust.issue"), t("comps2.trust.issues"))} />
+                  <PolicyRow label={t("comps2.trust.allowedAgents")} value={formatCount(boundary?.allowedAgentIds, t("comps2.trust.agent"), t("comps2.trust.agents"))} />
+                  <PolicyRow label={t("comps2.trust.allowedTools")} value={boundary?.allowedToolClasses?.join(" · ") || "-"} />
+                  <PolicyRow label={t("comps2.trust.allowedSecrets")} value={formatCount(boundary?.allowedSecretBindingIds, t("comps2.trust.binding"), t("comps2.trust.bindings"))} />
+                  <PolicyRow label={t("comps2.trust.promotionTarget")} value={boundary?.outputPromotionTarget?.issueId?.slice(0, 8) ?? "-"} />
                   <PolicyRow
-                    label="EE fields"
+                    label={t("comps2.trust.eeFields")}
                     value={Object.keys(policy ?? {}).some((key) => !["trustPreset", "reviewPreset", "trustBoundary"].includes(key))
-                      ? "Custom advanced policy fields preserved"
+                      ? t("comps2.trust.customFieldsPreserved")
                       : "-"}
                   />
                 </div>
@@ -243,7 +245,7 @@ export function TrustPresetSection({
     return (
       <div className="flex flex-col gap-(--agent-detail-module-gap)">
         <div className="grid gap-(--agent-detail-module-gap) sm:grid-cols-3">
-          <div role="radiogroup" aria-label="Trust preset" className="contents">
+          <div role="radiogroup" aria-label={t("comps2.trust.presetAria")} className="contents">
             {(["low_trust_review", "standard"] as const).map((value) => {
               const selected = preset === value;
               return (
@@ -275,7 +277,7 @@ export function TrustPresetSection({
         {lowTrust ? projectAccessEditor : null}
         {managedPermissions.authorizationPolicy?.reviewPreset ? null : (
           <p className="text-xs text-muted-foreground">
-            Advanced permissions remain editable through the EE permissions extension when installed.
+            {t("comps2.trust.eeExtensionNote")}
           </p>
         )}
       </div>
@@ -284,9 +286,9 @@ export function TrustPresetSection({
 
   return (
     <div>
-      <h3 className="mb-3 text-sm font-medium">Trust</h3>
+      <h3 className="mb-3 text-sm font-medium">{t("comps2.trust.trust")}</h3>
       <div className="rounded-lg border border-border p-4 space-y-3">
-        <Field label="Trust preset" hint="Choose how broadly this agent can read and act on Paperclip work objects.">
+        <Field label={t("comps2.trust.presetLabel")} hint={t("comps2.trust.presetHint")}>
           <select
             className={inputClass}
             value={preset}
@@ -305,7 +307,7 @@ export function TrustPresetSection({
 
         {managedPermissions.authorizationPolicy?.reviewPreset ? null : (
           <p className="text-xs text-muted-foreground">
-            Advanced permissions remain editable through the EE permissions extension when installed.
+            {t("comps2.trust.eeExtensionNote")}
           </p>
         )}
       </div>

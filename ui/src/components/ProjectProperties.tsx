@@ -689,7 +689,7 @@ export function ProjectProperties({ project, repositories, onUpdate, onFieldUpda
                   disabled={(!workspaceCwd.trim() && !primaryCodebaseWorkspace) || createWorkspace.isPending || updateWorkspace.isPending}
                   onClick={submitLocalWorkspace}
                 >
-                  {t("misc.projects.save")}
+                  {t("misc.projects.saveLabel")}
                 </Button>
                 <Button
                   variant="ghost"

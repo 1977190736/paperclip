@@ -21,6 +21,7 @@ import {
 import { queryKeys } from "@/lib/queryKeys";
 import { Link } from "@/lib/router";
 import { cn, formatDate, relativeTime } from "@/lib/utils";
+import { t, useTranslation } from "@/i18n";
 
 /**
  * The agent-scoped side panels shown beside an agent chat: every task the
@@ -35,12 +36,20 @@ const ARTIFACT_MAX_PAGES = 5;
 
 export type AgentTaskSortField = "updated" | "created" | "status" | "title";
 
-const SORT_OPTIONS: ReadonlyArray<[AgentTaskSortField, string]> = [
-  ["updated", "Last updated"],
-  ["created", "Created"],
-  ["status", "Status"],
-  ["title", "Title"],
-];
+const SORT_OPTIONS: ReadonlyArray<AgentTaskSortField> = [
+  "updated",
+  "created",
+  "status",
+  "title"];
+
+function sortOptionLabel(field: AgentTaskSortField): string {
+  switch (field) {
+    case "updated": return t("connections.workPanels.sortUpdated");
+    case "created": return t("connections.workPanels.sortCreated");
+    case "status": return t("connections.workPanels.sortStatus");
+    case "title": return t("connections.workPanels.sortTitle");
+  }
+}
 
 export function sortAgentTasks(
   tasks: Issue[],
@@ -74,6 +83,7 @@ const cardClassName =
   "flex flex-col gap-1 rounded-lg border border-border bg-card p-3 transition-colors hover:border-foreground/20 hover:bg-accent/40 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring";
 
 export function AgentTaskCard({ task }: { task: Issue }) {
+  const { t } = useTranslation();
   return (
     <Link
       // design-allow(card-pattern): navigation <Link> card; Card renders a div and would break anchor semantics
@@ -147,20 +157,21 @@ export function AgentTasksPanel({
   }, [tasksQuery.data, excludeIssueId, query, filters, sortField, sortDir]);
 
   const activeFilterCount = countActiveIssueFilters(filters);
+  const { t } = useTranslation();
   const total = (tasksQuery.data ?? []).filter((task) => task.id !== excludeIssueId).length;
   // Search and filters run on the most recently updated tasks only.
   const capped = (tasksQuery.data?.length ?? 0) >= AGENT_TASK_LIMIT;
 
   return (
-    <section className="flex flex-col gap-3" aria-label="Agent tasks">
+    <section className="flex flex-col gap-3" aria-label={t("connections.workPanels.agentTasks")}>
       <div className="flex items-center gap-1">
         <div className="relative min-w-0 flex-1">
           <Search className="pointer-events-none absolute left-2 top-1/2 h-3.5 w-3.5 -translate-y-1/2 text-muted-foreground" />
           <Input
             value={query}
             onChange={(event) => setQuery(event.target.value)}
-            placeholder="Search tasks"
-            aria-label="Search tasks"
+            placeholder={t("connections.workPanels.searchTasks")}
+            aria-label={t("connections.workPanels.searchTasks")}
             className="h-8 pl-7 text-sm"
           />
         </div>
@@ -176,13 +187,13 @@ export function AgentTasksPanel({
         />
         <Popover>
           <PopoverTrigger asChild>
-            <Button variant="outline" size="icon" className="h-8 w-8 shrink-0" title="Sort" aria-label="Sort tasks">
+            <Button variant="outline" size="icon" className="h-8 w-8 shrink-0" title={t("connections.workPanels.sort")} aria-label={t("connections.workPanels.sortTasks")}>
               <ArrowUpDown className="h-3.5 w-3.5" />
             </Button>
           </PopoverTrigger>
           <PopoverContent align="end" className="w-48 p-0">
             <div className="space-y-0.5 p-2">
-              {SORT_OPTIONS.map(([field, label]) => (
+              {SORT_OPTIONS.map((field) => (
                 <button
                   key={field}
                   type="button"
@@ -198,7 +209,7 @@ export function AgentTasksPanel({
                     }
                   }}
                 >
-                  <span>{label}</span>
+                  <span>{sortOptionLabel(field)}</span>
                   {sortField === field ? (
                     <span className="text-xs text-muted-foreground">{sortDir === "asc" ? "↑" : "↓"}</span>
                   ) : null}
@@ -210,30 +221,30 @@ export function AgentTasksPanel({
       </div>
 
       {tasksView.kind === "loading" || tasksView.kind === "reconnecting" ? (
-        <PanelMessage>Loading tasks…</PanelMessage>
+        <PanelMessage>{t("connections.workPanels.loadingTasks")}</PanelMessage>
       ) : tasksView.kind === "error" ? (
         <div className="py-4">
           <QueryErrorState
             error={tasksQuery.error}
-            action="load this agent's tasks"
+            action={t("connections.workPanels.loadTasksAction")}
             onRetry={tasksView.retry}
             retrying={tasksView.isFetching}
           />
         </div>
       ) : total === 0 ? (
-        <PanelMessage>This agent hasn't worked on any tasks yet.</PanelMessage>
+        <PanelMessage>{t("connections.workPanels.noTasksYet")}</PanelMessage>
       ) : visible.length === 0 ? (
         <PanelMessage>
           {capped
-            ? `No tasks match these filters among the ${AGENT_TASK_LIMIT} most recently updated.`
-            : "No tasks match these filters."}
+            ? t("connections.workPanels.noTasksMatchCapped", { limit: AGENT_TASK_LIMIT })
+            : t("connections.workPanels.noTasksMatch")}
         </PanelMessage>
       ) : (
         <div className="flex flex-col gap-2">
           {visible.map((task) => <AgentTaskCard key={task.id} task={task} />)}
           {capped ? (
             <p className="px-1 text-xs text-muted-foreground">
-              Showing the {AGENT_TASK_LIMIT} most recently updated tasks.
+              {t("connections.workPanels.showingRecentTasks", { limit: AGENT_TASK_LIMIT })}
             </p>
           ) : null}
         </div>
@@ -254,6 +265,7 @@ function ArtifactKindIcon({ artifact }: { artifact: CompanyArtifact }) {
 }
 
 export function AgentArtifactCard({ artifact }: { artifact: CompanyArtifact }) {
+  const { t } = useTranslation();
   return (
     <Link
       // design-allow(card-pattern): navigation <Link> card; Card renders a div and would break anchor semantics
@@ -271,7 +283,7 @@ export function AgentArtifactCard({ artifact }: { artifact: CompanyArtifact }) {
         </span>
       </div>
       <div className="flex items-center gap-1.5 pl-6 text-xs text-muted-foreground">
-        <span>Updated {formatDate(artifact.updatedAt)}</span>
+        <span>{t("connections.workPanels.updatedAt", { date: formatDate(artifact.updatedAt) })}</span>
         <span aria-hidden>·</span>
         <span className="font-mono">{artifact.issue.identifier}</span>
       </div>
@@ -297,6 +309,7 @@ async function listAgentArtifacts(companyId: string, agentId: string) {
 }
 
 export function AgentArtifactsPanel({ companyId, agentId }: { companyId: string; agentId: string }) {
+  const { t } = useTranslation();
   const artifactsQuery = useQuery({
     queryKey: queryKeys.artifacts.byAgent(companyId, agentId),
     queryFn: () => listAgentArtifacts(companyId, agentId),
@@ -304,13 +317,13 @@ export function AgentArtifactsPanel({ companyId, agentId }: { companyId: string;
 
   const artifactsView = useQueryView(artifactsQuery);
 
-  if (artifactsView.kind === "loading" || artifactsView.kind === "reconnecting") return <PanelMessage>Loading artifacts…</PanelMessage>;
+  if (artifactsView.kind === "loading" || artifactsView.kind === "reconnecting") return <PanelMessage>{t("connections.workPanels.loadingArtifacts")}</PanelMessage>;
   if (artifactsView.kind === "error") {
     return (
       <div className="py-4">
         <QueryErrorState
           error={artifactsQuery.error}
-          action="load this agent's artifacts"
+          action={t("connections.workPanels.loadArtifactsAction")}
           onRetry={artifactsView.retry}
           retrying={artifactsView.isFetching}
         />
@@ -320,12 +333,12 @@ export function AgentArtifactsPanel({ companyId, agentId }: { companyId: string;
   const loaded = artifactsQuery.data;
   if (!loaded) return null;
   const { artifacts, truncated } = loaded;
-  if (artifacts.length === 0) return <PanelMessage>This agent hasn't produced any artifacts yet.</PanelMessage>;
+  if (artifacts.length === 0) return <PanelMessage>{t("connections.workPanels.noArtifactsYet")}</PanelMessage>;
   return (
-    <section className="flex flex-col gap-2" aria-label="Agent artifacts">
+    <section className="flex flex-col gap-2" aria-label={t("connections.workPanels.agentArtifacts")}>
       {artifacts.map((artifact) => <AgentArtifactCard key={artifact.id} artifact={artifact} />)}
       {truncated ? (
-        <p className="px-1 text-xs text-muted-foreground">Showing this agent's {artifacts.length} most recent artifacts.</p>
+        <p className="px-1 text-xs text-muted-foreground">{t("connections.workPanels.showingRecentArtifacts", { amount: artifacts.length })}</p>
       ) : null}
     </section>
   );

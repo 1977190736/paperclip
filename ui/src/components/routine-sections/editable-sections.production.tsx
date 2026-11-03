@@ -36,76 +36,86 @@ import { RoutineTriggerCard } from "../RoutineTriggerCard";
 import { EnvironmentVariablesEditor } from "../environment-variables-editor";
 import { createDefaultNewTrigger, useRoutineDetail } from "./context";
 import type { EnvBinding, RoutineDetail as RoutineDetailType } from "@paperclipai/shared";
+import { t, useTranslation } from "@/i18n";
 
 const concurrencyPolicyOptions = [
   {
     value: "coalesce_if_active",
-    title: "Coalesce if active",
-    description: "Keep one follow-up run queued while an active run is still working.",
+    titleKey: "pages2.routineEdit.policy.coalesceIfActive.title",
+    descriptionKey: "pages2.routineEdit.policy.coalesceIfActive.desc",
   },
   {
     value: "always_enqueue",
-    title: "Always enqueue",
-    description: "Queue every trigger occurrence, even if several runs stack up.",
+    titleKey: "pages2.routineEdit.policy.alwaysEnqueue.title",
+    descriptionKey: "pages2.routineEdit.policy.alwaysEnqueue.desc",
   },
   {
     value: "skip_if_active",
-    title: "Skip if active",
-    description: "Drop overlapping trigger occurrences while the routine is already active.",
+    titleKey: "pages2.routineEdit.policy.skipIfActive.title",
+    descriptionKey: "pages2.routineEdit.policy.skipIfActive.desc",
   },
 ];
 
 const catchUpPolicyOptions = [
   {
     value: "skip_missed",
-    title: "Skip missed",
-    description: "Ignore schedule windows that were missed while paused.",
+    titleKey: "pages2.routineEdit.policy.skipMissed.title",
+    descriptionKey: "pages2.routineEdit.policy.skipMissed.desc",
   },
   {
     value: "enqueue_missed_with_cap",
-    title: "Enqueue missed with cap",
-    description: "Catch up missed schedule windows after recovery; sub-hourly schedules are combined into one catch-up run, slower schedules replay each missed window up to a cap.",
+    titleKey: "pages2.routineEdit.policy.enqueueMissedWithCap.title",
+    descriptionKey: "pages2.routineEdit.policy.enqueueMissedWithCap.desc",
   },
 ];
 
 const activityGatePolicyOptions = [
   {
     value: "always",
-    title: "Run on every scheduled tick",
-    description: "Fire on the schedule no matter what — the default behavior.",
+    titleKey: "pages2.routineEdit.policy.alwaysTick.title",
+    descriptionKey: "pages2.routineEdit.policy.alwaysTick.desc",
   },
   {
     value: "require_external_activity",
-    title: "Skip when there's been no activity since the last run",
-    description:
-      "On a scheduled tick, only run if something happened since the last run that finished. Lets a watcher-style routine stay asleep while the system is settled instead of burning tokens.",
+    titleKey: "pages2.routineEdit.policy.skipNoActivity.title",
+    descriptionKey: "pages2.routineEdit.policy.skipNoActivity.desc",
   },
 ];
 
 const activityGateScopeOptions = [
   {
     value: "company",
-    title: "Company-wide",
-    description: "Any activity across the company counts as a reason to run.",
+    titleKey: "pages2.routineEdit.gateScope.companyWide.title",
+    descriptionKey: "pages2.routineEdit.gateScope.companyWide.desc",
   },
   {
     value: "project",
-    title: "This project",
-    description: "Only activity in the routine's project counts as a reason to run.",
+    titleKey: "pages2.routineEdit.gateScope.project.title",
+    descriptionKey: "pages2.routineEdit.gateScope.project.desc",
   },
 ];
 
 const triggerKinds = ["schedule", "webhook"];
 const signingModes = ["app_webhook", "bearer", "hmac_sha256", "github_hmac", "none"];
 const signingModeDescriptions: Record<string, string> = {
-  bearer: "Send Authorization: Bearer <secret> with each request.",
-  hmac_sha256: "Send X-Paperclip-Timestamp and X-Paperclip-Signature: sha256=<hex>, signing timestamp + a dot + the exact JSON body.",
-  github_hmac: "Accept GitHub-style X-Hub-Signature-256 header (HMAC over raw body, no timestamp).",
-  app_webhook: "Accept a bearer token or an HMAC-SHA256 signature over the exact request body in X-Hub-Signature or X-Hub-Signature-256.",
-  fireflies_hmac: "Signed webhook (legacy).",
-  none: "No authentication — the webhook URL itself acts as a shared secret.",
+  bearer: "pages2.routineEdit.signing.bearer",
+  hmac_sha256: "pages2.routineEdit.signing.hmacSha256",
+  github_hmac: "pages2.routineEdit.signing.githubHmac",
+  app_webhook: "pages2.routineEdit.signing.appWebhook",
+  fireflies_hmac: "pages2.routineEdit.signing.firefliesHmac",
+  none: "pages2.routineEdit.signing.none",
 };
 const SIGNING_MODES_WITHOUT_REPLAY_WINDOW = new Set(["app_webhook", "bearer", "github_hmac", "fireflies_hmac", "none"]);
+
+function toRadioOptions(
+  options: { value: string; titleKey: string; descriptionKey?: string }[],
+): { value: string; title: string; description?: string }[] {
+  return options.map((option) => ({
+    value: option.value,
+    title: t(option.titleKey),
+    description: option.descriptionKey ? t(option.descriptionKey) : undefined,
+  }));
+}
 
 export function OverviewSection({
   defaultDescriptionAnnotationsOpen = false,
@@ -136,6 +146,7 @@ export function OverviewSection({
     isSectionDirty,
     navigateToSection,
   } = ctx;
+  const { t } = useTranslation();
   const [descriptionAnnotationsOpen, setDescriptionAnnotationsOpen] = useState(defaultDescriptionAnnotationsOpen);
 
   const activeTriggers = routine.triggers.length;
@@ -155,16 +166,16 @@ export function OverviewSection({
       {/* Assignment row */}
       <div className="overflow-x-auto overscroll-x-contain">
         <div className="inline-flex min-w-full flex-wrap items-center gap-2 text-sm text-muted-foreground sm:min-w-max sm:flex-nowrap">
-          <span>For</span>
+          <span>{t("pages2.routineEdit.overview.for")}</span>
           <InlineEntitySelector
             ref={assigneeSelectorRef}
             value={editDraft.assigneeAgentId}
             options={assigneeOptions}
             recentOptionIds={recentAssigneeIds}
-            placeholder="Responsible"
-            noneLabel="No responsible"
-            searchPlaceholder="Search responsible..."
-            emptyMessage="No responsible found."
+            placeholder={t("pages2.routineEdit.overview.responsible")}
+            noneLabel={t("pages2.routineEdit.overview.noResponsible")}
+            searchPlaceholder={t("pages2.routineEdit.overview.searchResponsible")}
+            emptyMessage={t("pages2.routineEdit.overview.noResponsibleFound")}
             onChange={(assigneeAgentId) =>
               setEditDraft((current) => ({ ...current, assigneeAgentId }))
             }
@@ -186,7 +197,7 @@ export function OverviewSection({
                   <span className="truncate">{option.label}</span>
                 )
               ) : (
-                <span className="text-muted-foreground">Responsible</span>
+                <span className="text-muted-foreground">{t("pages2.routineEdit.overview.responsible")}</span>
               )
             }
             renderOption={(option) => {
@@ -202,16 +213,16 @@ export function OverviewSection({
               );
             }}
           />
-          <span>in</span>
+          <span>{t("pages2.routineEdit.overview.in")}</span>
           <InlineEntitySelector
             ref={projectSelectorRef}
             value={editDraft.projectId}
             options={projectOptions}
             recentOptionIds={recentProjectIds}
-            placeholder="Project"
-            noneLabel="No project"
-            searchPlaceholder="Search projects..."
-            emptyMessage="No projects found."
+            placeholder={t("pages2.routineEdit.overview.project")}
+            noneLabel={t("pages2.routineEdit.overview.noProject")}
+            searchPlaceholder={t("pages2.routineEdit.overview.searchProjects")}
+            emptyMessage={t("pages2.routineEdit.overview.noProjectsFound")}
             onChange={(projectId) => setEditDraft((current) => ({ ...current, projectId }))}
             onConfirm={() => descriptionEditorRef.current?.focus()}
             renderTriggerValue={(option) =>
@@ -224,7 +235,7 @@ export function OverviewSection({
                   <span className="truncate">{option.label}</span>
                 </>
               ) : (
-                <span className="text-muted-foreground">Project</span>
+                <span className="text-muted-foreground">{t("pages2.routineEdit.overview.project")}</span>
               )
             }
             renderOption={(option) => {
@@ -246,8 +257,7 @@ export function OverviewSection({
 
       {!routine.assigneeAgentId ? (
         <div className="rounded-lg border border-amber-500/30 bg-amber-500/5 p-4 text-sm text-amber-900 dark:text-amber-200">
-          Default agent required. This routine can stay as a draft and still run manually, but
-          automation stays paused until you assign a default agent.
+          {t("pages2.routineEdit.overview.assigneeRequired")}
         </div>
       ) : null}
 
@@ -281,7 +291,7 @@ export function OverviewSection({
               ref={descriptionEditorRef}
               value={editDraft.description}
               onChange={(description) => setEditDraft((current) => ({ ...current, description }))}
-              placeholder="Add instructions..."
+              placeholder={t("pages2.routineEdit.overview.addInstructions")}
               bordered={false}
               contentClassName="min-h-(--sz-120px) text-sm leading-7"
               mentions={mentionOptions}
@@ -297,7 +307,7 @@ export function OverviewSection({
             ref={descriptionEditorRef}
             value={editDraft.description}
             onChange={(description) => setEditDraft((current) => ({ ...current, description }))}
-            placeholder="Add instructions..."
+            placeholder={t("pages2.routineEdit.overview.addInstructions")}
             bordered={false}
             contentClassName="min-h-(--sz-120px) text-sm leading-7"
             mentions={mentionOptions}
@@ -325,37 +335,37 @@ export function OverviewSection({
       <div className="grid gap-3 sm:grid-cols-3">
         <SummaryCard
           icon={Clock3}
-          label="Triggers"
-          value={activeTriggers === 0 ? "None" : `${activeTriggers} active`}
-          hint={nextFire ? `Next fire ${nextFire}` : "No schedule"}
+          label={t("pages2.routineEdit.overview.triggers")}
+          value={activeTriggers === 0 ? t("pages2.routineEdit.common.none") : t("pages2.routineEdit.overview.activeCount", { total: activeTriggers })}
+          hint={nextFire ? t("pages2.routineEdit.overview.nextFire", { time: nextFire }) : t("pages2.routineEdit.overview.noSchedule")}
           to={() => navigateToSection("triggers")}
-          ariaLabel={`${activeTriggers} triggers. Open triggers.`}
+          ariaLabel={t("pages2.routineEdit.overview.triggersAria", { total: activeTriggers })}
         />
         <SummaryCard
           icon={KeyRound}
-          label="Secrets"
-          value={boundSecrets === 0 ? "None" : `${boundSecrets} bound`}
-          hint="Manage bound secrets"
+          label={t("pages2.routineEdit.secrets.cardLabel")}
+          value={boundSecrets === 0 ? t("pages2.routineEdit.common.none") : t("pages2.routineEdit.secrets.boundCount", { total: boundSecrets })}
+          hint={t("pages2.routineEdit.secrets.manageBound")}
           to={() => navigateToSection("secrets")}
-          ariaLabel={`${boundSecrets} secrets bound. Open secrets.`}
+          ariaLabel={t("pages2.routineEdit.secrets.cardAria", { total: boundSecrets })}
         />
         <SummaryCard
           icon={Play}
-          label="Last run"
-          value={lastRun ? lastRun.status.replaceAll("_", " ") : "No runs"}
-          hint={lastRun ? timeAgo(lastRun.triggeredAt) : "Trigger a run"}
+          label={t("pages2.routineEdit.overview.lastRun")}
+          value={lastRun ? lastRun.status.replaceAll("_", " ") : t("pages2.routineEdit.overview.noRuns")}
+          hint={lastRun ? timeAgo(lastRun.triggeredAt) : t("pages2.routineEdit.overview.triggerRun")}
           to={() => navigateToSection("runs")}
-          ariaLabel={lastRun ? `Last run ${lastRun.status}. Open runs.` : "No runs. Open runs."}
+          ariaLabel={lastRun ? t("pages2.routineEdit.overview.lastRunAria", { status: lastRun.status.replaceAll("_", " ") }) : t("pages2.routineEdit.overview.noRunsAria")}
         />
       </div>
 
       {/* Recent activity */}
       <div className="space-y-2">
         <p className="text-xs font-medium uppercase tracking-wide text-muted-foreground">
-          Recent activity
+          {t("pages2.routineEdit.overview.recentActivity")}
         </p>
         {recentActivity.length === 0 ? (
-          <p className="text-xs text-muted-foreground">No activity yet.</p>
+          <p className="text-xs text-muted-foreground">{t("pages2.routineEdit.overview.noActivityYet")}</p>
         ) : (
           <div className="divide-y divide-border/60">
             {recentActivity.map((event) => (
@@ -376,7 +386,7 @@ export function OverviewSection({
               onClick={() => navigateToSection("activity")}
               className="flex items-center gap-1 pt-2 text-xs text-muted-foreground hover:text-foreground"
             >
-              View all activity <ArrowRight className="h-3 w-3" />
+              {t("pages2.routineEdit.overview.viewAllActivity")} <ArrowRight className="h-3 w-3" />
             </button>
           </div>
         )}
@@ -419,6 +429,7 @@ function SummaryCard({
 
 export function TriggersSection() {
   const ctx = useRoutineDetail();
+  const { t } = useTranslation();
   const { routine, newTrigger, setNewTrigger, createTrigger, updateTrigger, deleteTrigger, rotateTrigger, secretMessage, copySecretValue, setSecretMessage } = ctx;
   const [addOpen, setAddOpen] = useState(false);
   const [newScheduleEditorValid, setNewScheduleEditorValid] = useState(true);
@@ -440,8 +451,8 @@ export function TriggersSection() {
       <div className="flex items-center justify-between">
         <p className="text-sm font-medium text-muted-foreground">
           {routine.triggers.length === 0
-            ? "No triggers yet"
-            : `${routine.triggers.length} trigger${routine.triggers.length === 1 ? "" : "s"}`}
+            ? t("pages2.routineEdit.triggers.noneHeader")
+            : t("pages2.routineEdit.triggers.count", { count: routine.triggers.length })}
         </p>
         <Button
           size="sm"
@@ -452,12 +463,12 @@ export function TriggersSection() {
           {addOpen ? (
             <>
               <X className="mr-1.5 h-3.5 w-3.5" />
-              Cancel
+              {t("pages2.routineEdit.triggers.cancel")}
             </>
           ) : (
             <>
               <Plus className="mr-1.5 h-3.5 w-3.5" />
-              New trigger
+              {t("pages2.routineEdit.triggers.newTrigger")}
             </>
           )}
         </Button>
@@ -466,10 +477,10 @@ export function TriggersSection() {
       {/* Add trigger form — expand-on-click drawer */}
       {addOpen ? (
       <div className="space-y-3 rounded-lg border border-border p-4">
-        <p className="text-sm font-medium">Add trigger</p>
+        <p className="text-sm font-medium">{t("pages2.routineEdit.triggers.addTrigger")}</p>
         <div className="grid gap-3 md:grid-cols-2">
           <div className="space-y-1.5">
-            <Label className="text-xs">Kind</Label>
+            <Label className="text-xs">{t("pages2.routineEdit.triggers.kind")}</Label>
             <Select
               value={newTrigger.kind}
               onValueChange={(kind) => setNewTrigger((current) => ({ ...current, kind }))}
@@ -488,7 +499,7 @@ export function TriggersSection() {
           </div>
           {newTrigger.kind === "schedule" && (
             <div className="space-y-1.5 md:col-span-2">
-              <Label className="text-xs">Schedule</Label>
+              <Label className="text-xs">{t("pages2.routineEdit.triggers.schedule")}</Label>
               <ScheduleEditor
                 value={newTrigger.cronExpression}
                 onChange={(cronExpression) =>
@@ -501,7 +512,7 @@ export function TriggersSection() {
           {newTrigger.kind === "webhook" && (
             <>
               <div className="space-y-1.5">
-                <Label className="text-xs">Signing mode</Label>
+                <Label className="text-xs">{t("pages2.routineEdit.triggers.signingMode")}</Label>
                 <Select
                   value={newTrigger.signingMode}
                   onValueChange={(signingMode) =>
@@ -520,12 +531,12 @@ export function TriggersSection() {
                   </SelectContent>
                 </Select>
                 <p className="text-xs text-muted-foreground">
-                  {signingModeDescriptions[newTrigger.signingMode]}
+                  {t(signingModeDescriptions[newTrigger.signingMode])}
                 </p>
               </div>
               {!SIGNING_MODES_WITHOUT_REPLAY_WINDOW.has(newTrigger.signingMode) && (
                 <div className="space-y-1.5">
-                  <Label className="text-xs">Replay window (seconds)</Label>
+                  <Label className="text-xs">{t("pages2.routineEdit.triggers.replayWindow")}</Label>
                   <Input
                     value={newTrigger.replayWindowSec}
                     onChange={(event) =>
@@ -539,7 +550,7 @@ export function TriggersSection() {
         </div>
         <div className="flex items-center justify-end gap-2">
           <Button size="sm" variant="ghost" onClick={() => setAddOpen(false)}>
-            Cancel
+            {t("pages2.routineEdit.triggers.cancel")}
           </Button>
           <Button
             size="sm"
@@ -553,7 +564,7 @@ export function TriggersSection() {
             }
             disabled={addDisabled}
           >
-            {createTrigger.isPending ? "Adding..." : "Add trigger"}
+            {createTrigger.isPending ? t("pages2.routineEdit.triggers.adding") : t("pages2.routineEdit.triggers.addTrigger")}
           </Button>
         </div>
       </div>
@@ -564,28 +575,28 @@ export function TriggersSection() {
           <div>
             <p className="font-medium">{secretMessage.title}</p>
             <p className="text-xs text-muted-foreground">
-              Save this now. Paperclip will not show the secret value again.
+              {t("pages2.routineEdit.triggers.saveSecretNow")}
             </p>
           </div>
           <div className="space-y-3">
             {secretMessage.entries.map((entry, index) => (
               <div key={`${entry.webhookUrl}-${index}`} className="space-y-2">
                 <div className="flex items-center gap-2">
-                  <Input aria-label="New webhook URL" value={entry.webhookUrl} readOnly className="flex-1" />
-                  <Button variant="outline" size="sm" onClick={() => copySecretValue("Webhook URL", entry.webhookUrl)}>
-                    URL
+                  <Input aria-label={t("pages2.routineEdit.triggers.newWebhookUrl")} value={entry.webhookUrl} readOnly className="flex-1" />
+                  <Button variant="outline" size="sm" onClick={() => copySecretValue(t("pages2.routineEdit.triggers.webhookUrlLabel"), entry.webhookUrl)}>
+                    {t("pages2.routineEdit.triggers.url")}
                   </Button>
                 </div>
                 <div className="flex items-center gap-2">
-                  <Input aria-label="New webhook secret" value={entry.webhookSecret} readOnly className="flex-1" />
-                  <Button variant="outline" size="sm" onClick={() => copySecretValue("Webhook secret", entry.webhookSecret)}>
-                    Secret
+                  <Input aria-label={t("pages2.routineEdit.triggers.newWebhookSecret")} value={entry.webhookSecret} readOnly className="flex-1" />
+                  <Button variant="outline" size="sm" onClick={() => copySecretValue(t("pages2.routineEdit.triggers.webhookSecretLabel"), entry.webhookSecret)}>
+                    {t("pages2.routineEdit.triggers.secret")}
                   </Button>
                 </div>
               </div>
             ))}
           </div>
-          <Button variant="outline" size="sm" onClick={() => setSecretMessage(null)}>Done</Button>
+          <Button variant="outline" size="sm" onClick={() => setSecretMessage(null)}>{t("pages2.routineEdit.triggers.done")}</Button>
         </div>
       ) : null}
 
@@ -593,8 +604,8 @@ export function TriggersSection() {
       {routine.triggers.length === 0 ? (
         <EmptyState
           icon={Clock3}
-          message="No triggers yet."
-          action="Add a trigger"
+          message={t("pages2.routineEdit.triggers.none")}
+          action={t("pages2.routineEdit.triggers.addATrigger")}
           onAction={() => setAddOpen(true)}
         />
       ) : (
@@ -617,19 +628,19 @@ export function TriggersSection() {
 export function VariablesSection() {
   const ctx = useRoutineDetail();
   const { editDraft, setEditDraft, navigateToSection } = ctx;
+  const { t } = useTranslation();
   const hasVariables = editDraft.variables.length > 0;
 
   return (
     <div className="space-y-4">
       <div className="flex items-center gap-3 rounded-md border border-border bg-muted/20 px-4 py-3 text-xs">
         <span className="flex-1 text-muted-foreground">
-          Variables are auto-detected from <code className="font-mono">{"{{placeholders}}"}</code> in
-          the title &amp; instructions. The variable name is read-only — rename by editing the
-          placeholder.
+          {t("pages2.routineEdit.variables.hint1")} <code className="font-mono">{"{{placeholders}}"}</code>{" "}
+          {t("pages2.routineEdit.variables.hint2")}
         </span>
         <Button variant="secondary" size="sm" onClick={() => navigateToSection("overview")}>
           <Edit3 className="mr-1.5 h-3.5 w-3.5" />
-          Edit instructions
+          {t("pages2.routineEdit.variables.editInstructions")}
         </Button>
       </div>
 
@@ -643,8 +654,8 @@ export function VariablesSection() {
       ) : (
         <EmptyState
           icon={Braces}
-          message="No variables yet. Add a {{placeholder}} in the title or instructions to create one."
-          action="Edit instructions"
+          message={t("pages2.routineEdit.variables.empty", { token: "{{placeholder}}" })}
+          action={t("pages2.routineEdit.variables.editInstructions")}
           onAction={() => navigateToSection("overview")}
         />
       )}
@@ -674,8 +685,8 @@ export function SecretsSection() {
   return (
     <div className="space-y-4">
       <div className="rounded-md border border-border bg-muted/20 px-4 py-3 text-xs text-muted-foreground">
-        Routine secrets apply to every task this routine creates. They override matching keys in
-        project and agent env. <span className="font-mono">PAPERCLIP_*</span> names are reserved.
+        {t("pages2.routineEdit.secrets.note1")} <span className="font-mono">PAPERCLIP_*</span>{" "}
+        {t("pages2.routineEdit.secrets.note2")}
       </div>
 
 
@@ -693,6 +704,7 @@ export function SecretsSection() {
 export function DeliverySection() {
   const ctx = useRoutineDetail();
   const { editDraft, setEditDraft, routine } = ctx;
+  const { t } = useTranslation();
 
   // The activity gate only affects schedule ticks (webhook/manual/API fires are
   // themselves activity and always run), so the control is only meaningful for
@@ -705,58 +717,57 @@ export function DeliverySection() {
     <div className="space-y-6">
       <div className="space-y-3">
         <p className="text-xs font-medium uppercase tracking-(--tracking-caps) text-muted-foreground">
-          Concurrency
+          {t("pages2.routineEdit.delivery.concurrency")}
         </p>
         <RadioCardGroup
-          ariaLabel="Concurrency policy"
+          ariaLabel={t("pages2.routineEdit.delivery.concurrencyAria")}
           value={editDraft.concurrencyPolicy}
           onValueChange={(concurrencyPolicy) =>
             setEditDraft((current) => ({ ...current, concurrencyPolicy }))
           }
-          options={concurrencyPolicyOptions}
+          options={toRadioOptions(concurrencyPolicyOptions)}
         />
       </div>
       <div className="space-y-3">
         <p className="text-xs font-medium uppercase tracking-(--tracking-caps) text-muted-foreground">
-          Catch-up
+          {t("pages2.routineEdit.delivery.catchUp")}
         </p>
         <RadioCardGroup
-          ariaLabel="Catch-up policy"
+          ariaLabel={t("pages2.routineEdit.delivery.catchUpAria")}
           value={editDraft.catchUpPolicy}
           onValueChange={(catchUpPolicy) =>
             setEditDraft((current) => ({ ...current, catchUpPolicy }))
           }
-          options={catchUpPolicyOptions}
+          options={toRadioOptions(catchUpPolicyOptions)}
         />
       </div>
       <div className="space-y-3">
         <p className="text-xs font-medium uppercase tracking-(--tracking-caps) text-muted-foreground">
-          Advanced run policy
+          {t("pages2.routineEdit.delivery.advancedPolicy")}
         </p>
         <RadioCardGroup
-          ariaLabel="Advanced run policy"
+          ariaLabel={t("pages2.routineEdit.delivery.advancedPolicy")}
           value={editDraft.activityGatePolicy}
           onValueChange={(activityGatePolicy) =>
             setEditDraft((current) => ({ ...current, activityGatePolicy }))
           }
-          options={activityGatePolicyOptions}
+          options={toRadioOptions(activityGatePolicyOptions)}
           disabled={!hasScheduleTrigger}
         />
         {!hasScheduleTrigger ? (
           <p className="text-xs text-muted-foreground">
-            Add a schedule trigger to gate runs on activity. Webhook, manual, and API fires always
-            run.
+            {t("pages2.routineEdit.delivery.gateHint")}
           </p>
         ) : gateEnabled ? (
           <div className="space-y-2 rounded-lg border border-border p-3">
-            <Label className="text-xs font-medium">Activity scope</Label>
+            <Label className="text-xs font-medium">{t("pages2.routineEdit.delivery.activityScope")}</Label>
             <RadioCardGroup
-              ariaLabel="Activity gate scope"
+              ariaLabel={t("pages2.routineEdit.delivery.activityScopeAria")}
               value={editDraft.activityGateScope}
               onValueChange={(activityGateScope) =>
                 setEditDraft((current) => ({ ...current, activityGateScope }))
               }
-              options={activityGateScopeOptions}
+              options={toRadioOptions(activityGateScopeOptions)}
             />
           </div>
         ) : null}
@@ -788,6 +799,7 @@ function NextFiresPreview({
   triggers: RoutineDetailType["triggers"];
   concurrencyPolicy: string;
 }) {
+  const { t } = useTranslation();
   const preview = useMemo(() => {
     const schedule = triggers
       .filter((trigger) => trigger.kind === "schedule" && trigger.enabled && trigger.cronExpression)
@@ -809,7 +821,7 @@ function NextFiresPreview({
   return (
     <div className="space-y-3">
       <p className="text-xs font-medium uppercase tracking-(--tracking-caps) text-muted-foreground">
-        Next 5 fires
+        {t("pages2.routineEdit.nextFires.title")}
       </p>
       {preview ? (
         <>
@@ -829,14 +841,12 @@ function NextFiresPreview({
             ))}
           </div>
           <p className="text-(length:--text-micro) text-muted-foreground/60">
-            Preview assumes the previous run is still in flight when the next fires. Times shown in{" "}
-            {preview.timeZone}.
+            {t("pages2.routineEdit.nextFires.previewNote", { zone: preview.timeZone })}
           </p>
         </>
       ) : (
         <p className="rounded-lg border border-dashed border-border p-3 text-xs text-muted-foreground">
-          No enabled schedule trigger to preview. Add a schedule in Triggers to see how this policy
-          treats upcoming fires.
+          {t("pages2.routineEdit.nextFires.noPreview")}
         </p>
       )}
     </div>

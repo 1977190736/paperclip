@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { ChevronRight } from "lucide-react";
 import type { ActivityEvent } from "@paperclipai/shared";
+import { t } from "@/i18n";
 import { cn } from "@/lib/utils";
 
 export type RoutineActivityEvent = Pick<ActivityEvent, "id" | "action" | "details" | "createdAt">;
@@ -15,13 +16,13 @@ function formatTime(value: string | Date): string {
 
 function summarizeEvent(event: RoutineActivityEvent): string {
   const details = event.details;
-  if (event.action === "routine.webhook_test_received") return "Connection working · No run or task created";
-  if (event.action === "routine.webhook_test_rejected") return "Update the key in your app and resend";
-  if (event.action === "routine.webhook_received") return "Authentication passed";
-  if (event.action === "routine.webhook_rejected") return "Check the key in your sending app";
+  if (event.action === "routine.webhook_test_received") return t("comps1.activity.webhookTestReceivedSummary");
+  if (event.action === "routine.webhook_test_rejected") return t("comps1.activity.webhookTestRejectedSummary");
+  if (event.action === "routine.webhook_received") return t("comps1.activity.webhookReceivedSummary");
+  if (event.action === "routine.webhook_rejected") return t("comps1.activity.webhookRejectedSummary");
   if (!details) return "";
   if (typeof details.changeSummary === "string") return details.changeSummary;
-  if (event.action === "routine.run_triggered") return `${details.source === "webhook" ? "Webhook" : details.source === "schedule" ? "Schedule" : "Manual"} · ${details.status === "issue_created" ? "Task created" : String(details.status ?? "").replaceAll("_", " ")}`;
+  if (event.action === "routine.run_triggered") return `${details.source === "webhook" ? t("comps1.activity.sourceWebhook") : details.source === "schedule" ? t("comps1.activity.sourceSchedule") : t("comps1.activity.sourceManual")} · ${details.status === "issue_created" ? t("comps1.activity.taskCreated") : String(details.status ?? "").replaceAll("_", " ")}`;
   return Object.entries(details).filter(([key]) => !/id$/i.test(key)).slice(0, 3)
     .map(([key, value]) => `${key.replace(/([a-z])([A-Z])/g, "$1 $2").replaceAll("_", " ").toLowerCase()}: ${formatDetailValue(value)}`)
     .join(" · ");
@@ -39,18 +40,20 @@ function formatDetailValue(value: unknown): string {
   }
 }
 
-const actionLabels: Record<string, string> = {
-  "routine.webhook_test_received": "Connection test passed",
-  "routine.webhook_test_rejected": "Connection test rejected",
-  "routine.webhook_received": "Webhook event received",
-  "routine.webhook_rejected": "Webhook authentication failed",
-  "routine.created": "Routine created", "routine.updated": "Routine updated",
-  "routine.trigger_created": "Trigger added", "routine.trigger_updated": "Trigger updated",
-  "routine.trigger_deleted": "Trigger removed", "routine.trigger_removed": "Trigger removed", "routine.trigger_restored": "Trigger restored", "routine.trigger_setup_finished": "Webhook setup finished", "routine.trigger_secret_rotated": "Webhook key replaced",
-  "routine.run_triggered": "Routine started", "routine.run_created": "Run created",
+const actionLabelKeys: Record<string, string> = {
+  "routine.webhook_test_received": "webhookTestPassed",
+  "routine.webhook_test_rejected": "webhookTestRejected",
+  "routine.webhook_received": "webhookEventReceived",
+  "routine.webhook_rejected": "webhookAuthFailed",
+  "routine.created": "routineCreated", "routine.updated": "routineUpdated",
+  "routine.trigger_created": "triggerAdded", "routine.trigger_updated": "triggerUpdated",
+  "routine.trigger_deleted": "triggerRemoved", "routine.trigger_removed": "triggerRemoved", "routine.trigger_restored": "triggerRestored", "routine.trigger_setup_finished": "webhookSetupFinished", "routine.trigger_secret_rotated": "webhookKeyReplaced",
+  "routine.run_triggered": "routineStarted", "routine.run_created": "runCreated",
 };
 function actionLabel(action: string) {
-  return actionLabels[action] ?? action.replace(/^routine[._]/, "").replaceAll("_", " ").replaceAll(".", " ").replace(/^./, (char) => char.toUpperCase());
+  const key = actionLabelKeys[action];
+  if (key) return t(`comps1.activity.label.${key}`);
+  return action.replace(/^routine[._]/, "").replaceAll("_", " ").replaceAll(".", " ").replace(/^./, (char) => char.toUpperCase());
 }
 
 /** Activity log row with an expandable JSON payload (§3.7). */

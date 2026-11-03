@@ -15,6 +15,7 @@ import {
 import { DocumentAnnotationLayer, type AnnotationAnchorRect, type PendingAnchor } from "./DocumentAnnotationLayer";
 import { DocumentAnnotationPanel } from "./DocumentAnnotationPanel";
 import { DocumentAnnotationPopover } from "./DocumentAnnotationPopover";
+import { useTranslation } from "@/i18n";
 import type { CompanyUserProfile } from "@/lib/company-members";
 
 // Width of the right-hand comment gutter on desktop (lg+). The gutter is an
@@ -128,15 +129,16 @@ export function IssueDocumentAnnotations({
     setFocusedCommentId(target.commentId);
   }, [doc.key, locationHash, onPanelOpenChange]);
 
+  const { t } = useTranslation();
   const newCommentDisabled = draftDirty || draftConflicted || historicalPreview || !doc.latestRevisionId;
   const newCommentDisabledReason = historicalPreview
-    ? "New comments are disabled while previewing a historical revision."
+    ? t("comps1.docAnnotations.reasonHistoricalPreview")
     : draftConflicted
-      ? "Resolve the document conflict before adding new comments."
+      ? t("comps1.docAnnotations.reasonConflict")
       : draftDirty
-        ? "Save the draft to anchor new comments."
+        ? t("comps1.docAnnotations.reasonDraftDirty")
         : !doc.latestRevisionId
-          ? "Document has no saved revision yet."
+          ? t("comps1.docAnnotations.reasonNoRevision")
           : null;
 
   const handleSelectionAnchorChange = useCallback((anchor: PendingAnchor | null) => {
@@ -407,6 +409,7 @@ export function DocumentAnnotationsCountChip({
       : documentAnnotationsApi.list(issueId, docKey, { status: "all", includeComments: true }),
     staleTime: 30_000,
   });
+  const { t } = useTranslation();
   const threads = annotationsQuery.data ?? [];
   const openCount = useMemo(
     () => threads.filter((thread) => thread.status === "open" && thread.anchorState !== "orphaned").length,
@@ -427,14 +430,14 @@ export function DocumentAnnotationsCountChip({
       onClick={onToggle}
       data-testid={`document-annotation-count-${docKey}`}
       aria-label={openCount === 0
-        ? `Open comments on ${docKey}`
-        : `Open ${openCount} unresolved comments on ${docKey}`}
+        ? t("comps1.docAnnotations.openCommentsAria", { key: docKey })
+        : t("comps1.docAnnotations.openUnresolvedAria", { count: openCount, key: docKey })}
       aria-expanded={panelOpen}
     >
       <MessageSquare className="h-3 w-3" aria-hidden="true" />
       <span className="tabular-nums">{openCount}</span>
       <span className="hidden sm:inline">
-        {openCount === 1 ? "comment" : "comments"}
+        {openCount === 1 ? t("comps1.docAnnotations.commentSingular") : t("comps1.docAnnotations.commentPlural")}
       </span>
     </Button>
   );

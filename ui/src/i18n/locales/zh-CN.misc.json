@@ -3,6 +3,7 @@
     "projects": {
       "breadcrumb": "项目",
       "projectFallback": "项目",
+      "saveLabel": "保存",
       "noOrgSelected": "尚未选择组织",
       "loadingWorkspaces": "工作区加载中...",
       "cancel": "取消",

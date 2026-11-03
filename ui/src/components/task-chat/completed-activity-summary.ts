@@ -6,23 +6,24 @@ import {
   type ToolIcon,
 } from "./tool-taxonomy";
 import { protocolActivityPresentation, providerNoticeSeverity } from "./task-chat-activity-presentation";
+import { t } from "@/i18n";
 
 type Activity = TaskChatActivityPhaseItem["items"][number];
-const labels: Record<ToolFamily, string> = {
-  terminal: "Ran commands",
-  grep: "Searched files",
-  search: "Searched files",
-  read: "Read files",
-  edit: "Edited files",
-  web: "Searched the web",
-  plan: "Worked on a plan",
-  question: "Requested input",
-  agent: "Worked with agents",
-  safety: "Reviewed safety",
-  image: "Worked with images",
-  wait: "Waited",
-  mcp: "Used connected tools",
-  other: "Used tools",
+const labelKeys: Record<ToolFamily, string> = {
+  terminal: "taskChat.completed.terminal",
+  grep: "taskChat.completed.searchedFiles",
+  search: "taskChat.completed.searchedFiles",
+  read: "taskChat.completed.readFiles",
+  edit: "taskChat.completed.editedFiles",
+  web: "taskChat.completed.searchedWeb",
+  plan: "taskChat.completed.workedOnPlan",
+  question: "taskChat.completed.requestedInput",
+  agent: "taskChat.completed.workedWithAgents",
+  safety: "taskChat.completed.reviewedSafety",
+  image: "taskChat.completed.workedWithImages",
+  wait: "taskChat.completed.waited",
+  mcp: "taskChat.completed.usedConnectedTools",
+  other: "taskChat.completed.usedTools",
 };
 
 /** Describe observed activities, never infer success from a finished group. */
@@ -82,26 +83,27 @@ export function completedActivitySummary(items: Activity[]) {
         }
         const family =
           item.surface === "provider_activity" ? item.family : item.surface;
-        const label =
+        const label = t(
           (
             {
-              research: "Searched the web",
-              plan: "Worked on a plan",
-              delegation: "Worked with agents",
-              artifact: "Worked with artifacts",
-              context: "Managed context",
-              memory: "Checked memory",
-              model_identity: "Checked model settings",
-              review: "Worked in review mode",
-              hook: "Ran hooks",
-              safety: "Reviewed safety",
-              terminal: "Ran commands",
-              wait: "Waited",
-              workspace_change: "Worked on files",
-              workspace_file: "Referenced files",
-              resource: "Added resources",
+              research: "taskChat.completed.searchedWeb",
+              plan: "taskChat.completed.workedOnPlan",
+              delegation: "taskChat.completed.workedWithAgents",
+              artifact: "taskChat.completed.workedWithArtifacts",
+              context: "taskChat.completed.managedContext",
+              memory: "taskChat.completed.checkedMemory",
+              model_identity: "taskChat.completed.checkedModelSettings",
+              review: "taskChat.completed.workedInReviewMode",
+              hook: "taskChat.completed.ranHooks",
+              safety: "taskChat.completed.reviewedSafety",
+              terminal: "taskChat.completed.terminal",
+              wait: "taskChat.completed.waited",
+              workspace_change: "taskChat.completed.workedOnFiles",
+              workspace_file: "taskChat.completed.referencedFiles",
+              resource: "taskChat.completed.addedResources",
             } as Record<string, string>
-          )[family] ?? "Used tools";
+          )[family] ?? "taskChat.completed.usedTools"
+        );
         add(label, p.icon, order);
       }
     }
@@ -111,12 +113,12 @@ export function completedActivitySummary(items: Activity[]) {
       ?? notices.find((notice) => notice.severity === "warning")
       ?? notices[0]!;
     const label = notices.length === 1
-      ? strongest.summary || "Received a provider update"
+      ? strongest.summary || t("taskChat.completed.receivedProviderUpdate")
       : strongest.severity === "error"
-        ? "Provider error reported"
+        ? t("taskChat.completed.providerErrorReported")
         : strongest.severity === "warning"
-          ? "Provider warning reported"
-          : "Received provider updates";
+          ? t("taskChat.completed.providerWarningReported")
+          : t("taskChat.completed.receivedProviderUpdates");
     // One notice category leaves room for actual work. Keep warnings and errors
     // visible when the compact label truncates other activity categories.
     add(label, strongest.icon, strongest.severity === "info" ? notices[0]!.order : -1);
@@ -129,18 +131,18 @@ export function completedActivitySummary(items: Activity[]) {
     const succeeded = completedFamilies.has(tool.family);
     const label =
       tool.family === "read" && !succeeded
-        ? "Checked files"
+        ? t("taskChat.completed.checkedFiles")
         : tool.family === "edit" && !succeeded
-          ? "Worked on files"
-          : labels[tool.family];
+          ? t("taskChat.completed.workedOnFiles")
+          : t(labelKeys[tool.family]);
     add(label, tool.icon, tool.order);
   }
   if (!categories.size) {
     if (items.some((item) => item.kind === "thinking"))
-      add("Thought through the task", Brain);
+      add(t("taskChat.completed.thoughtThroughTask"), Brain);
     else if (items.some((item) => item.kind === "marker"))
-      add("Activity stopped", CirclePause);
-    else add("Recorded usage", Gauge);
+      add(t("taskChat.completed.activityStopped"), CirclePause);
+    else add(t("taskChat.completed.recordedUsage"), Gauge);
   }
   const values = [...categories.values()].sort((a, b) => a.order - b.order);
   const join = (parts: string[]) =>
@@ -151,7 +153,7 @@ export function completedActivitySummary(items: Activity[]) {
   return {
     label:
       values.length > 3
-        ? `${join(values.slice(0, 2).map((v) => v.label))}, and more`
+        ? `${join(values.slice(0, 2).map((v) => v.label))}${t("taskChat.completed.andMore")}`
         : fullLabel,
     fullLabel,
     icon: values.length === 1 ? values[0].icon : Layers3,

@@ -1,11 +1,8 @@
 import { useEffect, useRef, useState } from "react";
 import { ImagePlus, Loader2 } from "lucide-react";
-import {
-  MarkdownEditor,
-  type MarkdownEditorRef,
-  type MentionOption,
-} from "@/components/MarkdownEditor";
+import { MarkdownEditor, type MarkdownEditorRef, type MentionOption } from "@/components/MarkdownEditor";
 import { Button } from "@/components/ui/button";
+import { useTranslation, t as translate } from "@/i18n";
 
 interface TaskChatRichInputProps {
   value: string;
@@ -37,10 +34,11 @@ export function TaskChatRichInput({
   onUploadingChange,
   ariaLabelledBy,
   testId = "task-chat-rich-input",
-  attachAriaLabel = "Attach image",
+  attachAriaLabel = translate("taskChat.richInput.attachAria"),
   showImageAttachControls = false,
   questionAnswer = false,
 }: TaskChatRichInputProps) {
+  const { t } = useTranslation();
   const editorRef = useRef<MarkdownEditorRef>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
   const uploadCountRef = useRef(0);
@@ -59,7 +57,7 @@ export function TaskChatRichInput({
   }
 
   async function uploadImage(file: File): Promise<string> {
-    if (!imageUploadHandler) throw new Error("Image uploads are unavailable.");
+    if (!imageUploadHandler) throw new Error(t("taskChat.richInput.uploadsUnavailable"));
     uploadCountRef.current += 1;
     updateUploading(true);
     setUploadError(null);
@@ -69,7 +67,7 @@ export function TaskChatRichInput({
       setUploadError(
         error instanceof Error
           ? error.message
-          : "The image could not be uploaded.",
+          : t("taskChat.richInput.uploadFailed"),
       );
       throw error;
     } finally {
@@ -135,9 +133,9 @@ export function TaskChatRichInput({
             ) : (
               <ImagePlus aria-hidden className="h-3.5 w-3.5" />
             )}
-            Attach image
+            {t("taskChat.richInput.attachImage")}
           </Button>
-          <span>or drop/paste an image into the note</span>
+          <span>{t("taskChat.richInput.dropHint")}</span>
         </div>
       ) : null}
       {uploadError ? (

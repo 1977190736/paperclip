@@ -6,6 +6,7 @@ import { Badge } from "@/components/ui/badge";
 import { queryKeys } from "@/lib/queryKeys";
 import { Link } from "@/lib/router";
 import { useChatConnectorsEnabled, chatProviderVisible } from "@/hooks/useChatConnectorsEnabled";
+import { useTranslation } from "@/i18n";
 
 const providerNames: Record<ChatProvider, string> = {
   speko: "Speko",
@@ -26,6 +27,7 @@ export function AgentChannelsPanel({
   agentId: string;
 }) {
   const { enabled, githubEnabled } = useChatConnectorsEnabled();
+  const { t } = useTranslation();
   const query = useQuery({
     queryKey: queryKeys.chatEndpoints.list(companyId),
     queryFn: () => chatEndpointsApi.list(companyId),
@@ -39,28 +41,28 @@ export function AgentChannelsPanel({
     <section className="max-w-3xl space-y-5">
       <div className="flex flex-wrap items-start justify-between gap-3">
         <div>
-          <h2 className="text-lg font-semibold">Channels</h2>
+          <h2 className="text-lg font-semibold">{t("connections.channels.heading")}</h2>
           <p className="mt-1 text-sm text-muted-foreground">
-            Chat and email identities connected to this agent.
+            {t("connections.channels.description")}
           </p>
         </div>
         <Button asChild size="sm">
           <Link to={`/apps?chatAgentId=${encodeURIComponent(agentId)}`}>
             <MessageSquarePlus />
-            Connect a channel
+            {t("connections.channels.connectChannel")}
           </Link>
         </Button>
       </div>
       {query.isLoading ? (
-        <p className="text-sm text-muted-foreground">Loading channels…</p>
+        <p className="text-sm text-muted-foreground">{t("connections.channels.loading")}</p>
       ) : endpoints.length === 0 ? (
         <div className="rounded-lg border border-dashed border-border p-5">
-          <p className="text-sm font-medium">No channels connected</p>
+          <p className="text-sm font-medium">{t("connections.channels.empty")}</p>
           <p className="mt-1 text-sm text-muted-foreground">
-            {enabled || githubEnabled ? "Connect an agent identity from Connectors." : "Connect AgentMail from Connectors."}
+            {enabled || githubEnabled ? t("connections.channels.emptyFromConnectors") : t("connections.channels.emptyAgentMail")}
           </p>
           <Button asChild className="mt-3" variant="outline" size="sm">
-            <Link to="/apps">Open Connectors</Link>
+            <Link to="/apps">{t("connections.channels.openConnectors")}</Link>
           </Button>
         </div>
       ) : (
@@ -77,13 +79,13 @@ export function AgentChannelsPanel({
                 <p className="truncate text-xs text-muted-foreground">
                   {endpoint.botLabel ??
                     endpoint.providerAccountLabel ??
-                    "Provider identity"}
+                    t("connections.channels.providerIdentity")}
                 </p>
               </div>
               <Badge variant="outline">{endpoint.status.replace(/[_-]/g, " ")}</Badge>
               <Button asChild size="sm" variant="outline">
                 <Link to={`/apps/chat/${endpoint.id}/settings`}>
-                  Open connection <ExternalLink />
+                  {t("connections.channels.openConnection")} <ExternalLink />
                 </Link>
               </Button>
             </div>

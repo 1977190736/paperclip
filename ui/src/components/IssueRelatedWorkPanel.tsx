@@ -4,6 +4,7 @@ import { ExternalObjectPill } from "./ExternalObjectPill";
 import type { IssueExternalObjectGroup } from "../hooks/useIssueExternalObjects";
 import { externalObjectToneSeverity } from "../lib/external-objects";
 import { Badge } from "@/components/ui/badge";
+import { useTranslation } from "@/i18n";
 
 type GroupedSource = {
   label: string;
@@ -98,6 +99,7 @@ function ExternalObjectsSection({
   isError: boolean;
   onRetry?: () => void;
 }) {
+  const { t } = useTranslation();
   // Severity-first sort with most-recently-changed as the secondary sort.
   const sorted = [...groups].sort((a, b) => {
     const aTone = externalObjectToneSeverity(a.pill.statusCategory ? a.group.object?.statusTone ?? null : null);
@@ -111,30 +113,30 @@ function ExternalObjectsSection({
   return (
     <section className="space-y-3 rounded-lg border border-border p-3">
       <div className="space-y-1">
-        <h3 className="text-sm font-semibold">External objects</h3>
+        <h3 className="text-sm font-semibold">{t("comps1.relatedWork.externalObjects")}</h3>
         <p className="text-xs text-muted-foreground">
-          Remote work referenced from this issue — pull requests, deployments, tickets in other systems, and more.
+          {t("comps1.relatedWork.externalObjectsDescription")}
         </p>
       </div>
 
       {isError ? ( // query-error-ok: set only for a real failure (useIssueExternalObjects keeps data through outages)
         <p className="text-xs text-muted-foreground">
-          Couldn't load external objects.{" "}
+          {t("comps1.relatedWork.externalObjectsLoadFailed")}{" "}
           {onRetry ? (
             <button
               type="button"
               onClick={onRetry}
               className="text-primary underline-offset-2 hover:underline"
             >
-              Retry
+              {t("comps1.relatedWork.retry")}
             </button>
           ) : null}
         </p>
       ) : isLoading ? (
-        <p className="text-xs text-muted-foreground">Loading external objects…</p>
+        <p className="text-xs text-muted-foreground">{t("comps1.relatedWork.loadingExternalObjects")}</p>
       ) : sorted.length === 0 ? (
         <p className="text-xs text-muted-foreground">
-          This issue does not reference any external objects yet.
+          {t("comps1.relatedWork.externalObjectsEmpty")}
         </p>
       ) : (
         <ul className="-mx-1 flex flex-col">
@@ -187,14 +189,15 @@ export function IssueRelatedWorkPanel({
 }) {
   const outbound = relatedWork?.outbound ?? [];
   const inbound = relatedWork?.inbound ?? [];
+  const { t } = useTranslation();
 
   return (
     <div className="space-y-3">
       <Section
-        title="References"
-        description="Other tasks this task currently points at in its title, description, comments, or documents."
+        title={t("comps1.relatedWork.references")}
+        description={t("comps1.relatedWork.referencesDescription")}
         items={outbound}
-        emptyLabel="This task does not reference any other tasks yet."
+        emptyLabel={t("comps1.relatedWork.referencesEmpty")}
       />
       {externalObjectsEnabled ? (
         <ExternalObjectsSection
@@ -205,10 +208,10 @@ export function IssueRelatedWorkPanel({
         />
       ) : null}
       <Section
-        title="Referenced by"
-        description="Other tasks that currently point at this task."
+        title={t("comps1.relatedWork.referencedBy")}
+        description={t("comps1.relatedWork.referencedByDescription")}
         items={inbound}
-        emptyLabel="No other tasks reference this task yet."
+        emptyLabel={t("comps1.relatedWork.referencedByEmpty")}
       />
     </div>
   );

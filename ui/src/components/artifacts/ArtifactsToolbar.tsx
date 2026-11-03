@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import { ToolbarSearch } from "@/components/ToolbarSearch";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 import { cn } from "@/lib/utils";
+import { useTranslation, t as translate } from "@/i18n";
 
 export const ARTIFACT_KIND_FILTERS: { value: ArtifactKindFilter; label: string }[] = [
   { value: "all", label: "All" },
@@ -23,12 +24,19 @@ export const ARTIFACT_GROUP_OPTIONS: { value: ArtifactGroupBy; label: string }[]
 ];
 
 export function artifactGroupByLabel(value: ArtifactGroupBy): string {
-  return ARTIFACT_GROUP_OPTIONS.find((option) => option.value === value)?.label ?? "None";
+  return translate(`comps2.artifacts.group.${value}`);
 }
 
 /** Canonical collection filters; compact standalone, standard in the toolbar. */
 export function ArtifactKindFilters({ kind, onKindChange, size = "compact" }: { kind: ArtifactKindFilter; onKindChange: (value: ArtifactKindFilter) => void; size?: TabSize }) {
-  return <TabFilters items={ARTIFACT_KIND_FILTERS} value={kind} onValueChange={onKindChange} size={size} label="Filter artifacts by type" />;
+  const { t } = useTranslation();
+  return <TabFilters
+    items={ARTIFACT_KIND_FILTERS.map((filter) => ({ ...filter, label: t(`comps2.artifacts.kind.${filter.value}`) }))}
+    value={kind}
+    onValueChange={onKindChange}
+    size={size}
+    label={t("comps2.artifacts.filterByTypeAria")}
+  />;
 }
 
 export interface ArtifactsToolbarProps {
@@ -44,11 +52,12 @@ export interface ArtifactsToolbarProps {
 
 /** Shared shipped Artifacts controls. Canonical proposal: Components / Toolbars / Artifacts. */
 export function ArtifactsToolbar({ query: draftQuery, onQueryChange: setDraftQuery, groupBy, onGroupByChange: selectGroupBy, kind, onKindChange: selectKind, filters }: ArtifactsToolbarProps) {
+  const { t } = useTranslation();
   const grouping = groupBy !== "none";
   return (
-    <div data-canonical-toolbar="artifacts" role="toolbar" aria-label="Artifacts controls" className="flex flex-col items-start gap-4">
+    <div data-canonical-toolbar="artifacts" role="toolbar" aria-label={t("comps2.artifacts.controlsAria")} className="flex flex-col items-start gap-4">
       <div className="design-toolbar-controls flex w-full flex-wrap items-center gap-4">
-        <ToolbarSearch query={draftQuery} onQueryChange={setDraftQuery} label="Search artifacts" placeholder="Search artifacts…" clearLabel="Clear artifact search" />
+        <ToolbarSearch query={draftQuery} onQueryChange={setDraftQuery} label={t("comps2.artifacts.search")} placeholder={t("comps2.artifacts.searchPlaceholder")} clearLabel={t("comps2.artifacts.clearSearch")} />
 
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
@@ -56,8 +65,8 @@ export function ArtifactsToolbar({ query: draftQuery, onQueryChange: setDraftQue
               type="button"
               variant="outline"
               size="icon"
-              aria-label={`Group artifacts (currently ${artifactGroupByLabel(groupBy)})`}
-              title="Group artifacts"
+              aria-label={t("comps2.artifacts.groupAria", { current: artifactGroupByLabel(groupBy) })}
+              title={t("comps2.artifacts.groupTitle")}
               data-testid="artifact-group-control"
               data-group-by={groupBy}
               data-active={grouping}
@@ -67,7 +76,7 @@ export function ArtifactsToolbar({ query: draftQuery, onQueryChange: setDraftQue
             </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end" className="w-44">
-            <DropdownMenuLabel>Group by</DropdownMenuLabel>
+            <DropdownMenuLabel>{t("comps2.artifacts.groupBy")}</DropdownMenuLabel>
             {ARTIFACT_GROUP_OPTIONS.map((option) => (
               <DropdownMenuItem
                 key={option.value}
@@ -76,7 +85,7 @@ export function ArtifactsToolbar({ query: draftQuery, onQueryChange: setDraftQue
                 onSelect={() => selectGroupBy(option.value)}
                 className="justify-between"
               >
-                {option.label}
+                {t(`comps2.artifacts.group.${option.value}`)}
                 {groupBy === option.value ? <Check className="h-3.5 w-3.5" /> : null}
               </DropdownMenuItem>
             ))}

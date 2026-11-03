@@ -5,6 +5,7 @@ import { api, detachInflightGet } from "@/api/client";
 import { useCoordinatorWorkspaceEnabled } from "@/hooks/useCoordinatorWorkspaceEnabled";
 import { Button } from "@/components/ui/button";
 import { CoordinatorCreatedTaskLink, CoordinatorTaskMotion } from "./CoordinatorTaskCommitment";
+import { useTranslation } from "@/i18n";
 
 /** Bounded, viewer-scoped source-chat projection, shared by chat and its Tasks tab. */
 export function useCoordinatorChatTaskHandoffs(issueId: string | null, conversationMode = true) {
@@ -62,12 +63,13 @@ export function CoordinatorChatTaskHandoff({ handoff, animateEntry = false }: { 
 }
 
 export function CoordinatorChatHandoffStatus({ query, scroll = false }: { scroll?: boolean; query: ReturnType<typeof useCoordinatorChatTaskHandoffs> }) {
+  const { t } = useTranslation();
   if (!query.enabled) return null;
   if (query.isError) return <div role="status" className="flex flex-wrap items-center gap-2 text-sm text-muted-foreground">
-    <span>Created tasks couldn’t load.</span><Button size="sm" variant="ghost" onClick={() => void query.refetch()}>Retry</Button>
+    <span>{t("comps2.coordinator.handoffsLoadError")}</span><Button size="sm" variant="ghost" onClick={() => void query.refetch()}>{t("agentConfig.common.retry")}</Button>
   </div>;
   if (!scroll && query.hasNextPage) return <Button size="sm" variant="ghost" disabled={query.isFetchingNextPage} onClick={() => void query.fetchNextPage()}>
-    {query.isFetchingNextPage ? "Loading earlier tasks…" : "Load earlier tasks"}
+    {query.isFetchingNextPage ? t("comps2.coordinator.loadingEarlierTasks") : t("comps2.coordinator.loadEarlierTasks")}
   </Button>;
   return null;
 }

@@ -7,6 +7,7 @@ import type {
   ToolProfileWithDetails,
 } from "@paperclipai/shared";
 import { humanizeConnectionDisplayName, isToolConnectionAttentionHealth } from "@paperclipai/shared";
+import { t } from "@/i18n";
 
 /** Days before expiry at which we surface a token as "Expiring". */
 export const TOKEN_EXPIRING_WINDOW_DAYS = 14;
@@ -37,12 +38,16 @@ export function tokenStatus(
   return "active";
 }
 
-export const TOKEN_STATUS_LABEL: Record<TokenStatus, string> = {
-  active: "Active",
-  expiring: "Expiring",
-  expired: "Expired",
-  revoked: "Revoked",
+export const TOKEN_STATUS_LABEL_KEYS: Record<TokenStatus, string> = {
+  active: "apps.gateways.tokens.status.active",
+  expiring: "apps.gateways.tokens.status.expiring",
+  expired: "apps.gateways.tokens.status.expired",
+  revoked: "apps.gateways.tokens.status.revoked",
 };
+
+export function tokenStatusLabel(status: TokenStatus): string {
+  return t(TOKEN_STATUS_LABEL_KEYS[status]);
+}
 
 /** Count of tokens that can currently authenticate (not revoked, not expired). */
 export function activeTokenCount(gateway: ToolMcpGatewayWithTokens, now: number = Date.now()): number {
@@ -77,23 +82,23 @@ export function formatScope(
 ): string {
   if (gateway.contextScopeType !== "none" && gateway.contextScopeId) {
     if (gateway.contextScopeType === "project") {
-      return `Project · ${projectNames.get(gateway.contextScopeId) ?? shortId(gateway.contextScopeId)}`;
+      return t("apps.gateways.scope.project", { name: projectNames.get(gateway.contextScopeId) ?? shortId(gateway.contextScopeId) });
     }
     if (gateway.contextScopeType === "agent") {
-      return `Agent · ${agentNames.get(gateway.contextScopeId) ?? shortId(gateway.contextScopeId)}`;
+      return t("apps.gateways.scope.agent", { name: agentNames.get(gateway.contextScopeId) ?? shortId(gateway.contextScopeId) });
     }
     return `${gateway.contextScopeType} · ${shortId(gateway.contextScopeId)}`;
   }
-  if (gateway.projectId) return `Project · ${projectNames.get(gateway.projectId) ?? shortId(gateway.projectId)}`;
-  if (gateway.agentId) return `Agent · ${agentNames.get(gateway.agentId) ?? shortId(gateway.agentId)}`;
-  return "Organization";
+  if (gateway.projectId) return t("apps.gateways.scope.project", { name: projectNames.get(gateway.projectId) ?? shortId(gateway.projectId) });
+  if (gateway.agentId) return t("apps.gateways.scope.agent", { name: agentNames.get(gateway.agentId) ?? shortId(gateway.agentId) });
+  return t("apps.gateways.scope.organization");
 }
 
 export function formatOwner(gateway: ToolMcpGatewayWithTokens, agentNames: Map<string, string>): string {
   if (gateway.createdByAgentId) {
-    return agentNames.get(gateway.createdByAgentId) ?? `Agent ${shortId(gateway.createdByAgentId)}`;
+    return agentNames.get(gateway.createdByAgentId) ?? t("apps.gateways.owner.agent", { id: shortId(gateway.createdByAgentId) });
   }
-  return "Board";
+  return t("apps.gateways.owner.board");
 }
 
 /** Whether the gateway is exposing tools to clients right now. */
@@ -103,14 +108,14 @@ export function isGatewayOn(gateway: ToolMcpGatewayWithTokens): boolean {
 
 /** Human summary of how many tools a profile allows. */
 export function allowedToolsLabel(profile: ToolProfileWithDetails | undefined): string {
-  if (!profile) return "Profile unavailable";
+  if (!profile) return t("apps.gateways.tools.profileUnavailable");
   const { accessMode, allowedToolCount, totalToolCount, excludedToolCount } = profile.summary;
   const count =
     accessMode === "all_except"
       ? Math.max(totalToolCount - excludedToolCount, 0)
       : allowedToolCount;
-  if (count === 0) return "No tools allowed";
-  return `${count} ${count === 1 ? "tool" : "tools"}`;
+  if (count === 0) return t("apps.gateways.tools.noneAllowed");
+  return t(count === 1 ? "apps.gateways.tools.count_one" : "apps.gateways.tools.count_other", { count });
 }
 
 export type GatewayAppRow = {
@@ -175,7 +180,7 @@ export function deriveGatewayApps(
       toolCount: toolCountByApp.get(applicationId) ?? 0,
       needsAttention: Boolean(attentionConnection),
       attentionReason: attentionConnection
-        ? "Sign-in expired — reconnect to restore access."
+        ? t("apps.gateways.apps.signinExpired")
         : null,
     });
   }
